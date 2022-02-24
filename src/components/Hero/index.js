@@ -11,8 +11,7 @@ function Hero({ data }) {
       
         return `${hours < 1 ? '' : `${hours}h`}${minutes < 1 ? '' : `${minutes}min`}`;
     }
-      
-	console.log(data);
+
     return (
 		<S.HeroWrapper $src={data.backdrop_path ? `https://image.tmdb.org/t/p/original${data.backdrop_path}` : ''}>
         

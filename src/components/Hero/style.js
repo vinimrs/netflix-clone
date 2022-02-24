@@ -8,7 +8,7 @@ export const HeroWrapper = styled.div`
 	justify-content: start;
 	align-items: center;
 
-	background-image: linear-gradient(90deg, #000e 37.0%, #00000000 70.33%),
+	background-image: linear-gradient(90deg, #000e 37.0%, #00000000 85.33%),
 		url(${props => {
             console.log(props.$src);
             return props.$src ? props.$src : heroImage
@@ -23,6 +23,8 @@ export const HeroWrapper = styled.div`
             console.log(props.$src);
             return props.$src ? props.$src : heroImage
         }});
+	background-position: center;
+
 	}
 `;
 
@@ -46,13 +48,13 @@ export const InfoFilm = styled.div`
 
 export const FilmTitle = styled.h1`
 	font-size: 72px;
-	line-height: 78px;
 	color: var(--white);
     max-width: 50%;
 
     @media (max-width: 768px) {
 		font-size: 48px;
         max-width: 80%;
+
 	}
 `;
 

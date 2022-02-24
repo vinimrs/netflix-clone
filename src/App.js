@@ -21,21 +21,8 @@ function App() {
 			);
 			let chosen = warFilms[0].items.results[randomChosen];
 
-			let chosenInfo;
-			// switch(chosen.media_type){
-			//     case 'movie':
-			//         chosenInfo = await requires.getMovieInfo(chosen.id, 'movie');
-			//     break;
-
-			//     case 'tv':
-			//         chosenInfo = await requires.getMovieInfo(chosen.id, 'tv');
-			//     break;
-
-			//     default:
-			//         chosenInfo = chosen;
-			//     break;
-			// }
-			chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
+		
+			let chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
 			setHeroFilm(chosenInfo);
 		};
 
