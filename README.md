@@ -10,6 +10,7 @@ Projeto de clone de um dos mais famosos serviços de Streaming. Buscando a maior
 ## Tecnologias ⚡
 
 - [React](https://pt-br.reactjs.org)
+- [The Movie DB](https://pt-br.reactjs.org)
 
 ## Features :hammer:
 
