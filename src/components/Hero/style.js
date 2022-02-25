@@ -7,14 +7,21 @@ export const HeroWrapper = styled.div`
 	display: flex;
 	justify-content: start;
 	align-items: center;
+    position: relative;
 
 	background-image: linear-gradient(90deg, #000e 37.0%, #00000000 85.33%),
 		url(${props => {
-            console.log(props.$src);
-            return props.$src ? props.$src : heroImage
+            return props.$src ? props.$src : ''
         }});
 	background-size: cover;
 	background-position: center;
+
+    .video {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
+    }
 
 	@media (max-width: 768px) {
 		margin: -68px 0 0 0;
@@ -36,6 +43,7 @@ export const InfoFilm = styled.div`
     padding-left: 32px;
     padding-bottom: 150px;
     padding-top: 70px;
+    z-index: 10;
 
     @media (max-width: 768px) {
 		padding-left: 16px;
@@ -88,7 +96,7 @@ margin-right: 12px;
 export const FilmText = styled.p`
 	font-size: 20px;
 	line-height: 24px;
-	color: var(--gray);
+	color: var(--white);
 
 	order: 2;
 	margin: 8px 0 8px 0;
@@ -119,25 +127,62 @@ export const HeroButton = styled.button`
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	padding: 12px 22px;
-	background: var(
-		${(props) => (props.primary ? "--white" : "--light-black")}
+	padding: ${props => !props.variant ? '10px 20px' : '12px 22px'};
+	background-color: var(
+		${(props) => {
+            switch(props.variant) {
+                case 'primary':
+                   return '--white';
+                case 'secondary':
+                   return '--light-black';
+                default:
+                    return '--transparent';
+                } }
+        }
 	);
 	border-radius: 6px;
-    border: none;
-	color: var(${(props) => (props.primary ? "--black" : "--white")});
+    border: ${props => {
+        switch(props.variant) {
+            case 'primary':
+               return 'none';
+            case 'secondary':
+               return 'none';
+            default:
+                return 'solid 2px var(--white)';
+            } }
+    };
+	color: var(${(props) => {
+        switch(props.variant) {
+            case 'primary':
+               return '--black';
+            case 'secondary':
+               return '--white';
+            default:
+                return '--white';
+            } }
+    });
     cursor: pointer;
     transition: .5s;
 
 	/* Inside auto layout */
 
-	order: ${(props) => (props.primary ? "0" : "1")};
 	margin: 0px 8px;
 
     &:hover {
         background: var(
-            ${(props) => (props.primary ? "--white-hover" : "--light-black-hover")}
+            ${(props) => { 
+                
+                switch(props.variant) {
+                case 'primary':
+                   return '--white-hover';
+                case 'secondary':
+                   return '--light-black-hover';
+                default:
+                    return '--light-black-hover';
+                } }
+            }
         ); 
+        border-color: var(--light-black-hover); 
     }
 
     @media (max-width: 768px) {

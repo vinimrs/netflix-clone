@@ -14,7 +14,7 @@ const StyledHeader = styled.header`
     padding: 17px 32px;
     transition: all ease .2s;
     background-color: ${props => props.$active ? 'var(--black)' : '#00000000' }; 
-    z-index: 100;
+    z-index: 1000;
 
     
 

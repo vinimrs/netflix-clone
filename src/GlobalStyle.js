@@ -7,8 +7,9 @@ const GlobalStyle = createGlobalStyle`
         --white-hover: #f5f5f5e1;
         --green: #46d369;
         --gray: #9A9A9A;
-        --light-black: #363636;
-        --light-black-hover: #363636e1;
+        --light-black: #363636a1;
+        --light-black-hover: #363636a1;
+        --transparent: #00000000;
     }
 
     * {
@@ -21,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         background-color: var(--black);
+        overflow-x: hidden;
     }
 
 

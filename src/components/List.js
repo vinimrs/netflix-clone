@@ -27,6 +27,7 @@ const FilmImage = styled.img`
 	display: inline-block;
 	cursor: pointer;
 	transform: scale(0.9);
+    border-radius: 5px;
 
 	&:hover {
 		transform: scale(1);

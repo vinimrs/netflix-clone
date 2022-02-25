@@ -1,50 +1,180 @@
-import React from "react";
-import * as S from './style.js';
+import React, { useRef, useState } from "react";
+import * as S from "./style.js";
+import YouTube from "react-youtube";
+import { gsap, Power3 } from "gsap/all";
 import { ReactComponent as Plus } from "../../assets/plus.svg";
 import { ReactComponent as Play } from "../../assets/play.svg";
 
-function Hero({ data }) {
+function Hero({ data, videoData }) {
+	const [video, setVideo] = useState(false);
+	const trailerButton = useRef(null);
+	const infoFilm = useRef(null);
 
-    function toHoursAndMinutes(totalMinutes) {
-        const minutes = totalMinutes % 60;
-        const hours = Math.floor(totalMinutes / 60);
-      
-        return `${hours < 1 ? '' : `${hours}h`}${minutes < 1 ? '' : `${minutes}min`}`;
-    }
+	const opt = {
+		height: window.innerHeight,
+		width: window.innerWidth - 17,
+		playerVars: {
+			// https://developers.google.com/youtube/player_parameters
+			autoplay: 1,
+			controls: 0,
+			cc_load_policy: 1,
+			rel: 0,
+			origin: "",
+		},
+	};
 
-    return (
-		<S.HeroWrapper $src={data.backdrop_path ? `https://image.tmdb.org/t/p/original${data.backdrop_path}` : ''}>
+	const getTextLimit = () => {
+		let windowWidth = window.innerWidth;
+		return windowWidth > 768 ? 400 : 200;
+	};
+
+	function toHoursAndMinutes(totalMinutes) {
+		const minutes = totalMinutes % 60;
+		const hours = Math.floor(totalMinutes / 60);
+
+		return `${hours < 1 ? "" : `${hours}h`}${
+			minutes < 1 ? "" : `${minutes}min`
+		}`;
+	}
+
+	const handleOnEnd = () => {
+		handleInInfoAnimation();
+        setVideo(false);
+	};
+
+	const handleOutInfoAnimation = () => {
+		console.log("outanim");
+
+        // let tl = gsap.timeline();
+		// tl
+        gsap.to("._filmTitle", {
+			duration: 2,
+			ease: Power3.easeInOut,
+            fontSize: '58px',
+            
+            zIndex: -1
+		})
+        gsap.to('._detailsDiv', { duration: .15, delay: 1,ease: Power3.easeInOut,
+            display: 'none', opacity: 0,    
+        }, )
+
         
-            <S.InfoFilm>
-				<S.FilmTitle>{data.title ? data.title : data.name}</S.FilmTitle>
-				<S.Details>
-					{data.vote_average && <S.DetailsText score>{data.vote_average} pontos</S.DetailsText>}
-					{(data.release_date || data.last_air_date) && <S.DetailsText>{data.release_date ? data.release_date.substring(0,4) : data.last_air_date.substring(0,4)}</S.DetailsText>}
-					{(data.runtime || data.last_air_date) && <S.DetailsText>{data.runtime ? toHoursAndMinutes(data.runtime) : `${data.number_of_seasons} temporada${data.number_of_seasons > 1 ? 's' : ''}`}</S.DetailsText>}
+        gsap.to('._filmDescription', { duration: .15, delay: 1, ease: Power3.easeInOut,
+            display: 'none', opacity: 0    
+        }, )
+        gsap.to('._filmGenres', { duration: .15, delay: 1,ease: Power3.easeInOut,
+            display: 'none', opacity: 0   
+        }, );
+        
+	};
+
+	const handleInInfoAnimation = () => {
+		console.log("Inanim");
+		gsap.to("._filmTitle", {
+			duration: 2,
+			ease: Power3.easeInOut,
+            fontSize: '72px',
+            y: "inherit"
+		})
+        gsap.to('._detailsDiv', { duration: .1, delay: 1, ease: Power3.easeInOut,
+            display: 'inline', opacity: 1    
+        })
+        gsap.to('._filmDescription', { duration: .1, delay: 1,ease: Power3.easeInOut,
+            display: 'inline', opacity: 1  
+        })
+        gsap.to('._filmGenres', { duration: .1, delay: 1,ease: Power3.easeInOut,
+            display: 'inline', opacity: 1   
+        });
+	};
+
+	return (
+		<S.HeroWrapper
+			$src={
+				data.backdrop_path
+					? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
+					: ""
+			}
+		>
+			{video && (
+				<YouTube
+					className="video"
+					videoId={videoData.key}
+					opts={opt}
+					allow="autoplay;"
+					onEnd={() => handleOnEnd()}
+				/>
+			)}
+			<S.InfoFilm className="_infoFilm" ref={infoFilm}>
+				<S.FilmTitle className="_filmTitle">{data.title ? data.title : data.name}</S.FilmTitle>
+				<S.Details className="_detailsDiv">
+                     
+					{data.vote_average && (
+						<S.DetailsText score>
+							{data.vote_average} pontos
+						</S.DetailsText>
+					)}
+					{(data.release_date || data.last_air_date) && (
+						<S.DetailsText>
+							{data.release_date
+								? data.release_date.substring(0, 4)
+								: data.last_air_date.substring(0, 4)}
+						</S.DetailsText>
+					)}
+					{(data.runtime || data.last_air_date) && (
+						<S.DetailsText>
+							{data.runtime
+								? toHoursAndMinutes(data.runtime)
+								: `${data.number_of_seasons} temporada${
+										data.number_of_seasons > 1 ? "s" : ""
+								  }`}
+						</S.DetailsText>
+					)}
 				</S.Details>
-				<S.FilmText>
-					{data.overview.length > 300 ? data.overview.substring(0, 300) + '...' : data.overview}
+				<S.FilmText className="_filmDescription">
+					{data.overview.length > getTextLimit()
+						? data.overview.substring(0, getTextLimit()) + "..."
+						: data.overview}
 				</S.FilmText>
-				<S.ButtonsWrapper>
-					<a  href={`/watch/${data.id}`}>
-                        <S.HeroButton primary>
-                                <Play />
-                            <S.ButtonText>
-                                Assistir
-                            </S.ButtonText>
-                        </S.HeroButton>
-                    </a>
+				<S.ButtonsWrapper
+					// onMouseEnter={() => (video ? handleInInfoAnimation() : "")}
+					// onMouseLeave={() => (video ? handleOutInfoAnimation() : "")}
+				>
+					<a href={`/watch/${data.id}`}>
+						<S.HeroButton variant="primary">
+							<Play />
+							<S.ButtonText>Assistir</S.ButtonText>
+						</S.HeroButton>
+					</a>
 					<a href={`/list/add/${data.id}`}>
-                        <S.HeroButton>
-                                <Plus />
-                            <S.ButtonText>
-                                Minha Lista
-                            </S.ButtonText>
-                        </S.HeroButton>
-                    
-                    </a>
+						<S.HeroButton variant="secondary">
+							<Plus />
+							<S.ButtonText>Minha Lista</S.ButtonText>
+						</S.HeroButton>
+					</a>
+					<S.HeroButton
+						className="trailerButton"
+						ref={trailerButton}
+						variant={video ? "secondary" : "primary"}
+						onClick={() => {
+							if (!video) handleOutInfoAnimation();
+							else handleInInfoAnimation();
+							setVideo(!video);
+						}}
+					>
+						<Play />
+						<S.ButtonText>
+							{video ? "Sair" : "Trailer"}
+						</S.ButtonText>
+					</S.HeroButton>
 				</S.ButtonsWrapper>
-				{data.genres && <S.FilmText>| {data.genres.map(genre => {return `${genre.name} | `})}</S.FilmText>}
+				{data.genres && (
+					<S.FilmText className="_filmGenres">
+						|{" "}
+						{data.genres.map((genre) => {
+							return `${genre.name} | `;
+						})}
+					</S.FilmText>
+				)}
 			</S.InfoFilm>
 		</S.HeroWrapper>
 	);

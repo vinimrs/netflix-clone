@@ -75,6 +75,10 @@ const requires = {
 
         return info;
     },
+    getMovieVideo: async (movieId) => {
+        let info = await basicFetch(`/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`);
+        return info;
+    }
 };
 
 export default requires;

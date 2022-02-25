@@ -5,10 +5,12 @@ import requires from "./api/TheMb";
 import Hero from "./components/Hero";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
+import loading from './assets/loading1.gif';
 
 function App() {
-	const [list, setList] = useState([]);
+	const [list, setList] = useState(null);
 	const [heroFilm, setHeroFilm] = useState(null);
+	const [filmVideo, setFilmVideo] = useState(null);
 	const [headerActive, setHeaderActive] = useState(false);
 
 	useEffect(() => {
@@ -23,7 +25,12 @@ function App() {
 
 		
 			let chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
-			setHeroFilm(chosenInfo);
+			
+            const videos = await requires.getMovieVideo(chosen.id);
+            console.log(chosenInfo);
+            console.log(videos.results[0]);
+            setFilmVideo(videos.results[0]);
+            setHeroFilm(chosenInfo);
 		};
 
 		loadAll();
@@ -48,9 +55,26 @@ function App() {
 		<>
 			<GlobalStyle />
 			<Header scroll={headerActive} />
-			{heroFilm && <Hero data={heroFilm} />}
-			<Main list={list} />
-			<Footer />
+			{heroFilm && <Hero data={heroFilm} videoData={filmVideo} />}
+			{list && <Main list={list} />}
+            {(!list || !heroFilm) && 
+            <div style={{
+                position: 'absolute',
+                zIndex: '900',
+                top: '0',
+                left: '0',
+                right: '0',
+                bottom: '0',
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: '#000',
+            }}>
+                <img style={{
+                    width: '100vw',
+                }} src={loading} alt="Animação de carregamento" />
+            </div>
+            }
+			{list && <Footer />}
 		</>
 	);
 }
