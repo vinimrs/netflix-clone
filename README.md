@@ -1,4 +1,4 @@
-[Netflix](https://github.com/ViniR07/netflix-clone/blob/master/src/assets/netflix-logo.svg)
+<img src="https://github.com/ViniR07/netflix-clone/blob/master/src/assets/netflix-logo.svg" />
 # Netflix Clone
 
 Projeto de clone de um dos mais famosos serviços de Streaming. Buscando a maior fidelidade possível.
