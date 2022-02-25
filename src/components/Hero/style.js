@@ -58,11 +58,12 @@ export const FilmTitle = styled.h1`
 	font-size: 72px;
 	color: var(--white);
     max-width: 50%;
+    order: 1;
 
     @media (max-width: 768px) {
 		font-size: 48px;
         max-width: 80%;
-
+        line-height: 80px;
 	}
 `;
 
@@ -71,11 +72,11 @@ export const Details = styled.div`
 	flex-direction: row;
 	align-items: flex-start;
 
-	order: 1;
-	margin: 12px 0px;
+	order: 2;
+	margin-top: 12px;
 
     @media (max-width: 768px) {
-		margin: 10px 0px;
+		margin-top: 8px;
 	}
 `;
 
@@ -85,7 +86,6 @@ font-size: 20px;
 line-height: 23px;
 color: var(${(props) => (props.score ? "--green" : "--white")});
 
-order: 0;
 margin-right: 12px;
 
 @media (max-width: 768px) {
@@ -98,14 +98,14 @@ export const FilmText = styled.p`
 	line-height: 24px;
 	color: var(--white);
 
-	order: 2;
-	margin: 8px 0 8px 0;
+	order: 4;
+	margin: 8px 0;
 
     max-width: 40%;
 
     @media (max-width: 768px) {
         font-size: 16px;
-        margin: 8px 0 8px 0;
+        margin: 8px 0;
         max-width: 80%;
     }
 `;
@@ -114,11 +114,13 @@ export const ButtonsWrapper = styled.div`
 	display: flex;
 	align-items: flex-start;
 
-	order: 2;
+	order: 4;
 	margin: 12px 0px;
     
     @media (max-width: 768px) {
         justify-content: space-between;
+	    margin: 8px 0px;
+
     }
 `;
 
@@ -127,6 +129,10 @@ export const HeroButton = styled.button`
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+    cursor: pointer;
+    transition: .5s;
+	border-radius: 6px;
+
 	padding: ${props => !props.variant ? '10px 20px' : '12px 22px'};
 	background-color: var(
 		${(props) => {
@@ -140,7 +146,6 @@ export const HeroButton = styled.button`
                 } }
         }
 	);
-	border-radius: 6px;
     border: ${props => {
         switch(props.variant) {
             case 'primary':
@@ -161,8 +166,7 @@ export const HeroButton = styled.button`
                 return '--white';
             } }
     });
-    cursor: pointer;
-    transition: .5s;
+
 
 	/* Inside auto layout */
 
@@ -187,6 +191,8 @@ export const HeroButton = styled.button`
 
     @media (max-width: 768px) {
         padding: 12px 24px;
+        display: ${props => props.disableMobile ? 'none' : 'flex'};
+
     }
 `;
 

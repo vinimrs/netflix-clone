@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ChevronLeft } from "../assets/chevron.svg";
 import { ReactComponent as ChevronRight } from "../assets/chevron-right.svg";
@@ -11,7 +11,7 @@ const ListWrapper = styled.div`
 const ListDiv = styled.div`
 	overflow-x: hidden;
 	padding-left: 32px;
-    transition: all ease .5s;
+	transition: all ease 0.5s;
 `;
 
 const FilmsList = styled.div`
@@ -27,7 +27,7 @@ const FilmImage = styled.img`
 	display: inline-block;
 	cursor: pointer;
 	transform: scale(0.9);
-    border-radius: 5px;
+	border-radius: 5px;
 
 	&:hover {
 		transform: scale(1);
@@ -60,24 +60,26 @@ const NavigateDiv = styled.div`
 
 function List({ list }) {
 	const [activeList, setActiveList] = useState(false);
-    const [scrollx, setScrollx] = useState(0);
+	const [scrollx, setScrollx] = useState(0);
+	const listTitle = useRef(null);
+	const listDiv = useRef(null);
 
-    const handleLeftArrow = () => {
-        let x = scrollx + Math.round(window.innerWidth / 4);
-        if(x > 0) {
-            x = 0;
-        }
-        setScrollx(x);
-    }
+	const handleLeftArrow = () => {
+		let x = scrollx + Math.round(window.innerWidth / 3);
+		if (x > 0) {
+			x = 0;
+		}
+		setScrollx(x);
+	};
 
-    const handleRightArrow = () => {
-        let x = scrollx - Math.round(window.innerWidth / 4);
-        const listWidth = list.items.results.length * 200;
-        if((window.innerWidth - listWidth) > x) {
-            x = (window.innerWidth - listWidth) - 64;
-        }
-        setScrollx(x);
-    }
+	const handleRightArrow = () => {
+		let x = scrollx - Math.round(window.innerWidth / 3);
+		const listWidth = list.items.results.length * 200;
+		if (window.innerWidth - listWidth > x) {
+			x = window.innerWidth - listWidth - 64;
+		}
+		setScrollx(x);
+	};
 
 	return (
 		<ListWrapper>
@@ -90,7 +92,7 @@ function List({ list }) {
 				onMouseLeave={() => {
 					setActiveList(false);
 				}}
-                onClick={handleLeftArrow}
+				onClick={handleLeftArrow}
 			>
 				<ChevronLeft />
 			</NavigateDiv>
@@ -102,20 +104,21 @@ function List({ list }) {
 				onMouseLeave={() => {
 					setActiveList(false);
 				}}
-                onClick={handleRightArrow}
+				onClick={handleRightArrow}
 			>
 				<ChevronRight />
 			</NavigateDiv>
 
-			<ListTitle>{list.title}</ListTitle>
+			<ListTitle ref={listTitle}>{list.title}</ListTitle>
 			<ListDiv
+				ref={listDiv}
 				onMouseEnter={() => {
 					setActiveList(true);
 				}}
 				onMouseLeave={() => {
 					setActiveList(false);
 				}}
-                style={{marginLeft: scrollx}}
+				style={{ marginLeft: scrollx }}
 			>
 				<FilmsList $length={list.items.results.length}>
 					{list.items.results.length > 0 &&

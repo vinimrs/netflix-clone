@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import * as S from "./style.js";
 import YouTube from "react-youtube";
 import { gsap, Power3 } from "gsap/all";
@@ -7,8 +7,6 @@ import { ReactComponent as Play } from "../../assets/play.svg";
 
 function Hero({ data, videoData }) {
 	const [video, setVideo] = useState(false);
-	const trailerButton = useRef(null);
-	const infoFilm = useRef(null);
 
 	const opt = {
 		height: window.innerHeight,
@@ -39,53 +37,67 @@ function Hero({ data, videoData }) {
 
 	const handleOnEnd = () => {
 		handleInInfoAnimation();
-        setVideo(false);
+		setVideo(false);
 	};
 
 	const handleOutInfoAnimation = () => {
 		console.log("outanim");
 
-        // let tl = gsap.timeline();
-		// tl
-        gsap.to("._filmTitle", {
-			duration: 2,
+		gsap.to("._filmTitle", {
 			ease: Power3.easeInOut,
-            fontSize: '58px',
-            
-            zIndex: -1
-		})
-        gsap.to('._detailsDiv', { duration: .15, delay: 1,ease: Power3.easeInOut,
-            display: 'none', opacity: 0,    
-        }, )
+			fontSize: "58px",
+            duration: 1,
+			zIndex: -1,
+		});
+		gsap.to("._detailsDiv",  { 
+			ease: Power3.easeInOut,
+            display: 'none',
+            duration: 1,
+			autoAlpha: 0,
+		});
 
-        
-        gsap.to('._filmDescription', { duration: .15, delay: 1, ease: Power3.easeInOut,
-            display: 'none', opacity: 0    
-        }, )
-        gsap.to('._filmGenres', { duration: .15, delay: 1,ease: Power3.easeInOut,
-            display: 'none', opacity: 0   
-        }, );
-        
+		gsap.to("._filmDescription", {
+			ease: Power3.easeInOut,
+            display: 'none',
+            duration: 1,
+			autoAlpha: 0,
+		});
+		gsap.to("._filmGenres", {
+			ease: Power3.easeInOut,
+            display: 'none',
+            duration: 1,
+			autoAlpha: 0,
+		});
 	};
 
 	const handleInInfoAnimation = () => {
 		console.log("Inanim");
 		gsap.to("._filmTitle", {
-			duration: 2,
+			duration: 0.5,
 			ease: Power3.easeInOut,
-            fontSize: '72px',
-            y: "inherit"
-		})
-        gsap.to('._detailsDiv', { duration: .1, delay: 1, ease: Power3.easeInOut,
-            display: 'inline', opacity: 1    
-        })
-        gsap.to('._filmDescription', { duration: .1, delay: 1,ease: Power3.easeInOut,
-            display: 'inline', opacity: 1  
-        })
-        gsap.to('._filmGenres', { duration: .1, delay: 1,ease: Power3.easeInOut,
-            display: 'inline', opacity: 1   
-        });
+			fontSize: "72px",
+			y: "inherit",
+		});
+		gsap.to("._detailsDiv", {
+			ease: Power3.easeInOut,
+            display: "inherit",
+            duration: .5,
+			autoAlpha: 1,
+		});
+		gsap.to("._filmDescription", {
+			duration: .5,
+			ease: Power3.easeInOut,
+            display: "inherit",
+			autoAlpha: 1,
+		});
+		gsap.to("._filmGenres", {
+			duration: .5,
+			ease: Power3.easeInOut,
+            display: "inherit",
+			autoAlpha: 1,
+		});
 	};
+
 
 	return (
 		<S.HeroWrapper
@@ -104,10 +116,11 @@ function Hero({ data, videoData }) {
 					onEnd={() => handleOnEnd()}
 				/>
 			)}
-			<S.InfoFilm className="_infoFilm" ref={infoFilm}>
-				<S.FilmTitle className="_filmTitle">{data.title ? data.title : data.name}</S.FilmTitle>
-				<S.Details className="_detailsDiv">
-                     
+			<S.InfoFilm className="_infoFilm">
+				<S.FilmTitle className="_filmTitle" >
+					{data.title ? data.title : data.name}
+				</S.FilmTitle>
+				<S.Details className="_detailsDiv" >
 					{data.vote_average && (
 						<S.DetailsText score>
 							{data.vote_average} pontos
@@ -130,14 +143,12 @@ function Hero({ data, videoData }) {
 						</S.DetailsText>
 					)}
 				</S.Details>
-				<S.FilmText className="_filmDescription">
+				<S.FilmText className="_filmDescription" >
 					{data.overview.length > getTextLimit()
 						? data.overview.substring(0, getTextLimit()) + "..."
 						: data.overview}
 				</S.FilmText>
 				<S.ButtonsWrapper
-					// onMouseEnter={() => (video ? handleInInfoAnimation() : "")}
-					// onMouseLeave={() => (video ? handleOutInfoAnimation() : "")}
 				>
 					<a href={`/watch/${data.id}`}>
 						<S.HeroButton variant="primary">
@@ -153,9 +164,9 @@ function Hero({ data, videoData }) {
 					</a>
 					<S.HeroButton
 						className="trailerButton"
-						ref={trailerButton}
 						variant={video ? "secondary" : "primary"}
-						onClick={() => {
+						disableMobile
+                        onClick={() => {
 							if (!video) handleOutInfoAnimation();
 							else handleInInfoAnimation();
 							setVideo(!video);
@@ -168,7 +179,7 @@ function Hero({ data, videoData }) {
 					</S.HeroButton>
 				</S.ButtonsWrapper>
 				{data.genres && (
-					<S.FilmText className="_filmGenres">
+					<S.FilmText  className="_filmGenres">
 						|{" "}
 						{data.genres.map((genre) => {
 							return `${genre.name} | `;
