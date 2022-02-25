@@ -1,13 +1,11 @@
-<img src="https://github.com/ViniR07/netflix-clone/blob/master/src/assets/netflix-logo.svg" />
 # Netflix Clone
+
+<img src="https://github.com/ViniR07/netflix-clone/blob/master/src/assets/netflix-logo.svg" width="500px" />
 
 Projeto de clone de um dos mais famosos serviços de Streaming. Buscando a maior fidelidade possível.
 
-<!-- ## Confira 🔦
-<img src="https://github.com/ViniR07/VinChat/blob/master/Screenshots/scree_vinChat.png" width="900"/>
-<img src="https://github.com/ViniR07/VinChat/blob/master/Screenshots/screen_vinchat2.png" width="900"/>
-<img src="https://user-images.githubusercontent.com/92659173/152045984-f7741d95-1223-4a0a-8226-bb52134e5a60.gif" width="900" /> -->
-
+## Confira 🔦
+![pagina-principal](https://user-images.githubusercontent.com/92659173/155800583-0948465a-b167-490a-823e-3e3fc3995f45.png)
 
 ## Tecnologias ⚡
 
