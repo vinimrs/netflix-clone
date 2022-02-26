@@ -8,7 +8,6 @@ export const HeroWrapper = styled.div`
 	justify-content: start;
 	align-items: center;
     position: relative;
-    // overflow-x: hidden;
 
 	background-image: linear-gradient(90deg, #000e 37.0%, #00000000 85.33%),
 		url(${props => {
@@ -32,8 +31,7 @@ export const HeroWrapper = styled.div`
             return props.$src ? props.$src : heroImage
         }});
 	    background-position: center;
-	    justify-content: center;
-
+        align-items: end;
 
 	}
 `;
@@ -53,6 +51,8 @@ export const InfoFilm = styled.div`
         padding-bottom: 80px;
         padding-top: 100px;
         max-width: 80vh;
+	// align-items: flex-end;
+        justify-content: end;
 	}
 `;
 
