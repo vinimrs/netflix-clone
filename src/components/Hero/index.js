@@ -10,14 +10,15 @@ function Hero({ data, videoData }) {
 
 	const opt = {
 		height: window.innerHeight,
-		width: window.innerWidth - 17,
+		width: window.innerWidth,
 		playerVars: {
 			// https://developers.google.com/youtube/player_parameters
 			autoplay: 1,
 			controls: 0,
 			cc_load_policy: 1,
 			rel: 0,
-			origin: "",
+			origin: "https://netflix-clone-vinir07.vercel.app",
+            mute1: window.innerWidth < 769 ? "1" : "0",
 		},
 	};
 
@@ -106,9 +107,11 @@ function Hero({ data, videoData }) {
 		>
 			{video && (
 				<YouTube
+                    className="video"
 					videoId={videoData.key}
 					opts={opt}
 					allow="autoplay;"
+                    onReady={(e) => e.target.playVideo()}
 					onEnd={() => handleOnEnd()}
 				/>
 			)}
@@ -159,9 +162,8 @@ function Hero({ data, videoData }) {
 						</S.HeroButton>
 					</a>
 					<S.HeroButton
-						className="trailerButton"
 						variant={video ? "secondary" : "primary"}
-						disableMobile
+						// disableMobile
                         onClick={() => {
 							if (!video) handleOutInfoAnimation();
 							else handleInInfoAnimation();

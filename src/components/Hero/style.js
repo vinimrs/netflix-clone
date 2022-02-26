@@ -8,6 +8,7 @@ export const HeroWrapper = styled.div`
 	justify-content: start;
 	align-items: center;
     position: relative;
+    // overflow-x: hidden;
 
 	background-image: linear-gradient(90deg, #000e 37.0%, #00000000 85.33%),
 		url(${props => {
@@ -25,12 +26,14 @@ export const HeroWrapper = styled.div`
 
 	@media (max-width: 768px) {
 		margin: -68px 0 0 0;
-        background-image: linear-gradient(90deg, #000e 60.0%, #00000000 95.33%),
+        background-image: linear-gradient(0deg, #000e 40.0%, #00000000 95.33%),
 		url(${props => {
             console.log(props.$src);
             return props.$src ? props.$src : heroImage
         }});
-	background-position: center;
+	    background-position: center;
+	    justify-content: center;
+
 
 	}
 `;
@@ -49,7 +52,6 @@ export const InfoFilm = styled.div`
 		padding-left: 16px;
         padding-bottom: 80px;
         padding-top: 100px;
-
         max-width: 80vh;
 	}
 `;
@@ -63,7 +65,7 @@ export const FilmTitle = styled.h1`
     @media (max-width: 768px) {
 		font-size: 48px;
         max-width: 80%;
-        line-height: 80px;
+        line-height: 70px;
 	}
 `;
 
@@ -90,6 +92,7 @@ margin-right: 12px;
 
 @media (max-width: 768px) {
     font-size: 16px;
+    text-align: center;
 }
 `;
 
@@ -118,9 +121,8 @@ export const ButtonsWrapper = styled.div`
 	margin: 12px 0px;
     
     @media (max-width: 768px) {
-        justify-content: space-between;
 	    margin: 8px 0px;
-
+        flex-wrap: wrap;
     }
 `;
 
@@ -132,6 +134,7 @@ export const HeroButton = styled.button`
     cursor: pointer;
     transition: .5s;
 	border-radius: 6px;
+
 
 	padding: ${props => !props.variant ? '10px 20px' : '12px 22px'};
 	background-color: var(
@@ -191,6 +194,7 @@ export const HeroButton = styled.button`
 
     @media (max-width: 768px) {
         padding: 12px 24px;
+        margin: 8px 0;
         display: ${props => props.disableMobile ? 'none' : 'flex'};
 
     }

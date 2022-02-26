@@ -73,7 +73,7 @@ function List({ list }) {
     });
 
 	const handleLeftArrow = () => {
-		let x = scrollx + Math.round(window.innerWidth / 3);
+		let x = scrollx + Math.round(window.innerWidth / (window.innerWidth < 769 ? 2 : 3));
 		if (x > 0) {
 			x = 0;
 		}
@@ -81,7 +81,7 @@ function List({ list }) {
 	};
 
 	const handleRightArrow = () => {
-		let x = scrollx - Math.round(window.innerWidth / 3);
+		let x = scrollx - Math.round(window.innerWidth / (window.innerWidth < 769 ? 2 : 3));
 		const listWidth = list.items.results.length * 200;
 		if (window.innerWidth - listWidth > x) {
 			x = window.innerWidth - listWidth - 64;
