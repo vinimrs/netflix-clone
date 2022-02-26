@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, {  useState } from "react";
 import * as S from "./style.js";
 import YouTube from "react-youtube";
 import { gsap, Power3 } from "gsap/all";
@@ -41,8 +41,6 @@ function Hero({ data, videoData }) {
 	};
 
 	const handleOutInfoAnimation = () => {
-		console.log("outanim");
-
 		gsap.to("._filmTitle", {
 			ease: Power3.easeInOut,
 			fontSize: "58px",
@@ -71,7 +69,6 @@ function Hero({ data, videoData }) {
 	};
 
 	const handleInInfoAnimation = () => {
-		console.log("Inanim");
 		gsap.to("._filmTitle", {
 			duration: 0.5,
 			ease: Power3.easeInOut,
@@ -109,7 +106,6 @@ function Hero({ data, videoData }) {
 		>
 			{video && (
 				<YouTube
-					className="video"
 					videoId={videoData.key}
 					opts={opt}
 					allow="autoplay;"

@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as ChevronLeft } from "../assets/chevron.svg";
 import { ReactComponent as ChevronRight } from "../assets/chevron-right.svg";
+import { useSwipeable } from "react-swipeable";
 
 const ListWrapper = styled.div`
 	margin-bottom: 24px;
@@ -64,6 +65,13 @@ function List({ list }) {
 	const listTitle = useRef(null);
 	const listDiv = useRef(null);
 
+    const handlers = useSwipeable({
+        onSwipedLeft: () => handleRightArrow(),
+        onSwipedRight: () => handleLeftArrow(),
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true
+    });
+
 	const handleLeftArrow = () => {
 		let x = scrollx + Math.round(window.innerWidth / 3);
 		if (x > 0) {
@@ -80,9 +88,10 @@ function List({ list }) {
 		}
 		setScrollx(x);
 	};
+    console.log(handlers);
 
 	return (
-		<ListWrapper>
+		<ListWrapper {...handlers}>
 			<NavigateDiv
 				onMouseEnter={() => {
 					setActiveList(true);
@@ -92,7 +101,7 @@ function List({ list }) {
 				onMouseLeave={() => {
 					setActiveList(false);
 				}}
-				onClick={handleLeftArrow}
+				onClick={() => handleLeftArrow()}
 			>
 				<ChevronLeft />
 			</NavigateDiv>
@@ -104,7 +113,7 @@ function List({ list }) {
 				onMouseLeave={() => {
 					setActiveList(false);
 				}}
-				onClick={handleRightArrow}
+				onClick={() => handleRightArrow()}
 			>
 				<ChevronRight />
 			</NavigateDiv>
