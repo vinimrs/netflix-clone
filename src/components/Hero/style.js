@@ -32,7 +32,6 @@ export const HeroWrapper = styled.div`
         }});
 	    background-position: center;
         align-items: end;
-
 	}
 `;
 
@@ -45,13 +44,13 @@ export const InfoFilm = styled.div`
     padding-bottom: 150px;
     padding-top: 70px;
     z-index: 10;
+    width: 100%;
 
     @media (max-width: 768px) {
 		padding-left: 16px;
         padding-bottom: 80px;
         padding-top: 100px;
         max-width: 80vh;
-	// align-items: flex-end;
         justify-content: end;
 	}
 `;
@@ -59,13 +58,14 @@ export const InfoFilm = styled.div`
 export const FilmTitle = styled.h1`
 	font-size: 72px;
 	color: var(--white);
-    max-width: 50%;
+    max-width: 45%;
     order: 1;
 
     @media (max-width: 768px) {
 		font-size: 48px;
-        max-width: 80%;
+        max-width: 90%;
         line-height: 70px;
+
 	}
 `;
 
@@ -73,12 +73,14 @@ export const Details = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
-
+    max-width: 35%;
 	order: 2;
 	margin-top: 12px;
 
     @media (max-width: 768px) {
 		margin-top: 8px;
+    max-width: 80%;
+
 	}
 `;
 
@@ -86,6 +88,7 @@ export const DetailsText = styled.span`
 font-weight: 500;
 font-size: 20px;
 line-height: 23px;
+
 color: var(${(props) => (props.score ? "--green" : "--white")});
 
 margin-right: 12px;
@@ -104,7 +107,7 @@ export const FilmText = styled.p`
 	order: 4;
 	margin: 8px 0;
 
-    max-width: 40%;
+    max-width: 35%;
 
     @media (max-width: 768px) {
         font-size: 16px;
@@ -116,13 +119,16 @@ export const FilmText = styled.p`
 export const ButtonsWrapper = styled.div`
 	display: flex;
 	align-items: flex-start;
+    flex-wrap: wrap;
 
 	order: 4;
 	margin: 12px 0px;
+    max-width: 45%;
     
     @media (max-width: 768px) {
 	    margin: 8px 0px;
-        flex-wrap: wrap;
+        max-width: 100%;
+
     }
 `;
 
@@ -173,7 +179,7 @@ export const HeroButton = styled.button`
 
 	/* Inside auto layout */
 
-	margin: 0px 8px;
+	margin: 8px 8px;
 
     &:hover {
         background: var(
