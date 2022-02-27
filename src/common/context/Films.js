@@ -34,6 +34,5 @@ export const FilmsProvider = ({ children }) => {
         <FilmsContext.Provider value={{list, heroFilm, filmVideo}}>
             {children}
         </FilmsContext.Provider>
-
     );
 };

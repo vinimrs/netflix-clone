@@ -1,14 +1,16 @@
+import { StyledEngineProvider } from '@mui/material';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import { FilmsProvider } from './common/context/Films';
+import GlobalStyle from './GlobalStyle';
+import AppRoutes from './router';
 
 ReactDOM.render(
   <React.StrictMode>
-      <FilmsProvider>
-        <App />
+      <StyledEngineProvider injectFirst>
+          <GlobalStyle />
+        <AppRoutes />
 
-      </FilmsProvider>
+      </StyledEngineProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
