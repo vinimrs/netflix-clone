@@ -4,18 +4,24 @@ import { Button, TextField } from "@mui/material";
 export const Background = styled.div`
 	width: 100vw;
 	height: 100vh;
+    overflow-x: hidden;
+    
+
 	background-image: linear-gradient(90deg, #000a 100%, #00000000 100%),
 		url(${(props) => {
 			return props.$src ? props.$src : "";
 		}});
 	background-size: cover;
 	background-position: center;
-	margin: 0;
 	color: var(--white);
 
 	h1 {
 		margin-bottom: 12px;
 	}
+
+    @media (max-width: 768px) {
+    
+    }
 `;
 
 
@@ -28,6 +34,13 @@ export const LoginContainer = styled.div`
 	transform: translate(-50%, -50%);
 	border-radius: 5px;
 	padding: 62px 32px;
+
+    @media (max-width: 768px) {
+        width: 280px;
+        padding: 24px 0;
+        margin: 0;
+        overflow-x: hidden;
+    }
 `;
 
 export const LoginForm = styled.form`
@@ -45,7 +58,6 @@ export const LoginTextfield = styled(TextField)`
 export const LoginButton = styled(Button)`
 	background-color: var(--red-netflix);
 	padding: 12px 24px;
-	// margin: 12px 0 8px 0;
     margin: 24px 0 12px 0;
 
 	&:hover {
@@ -59,7 +71,7 @@ export const LoginButton = styled(Button)`
     }
 `;
 
-export const SecLoginButton = styled.span`
+export const LoginText = styled.span`
 	color: #8c8c80;
 	padding: 12px 0;
 	font-size: 16px;
@@ -68,6 +80,7 @@ export const SecLoginButton = styled.span`
 	&:hover {
 		color: var(--white);
 	}
+
 `;
 
 export const TogglePasswordVisibility = styled.span`

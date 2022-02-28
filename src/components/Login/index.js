@@ -116,7 +116,7 @@ function Login() {
 							}
 							label="Lembre-se de mim"
 						/>
-						<S.SecLoginButton>Esqueceu a senha?</S.SecLoginButton>
+						<S.LoginText>Esqueceu a senha?</S.LoginText>
 					</div>
 				</S.LoginForm>
 			</S.LoginContainer>
