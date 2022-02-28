@@ -1,5 +1,37 @@
 import styled from "styled-components";
 import heroImage from '../../assets/hero-image-example.png'; 
+import { gsap, Power3 } from "gsap/all";
+
+export const handleOutInfoAnimation = () => {
+    gsap.to("._filmTitle", {
+        ease: Power3.easeInOut,
+        fontSize: "52px",
+        duration: 1,
+        zIndex: -1,
+    });
+    gsap.to("._detailsDiv, ._filmDescription, ._filmGenres",  { 
+        ease: Power3.easeInOut,
+        display: 'none',
+        duration: 1,
+        autoAlpha: 0,
+    });
+};
+
+export const handleInInfoAnimation = () => {
+    gsap.to("._filmTitle", {
+        duration: 0.5,
+        ease: Power3.easeInOut,
+        fontSize: "72px",
+        y: "inherit",
+    });
+    gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
+        ease: Power3.easeInOut,
+        display: "inherit",
+        duration: .5,
+        autoAlpha: 1,
+    });
+};
+
 
 export const HeroWrapper = styled.div`
 	width: 100%;
@@ -48,7 +80,7 @@ export const InfoFilm = styled.div`
 
     @media (max-width: 768px) {
 		padding-left: 16px;
-        padding-bottom: 80px;
+        padding-bottom: 150px;
         padding-top: 100px;
         max-width: 80vh;
         justify-content: end;
@@ -128,7 +160,7 @@ export const ButtonsWrapper = styled.div`
     @media (max-width: 768px) {
 	    margin: 8px 0px;
         max-width: 100%;
-
+        order: 5;
     }
 `;
 

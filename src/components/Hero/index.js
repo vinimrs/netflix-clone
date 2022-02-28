@@ -1,18 +1,20 @@
 import React, {  useContext, useState } from "react";
 import * as S from "./style.js";
 import YouTube from "react-youtube";
-import { gsap, Power3 } from "gsap/all";
+import { handleInInfoAnimation, handleOutInfoAnimation } from "./style.js";
 import { ReactComponent as Plus } from "../../assets/plus.svg";
 import { ReactComponent as Play } from "../../assets/play.svg";
 import { FilmsContext } from "../../common/context/Films.js";
+import useWindowDimensions from "../../common/context/WindowDimensions.js";
 
 function Hero() {
     const { heroFilm, filmVideo } = useContext(FilmsContext);
 	const [video, setVideo] = useState(false);
+    const { width, height } = useWindowDimensions();
 
 	const videoOpts = {
-		height: window.innerHeight,
-		width: window.innerWidth,
+		height: height,
+		width: width,
 		playerVars: {
 			// https://developers.google.com/youtube/player_parameters
 			autoplay: 1,
@@ -20,12 +22,12 @@ function Hero() {
 			cc_load_policy: 1,
 			rel: 0,
 			origin: "https://netflix-clone-vinir07.vercel.app",
-            muted: window.innerWidth < 769 ? "1" : "0",
+            muted: width < 769 ? "1" : "0",
 		},
 	};
 
 	const getTextLimit = () => {
-		let windowWidth = window.innerWidth;
+		let windowWidth = width;
 		return windowWidth > 768 ? 400 : 200;
 	};
 
@@ -42,37 +44,6 @@ function Hero() {
 		handleInInfoAnimation();
 		setVideo(false);
 	};
-
-	const handleOutInfoAnimation = () => {
-		gsap.to("._filmTitle", {
-			ease: Power3.easeInOut,
-			fontSize: "52px",
-            duration: 1,
-			zIndex: -1,
-		});
-		gsap.to("._detailsDiv, ._filmDescription, ._filmGenres",  { 
-			ease: Power3.easeInOut,
-            display: 'none',
-            duration: 1,
-			autoAlpha: 0,
-		});
-	};
-
-	const handleInInfoAnimation = () => {
-		gsap.to("._filmTitle", {
-			duration: 0.5,
-			ease: Power3.easeInOut,
-			fontSize: "72px",
-			y: "inherit",
-		});
-		gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
-			ease: Power3.easeInOut,
-            display: "inherit",
-            duration: .5,
-			autoAlpha: 1,
-		});
-	};
-
 
 	return (
 		<S.HeroWrapper
@@ -119,11 +90,13 @@ function Hero() {
 						</S.DetailsText>
 					)}
 				</S.Details>
-				<S.FilmText className="_filmDescription" >
-					{heroFilm.overview.length > getTextLimit()
-						? heroFilm.overview.substring(0, getTextLimit()) + "..."
-						: heroFilm.overview}
-				</S.FilmText>
+                {heroFilm.overview && (
+                    <S.FilmText className="_filmDescription" >
+                        {heroFilm.overview.length > getTextLimit()
+                            ? heroFilm.overview.substring(0, getTextLimit()) + "..."
+                            : heroFilm.overview}
+                    </S.FilmText>
+                )}
 				<S.ButtonsWrapper
 				>
 					<a href={`/watch/${heroFilm.id}`}>
@@ -140,7 +113,6 @@ function Hero() {
 					</a>
 					<S.HeroButton
 						variant={video ? "secondary" : "primary"}
-						// disableMobile
                         onClick={() => {
 							if (!video) handleOutInfoAnimation();
 							else handleInInfoAnimation();

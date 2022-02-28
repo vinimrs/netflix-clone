@@ -4,7 +4,6 @@ import { Button, TextField } from "@mui/material";
 export const Background = styled.div`
 	width: 100vw;
 	height: 100vh;
-	// linear-gradient(90deg, #000e 37.0%, #00000000 85.33%)
 	background-image: linear-gradient(90deg, #000a 100%, #00000000 100%),
 		url(${(props) => {
 			return props.$src ? props.$src : "";
@@ -19,13 +18,6 @@ export const Background = styled.div`
 	}
 `;
 
-export const Header = styled.header`
-	text-align: left;
-	position: absolute;
-	top: 0;
-	left: 0;
-	padding: 16px 0 0 32px;
-`;
 
 export const LoginContainer = styled.div`
 	background-color: #000000b1;
@@ -63,6 +55,13 @@ export const LoginForm = styled.form`
 		position: absolute;
 		transform: translate(0px, 57px);
 	}
+
+
+.css-1fu7jd5-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+    color: rgb(253 239 239 / 65%);
+    background-color: rgb(102 0 0 / 97%);
+    margin: 24px 0 12px 0;
+}
 `;
 
 export const LoginTextfield = styled(TextField)`
@@ -70,13 +69,15 @@ export const LoginTextfield = styled(TextField)`
 	background-color: #333;
 	border-radius: 5px;
 	width: 100%;
-	margin: 18px 0;
+	margin: 12px 0 16px 0;
 `;
 
 export const LoginButton = styled(Button)`
 	background-color: var(--red-netflix);
 	padding: 12px 24px;
-	margin: 12px 0 8px 0;
+	// margin: 12px 0 8px 0;
+    margin: 24px 0 12px 0;
+
 	&:hover {
 		background-color: #bd0000;
 	}
@@ -98,6 +99,6 @@ export const TogglePasswordVisibility = styled.span`
 	left: 10;
 	cursor: pointer;
 	transition: 0.5s;
-	transform: translate(-97px, 35px);
+	transform: translate(-97px, 30px);
 	color: var(--white);
 `;

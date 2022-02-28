@@ -1,5 +1,12 @@
-import React, { createContext, useEffect, useState } from 'react';
-import requires from '../../api/TheMb';
+import React, {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
+import requires from "../../api/TheMb";
+import { useUsuario, UsuarioContext } from "./Usuario";
 
 export const FilmsContext = createContext();
 FilmsContext.displayName = "Films";
@@ -9,30 +16,66 @@ export const FilmsProvider = ({ children }) => {
 	const [heroFilm, setHeroFilm] = useState(null);
 	const [filmVideo, setFilmVideo] = useState(null);
 
-    
-    useEffect(() => {
-        const loadAll = async () => {
-            const resultList = await requires.getHomeList();
-            setList(resultList);
-            const warFilms = resultList.filter((i) => i.slug === "war");
-            let randomChosen = Math.floor(
-                Math.random() * (warFilms[0].items.results.length - 1)
-            );
-            let chosen = warFilms[0].items.results[randomChosen];
-            let chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
-    
-            const videos = await requires.getMovieVideo(chosen.id);
-            console.log(chosenInfo);
-            console.log(videos.results[0]);
-            setFilmVideo(videos.results[0]);
-            setHeroFilm(chosenInfo);
-        };
-        loadAll();
-    }, [])
+	return (
+		<FilmsContext.Provider
+			value={{
+				list,
+				setFilmVideo,
+				setHeroFilm,
+				setList,
+				heroFilm,
+				filmVideo,
+			}}
+		>
+			{children}
+		</FilmsContext.Provider>
+	);
+};
 
-    return(
-        <FilmsContext.Provider value={{list, heroFilm, filmVideo}}>
-            {children}
-        </FilmsContext.Provider>
-    );
+export const useFilm = () => {
+	const { list, heroFilm, filmVideo, setHeroFilm, setFilmVideo, setList } =
+		useContext(FilmsContext);
+	const { profile } = useUsuario();
+
+	const loadHeroFilmWithId = useCallback(
+		async (id = 10752) => {
+			const resp = await requires.getMoviesByCategoryId(id);
+			console.log(resp);
+			let randomChosen = Math.floor(
+				Math.random() * (resp.results.length - 1)
+			);
+			let chosen = resp.results[randomChosen];
+
+			let chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
+			const videos = await requires.getMovieVideo(chosen.id);
+
+			setFilmVideo(videos);
+			setHeroFilm(chosenInfo);
+		},
+		[setFilmVideo, setHeroFilm]
+	);
+
+	const loadHomeLists = useCallback(async () => {
+		const resultList = await requires.getHomeList();
+		setList(resultList);
+	}, [setList]);
+
+	useEffect(() => {
+		const loadAll = async () => {
+			loadHomeLists();
+			loadHeroFilmWithId(profile.preference);
+		};
+		loadAll();
+	}, [profile, loadHeroFilmWithId, loadHomeLists]);
+
+	return {
+		list,
+		heroFilm,
+		filmVideo,
+		setHeroFilm,
+		setFilmVideo,
+		setList,
+		loadHeroFilmWithId,
+		loadHomeLists,
+	};
 };

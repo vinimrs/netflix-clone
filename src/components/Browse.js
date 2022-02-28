@@ -1,14 +1,13 @@
-import Header from "./components/Header";
+import Header from "./Header";
 import {  useContext, useEffect, useState } from "react";
-import GlobalStyle from "./GlobalStyle";
-import Hero from "./components/Hero";
-import Main from "./components/Main";
-import Footer from "./components/Footer";
-import loading from "./assets/loading1.gif";
-import { FilmsContext } from "./common/context/Films";
+import Hero from "./Hero";
+import Main from "./Main";
+import Footer from "./Footer";
+import loading from "../assets/loading1.gif";
+import { FilmsContext, useFilm } from "../common/context/Films";
 
-function App() {
-    const { list, heroFilm } = useContext(FilmsContext);
+function Browse() {
+    const { list, heroFilm } = useFilm();
 	const [headerActive, setHeaderActive] = useState(false);
 
 	useEffect(() => {
@@ -28,7 +27,6 @@ function App() {
 
 	return (
 		<>
-			<GlobalStyle />
                 <Header scroll={headerActive} />
                 {heroFilm && <Hero />}
                 {list && <Main />}
@@ -60,4 +58,4 @@ function App() {
 	);
 }
 
-export default App;
+export default Browse;

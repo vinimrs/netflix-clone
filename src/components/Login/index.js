@@ -1,24 +1,27 @@
 import React, { useContext, useState } from "react";
-import {
-	Checkbox,
-	FormControlLabel,
-} from "@mui/material";
-import * as S from './style';
+import { Checkbox, FormControlLabel } from "@mui/material";
+import * as S from "./style";
 import bgImage from "../../assets/netflix-library.jpg";
-import { ReactComponent as Logo } from "../../assets/netflix-logo.svg";
 import { UsuarioContext } from "../../common/context/Usuario";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import FirstHeader from "../FirstHeader";
 
 function Login() {
 	const [showPassword, setShowPassword] = useState(false);
-	const {email, password, checked, setChecked, setEmail, setPassword} = useContext(UsuarioContext);
-    const history = useNavigate();
+	const [validity, setValidity] = useState({ email: true, password: true });
+	const { email, password, checked, setChecked, setEmail, setPassword } =
+		useContext(UsuarioContext);
+	const history = useNavigate();
+
+	const simpleCheck = (type, size, value) => {
+        setValidity((lastVal) => {
+            return { ...lastVal, [type]: !(value.length < size) };
+        });
+	};
 
 	return (
 		<S.Background $src={bgImage}>
-			<S.Header>
-				<Logo />
-			</S.Header>
+			<FirstHeader/>
 			<S.LoginContainer>
 				<S.LoginForm>
 					<h1>Entrar</h1>
@@ -29,9 +32,13 @@ function Login() {
 						value={email}
 						margin="normal"
 						onChange={(e) => setEmail(e.target.value)}
-						error={email.length < 9}
+						error={!validity.email}
+						onBlur={(e) => {
+							console.log("blur");
+							simpleCheck("email", 10, e.target.value);
+						}}
 						helperText={
-							email.length < 9 ? "Informe um Email válido" : ""
+							validity.email ? "" : "Informe um Email válido"
 						}
 						inputProps={{ sx: { color: "var(--white)" } }}
 						type="email"
@@ -42,18 +49,20 @@ function Login() {
 							variant="filled"
 							value={password}
 							margin="normal"
-							error={password.length < 4}
-                            // onBlur={() => simpleCheck('password', 4)}
+							error={!validity.password}
+							onBlur={(e) =>
+								simpleCheck("password", 4, e.target.value)
+							}
 							helperText={
-								password.length < 4
-									? "Informe uma senha maior que 4 caracteres."
-									: ""
+								validity.password
+									? ""
+									: "Informe uma senha maior que 4 caracteres."
 							}
 							onChange={(e) => setPassword(e.target.value)}
 							inputProps={{ sx: { color: "var(--white)" } }}
 							type={showPassword ? "text" : "password"}
 						/>
-						{password.length > 4 && (
+						{password.length > 0 && (
 							<S.TogglePasswordVisibility
 								onClick={() => setShowPassword(!showPassword)}
 							>
@@ -61,10 +70,21 @@ function Login() {
 							</S.TogglePasswordVisibility>
 						)}
 					</div>
-					<S.LoginButton onClick={(e) => {
-                        e.preventDefault();
-                        history('/browse');
-                        }} type="submit" variant="contained" fullWidth>
+					<S.LoginButton
+						onClick={(e) => {
+							e.preventDefault();
+							history("/select-profile");
+						}}
+						disabled={
+							!validity.email ||
+							!validity.password ||
+							password.length < 1 ||
+							email.length < 1
+						}
+						type="submit"
+						variant="contained"
+						fullWidth
+					>
 						Entrar
 					</S.LoginButton>
 					<div style={{ display: "flex" }}>
