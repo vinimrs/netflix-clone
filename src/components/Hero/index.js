@@ -1,16 +1,16 @@
-import React, {  useContext, useState } from "react";
+import React, { useState } from "react";
 import * as S from "./style.js";
 import YouTube from "react-youtube";
 import { handleInInfoAnimation, handleOutInfoAnimation } from "./style.js";
 import { ReactComponent as Plus } from "../../assets/plus.svg";
 import { ReactComponent as Play } from "../../assets/play.svg";
-import { FilmsContext } from "../../common/context/Films.js";
+import { useFilms } from "../../common/context/Films.js";
 import useWindowDimensions from "../../common/context/WindowDimensions.js";
 
 function Hero() {
-    const { heroFilm, filmVideo } = useContext(FilmsContext);
+	const { heroFilm, filmVideo } = useFilms();
 	const [video, setVideo] = useState(false);
-    const { width, height } = useWindowDimensions();
+	const { width, height } = useWindowDimensions();
 
 	const videoOpts = {
 		height: height,
@@ -22,7 +22,7 @@ function Hero() {
 			cc_load_policy: 1,
 			rel: 0,
 			origin: "https://netflix-clone-vinir07.vercel.app",
-            muted: width < 769 ? "1" : "0",
+			muted: width < 769 ? "1" : "0",
 		},
 	};
 
@@ -44,6 +44,7 @@ function Hero() {
 		handleInInfoAnimation();
 		setVideo(false);
 	};
+    console.log(filmVideo.key);
 
 	return (
 		<S.HeroWrapper
@@ -54,20 +55,20 @@ function Hero() {
 			}
 		>
 			{video && (
-                    <YouTube
-                        className="video"
-                        videoId={filmVideo.key}
-                        opts={videoOpts}
-                        allow="autoplay;"
-                        onReady={(e) => e.target.playVideo()}
-                        onEnd={() => handleOnVideoEnd()}
-                    />
+				<YouTube
+					className="video"
+					videoId={filmVideo.key}
+					opts={videoOpts}
+					allow="autoplay;"
+					onReady={(e) => e.target.playVideo()}
+					onEnd={() => handleOnVideoEnd()}
+				/>
 			)}
 			<S.InfoFilm className="_infoFilm">
-				<S.FilmTitle className="_filmTitle" >
+				<S.FilmTitle className="_filmTitle">
 					{heroFilm.title ? heroFilm.title : heroFilm.name}
 				</S.FilmTitle>
-				<S.Details className="_detailsDiv" >
+				<S.Details className="_detailsDiv">
 					{heroFilm.vote_average && (
 						<S.DetailsText score>
 							{heroFilm.vote_average} pontos
@@ -85,20 +86,22 @@ function Hero() {
 							{heroFilm.runtime
 								? toHoursAndMinutes(heroFilm.runtime)
 								: `${heroFilm.number_of_seasons} temporada${
-										heroFilm.number_of_seasons > 1 ? "s" : ""
+										heroFilm.number_of_seasons > 1
+											? "s"
+											: ""
 								  }`}
 						</S.DetailsText>
 					)}
 				</S.Details>
-                {heroFilm.overview && (
-                    <S.FilmText className="_filmDescription" >
-                        {heroFilm.overview.length > getTextLimit()
-                            ? heroFilm.overview.substring(0, getTextLimit()) + "..."
-                            : heroFilm.overview}
-                    </S.FilmText>
-                )}
-				<S.ButtonsWrapper
-				>
+				{heroFilm.overview && (
+					<S.FilmText className="_filmDescription">
+						{heroFilm.overview.length > getTextLimit()
+							? heroFilm.overview.substring(0, getTextLimit()) +
+							  "..."
+							: heroFilm.overview}
+					</S.FilmText>
+				)}
+				<S.ButtonsWrapper>
 					<a href={`/watch/${heroFilm.id}`}>
 						<S.HeroButton variant="primary">
 							<Play />
@@ -111,22 +114,24 @@ function Hero() {
 							<S.ButtonText>Minha Lista</S.ButtonText>
 						</S.HeroButton>
 					</a>
-					<S.HeroButton
-						variant={video ? "secondary" : "primary"}
-                        onClick={() => {
-							if (!video) handleOutInfoAnimation();
-							else handleInInfoAnimation();
-							setVideo(!video);
-						}}
-					>
-						<Play />
-						<S.ButtonText>
-							{video ? "Sair" : "Trailer"}
-						</S.ButtonText>
-					</S.HeroButton>
+					{filmVideo.key && (
+						<S.HeroButton
+							variant={video ? "secondary" : "primary"}
+							onClick={() => {
+								if (!video) handleOutInfoAnimation();
+								else handleInInfoAnimation();
+								setVideo(!video);
+							}}
+						>
+							<Play />
+							<S.ButtonText>
+								{video ? "Sair" : "Trailer"}
+							</S.ButtonText>
+						</S.HeroButton>
+					)}
 				</S.ButtonsWrapper>
 				{heroFilm.genres && (
-					<S.FilmText  className="_filmGenres">
+					<S.FilmText className="_filmGenres">
 						|{" "}
 						{heroFilm.genres.map((genre) => {
 							return `${genre.name} | `;

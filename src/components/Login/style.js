@@ -4,18 +4,24 @@ import { Button, TextField } from "@mui/material";
 export const Background = styled.div`
 	width: 100vw;
 	height: 100vh;
+    overflow-x: hidden;
+    
+
 	background-image: linear-gradient(90deg, #000a 100%, #00000000 100%),
 		url(${(props) => {
 			return props.$src ? props.$src : "";
 		}});
 	background-size: cover;
 	background-position: center;
-	margin: 0;
 	color: var(--white);
 
 	h1 {
 		margin-bottom: 12px;
 	}
+
+    @media (max-width: 768px) {
+    
+    }
 `;
 
 
@@ -28,40 +34,17 @@ export const LoginContainer = styled.div`
 	transform: translate(-50%, -50%);
 	border-radius: 5px;
 	padding: 62px 32px;
+
+    @media (max-width: 768px) {
+        width: 280px;
+        padding: 24px 0;
+        margin: 0;
+        overflow-x: hidden;
+    }
 `;
 
 export const LoginForm = styled.form`
 	padding: 12px 24px;
-
-	// checkbox
-	.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
-	.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate,
-	.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
-		color: #fff6f6ee;
-	}
-
-	// inputs mui style
-	.css-cio0x1-MuiInputBase-root-MuiFilledInput-root:after {
-		border-bottom: 2px solid var(--red-netflix);
-	}
-	.css-e4w4as-MuiFormLabel-root-MuiInputLabel-root,
-	.css-o943dk-MuiFormLabel-root-MuiInputLabel-root,
-	.css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
-		color: #8c8c80;
-	}
-
-	.css-1wc848c-MuiFormHelperText-root {
-		color: var(--red-netflix);
-		position: absolute;
-		transform: translate(0px, 57px);
-	}
-
-
-.css-1fu7jd5-MuiButtonBase-root-MuiButton-root.Mui-disabled {
-    color: rgb(253 239 239 / 65%);
-    background-color: rgb(102 0 0 / 97%);
-    margin: 24px 0 12px 0;
-}
 `;
 
 export const LoginTextfield = styled(TextField)`
@@ -75,15 +58,20 @@ export const LoginTextfield = styled(TextField)`
 export const LoginButton = styled(Button)`
 	background-color: var(--red-netflix);
 	padding: 12px 24px;
-	// margin: 12px 0 8px 0;
     margin: 24px 0 12px 0;
 
 	&:hover {
 		background-color: #bd0000;
 	}
+
+    &:disabled {
+        color: rgb(253 239 239 / 65%);
+        background-color: rgb(102 0 0 / 97%);
+        margin: 24px 0 12px 0;
+    }
 `;
 
-export const SecLoginButton = styled.span`
+export const LoginText = styled.span`
 	color: #8c8c80;
 	padding: 12px 0;
 	font-size: 16px;
@@ -92,6 +80,7 @@ export const SecLoginButton = styled.span`
 	&:hover {
 		color: var(--white);
 	}
+
 `;
 
 export const TogglePasswordVisibility = styled.span`
