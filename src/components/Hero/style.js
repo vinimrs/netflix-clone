@@ -1,5 +1,37 @@
 import styled from "styled-components";
 import heroImage from '../../assets/hero-image-example.png'; 
+import { gsap, Power3 } from "gsap/all";
+
+export const handleOutInfoAnimation = () => {
+    gsap.to("._filmTitle", {
+        ease: Power3.easeInOut,
+        fontSize: "52px",
+        duration: 1,
+        zIndex: -1,
+    });
+    gsap.to("._detailsDiv, ._filmDescription, ._filmGenres",  { 
+        ease: Power3.easeInOut,
+        display: 'none',
+        duration: 1,
+        autoAlpha: 0,
+    });
+};
+
+export const handleInInfoAnimation = () => {
+    gsap.to("._filmTitle", {
+        duration: 0.5,
+        ease: Power3.easeInOut,
+        fontSize: "72px",
+        y: "inherit",
+    });
+    gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
+        ease: Power3.easeInOut,
+        display: "inherit",
+        duration: .5,
+        autoAlpha: 1,
+    });
+};
+
 
 export const HeroWrapper = styled.div`
 	width: 100%;
@@ -25,13 +57,13 @@ export const HeroWrapper = styled.div`
 
 	@media (max-width: 768px) {
 		margin: -68px 0 0 0;
-        background-image: linear-gradient(90deg, #000e 60.0%, #00000000 95.33%),
+        background-image: linear-gradient(0deg, #000e 40.0%, #00000000 95.33%),
 		url(${props => {
             console.log(props.$src);
             return props.$src ? props.$src : heroImage
         }});
-	background-position: center;
-
+	    background-position: center;
+        align-items: end;
 	}
 `;
 
@@ -44,26 +76,28 @@ export const InfoFilm = styled.div`
     padding-bottom: 150px;
     padding-top: 70px;
     z-index: 10;
+    width: 100%;
 
     @media (max-width: 768px) {
 		padding-left: 16px;
-        padding-bottom: 80px;
+        padding-bottom: 150px;
         padding-top: 100px;
-
         max-width: 80vh;
+        justify-content: end;
 	}
 `;
 
 export const FilmTitle = styled.h1`
 	font-size: 72px;
 	color: var(--white);
-    max-width: 50%;
+    max-width: 45%;
     order: 1;
 
     @media (max-width: 768px) {
 		font-size: 48px;
-        max-width: 80%;
-        line-height: 80px;
+        max-width: 90%;
+        line-height: 70px;
+
 	}
 `;
 
@@ -71,12 +105,14 @@ export const Details = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
-
+    max-width: 35%;
 	order: 2;
 	margin-top: 12px;
 
     @media (max-width: 768px) {
 		margin-top: 8px;
+    max-width: 80%;
+
 	}
 `;
 
@@ -84,12 +120,14 @@ export const DetailsText = styled.span`
 font-weight: 500;
 font-size: 20px;
 line-height: 23px;
+
 color: var(${(props) => (props.score ? "--green" : "--white")});
 
 margin-right: 12px;
 
 @media (max-width: 768px) {
     font-size: 16px;
+    text-align: center;
 }
 `;
 
@@ -101,7 +139,7 @@ export const FilmText = styled.p`
 	order: 4;
 	margin: 8px 0;
 
-    max-width: 40%;
+    max-width: 35%;
 
     @media (max-width: 768px) {
         font-size: 16px;
@@ -113,14 +151,16 @@ export const FilmText = styled.p`
 export const ButtonsWrapper = styled.div`
 	display: flex;
 	align-items: flex-start;
+    flex-wrap: wrap;
 
 	order: 4;
 	margin: 12px 0px;
+    max-width: 45%;
     
     @media (max-width: 768px) {
-        justify-content: space-between;
 	    margin: 8px 0px;
-
+        max-width: 100%;
+        order: 5;
     }
 `;
 
@@ -132,6 +172,7 @@ export const HeroButton = styled.button`
     cursor: pointer;
     transition: .5s;
 	border-radius: 6px;
+
 
 	padding: ${props => !props.variant ? '10px 20px' : '12px 22px'};
 	background-color: var(
@@ -170,7 +211,7 @@ export const HeroButton = styled.button`
 
 	/* Inside auto layout */
 
-	margin: 0px 8px;
+	margin: 8px 8px;
 
     &:hover {
         background: var(
@@ -191,6 +232,7 @@ export const HeroButton = styled.button`
 
     @media (max-width: 768px) {
         padding: 12px 24px;
+        margin: 8px 0;
         display: ${props => props.disableMobile ? 'none' : 'flex'};
 
     }

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { FilmsContext } from '../common/context/Films';
 import List from './List';
 
 const MainWrapper = styled.main`
@@ -11,7 +12,8 @@ const MainWrapper = styled.main`
     }
 `;
 
-function Main({ list }) {
+function Main() {
+    const { list } = useContext(FilmsContext);
     return ( 
         <MainWrapper>
             {list.map((category, key) => {

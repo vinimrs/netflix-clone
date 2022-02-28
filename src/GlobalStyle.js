@@ -10,6 +10,8 @@ const GlobalStyle = createGlobalStyle`
         --light-black: #363636a1;
         --light-black-hover: #363636a1;
         --transparent: #00000000;
+        --red-netflix: #E50914;
+        --red-netflix-darker: #E50930;
     }
 
     * {
