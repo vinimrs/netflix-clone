@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import * as S from "./style.js";
 import YouTube from "react-youtube";
 import { handleInInfoAnimation, handleOutInfoAnimation } from "./style.js";
-import { ReactComponent as Plus } from "../../assets/plus.svg";
 import { ReactComponent as Play } from "../../assets/play.svg";
 import { useFilms } from "../../common/context/Films.js";
 import useWindowDimensions from "../../common/context/WindowDimensions.js";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-function Hero() {
+function Hero({ setModal, minutesToHours }) {
 	const { heroFilm, filmVideo } = useFilms();
-	const [video, setVideo] = useState(false);
 	const { width, height } = useWindowDimensions();
+    const [videoIsOpen, setVideoIsOpen] = useState(false);
 
-	const videoOpts = {
+    const videoOpts = {
 		height: height,
 		width: width,
 		playerVars: {
@@ -26,25 +26,17 @@ function Hero() {
 		},
 	};
 
-	const getTextLimit = () => {
+    const getTextLimit = () => {
 		let windowWidth = width;
 		return windowWidth > 768 ? 400 : 200;
 	};
 
-	const toHoursAndMinutes = (totalMinutes) => {
-		const minutes = totalMinutes % 60;
-		const hours = Math.floor(totalMinutes / 60);
 
-		return `${hours < 1 ? "" : `${hours}h`}${
-			minutes < 1 ? "" : `${minutes}min`
-		}`;
-	};
 
 	const handleOnVideoEnd = () => {
 		handleInInfoAnimation();
-		setVideo(false);
+		setVideoIsOpen(false);
 	};
-    console.log(filmVideo.key);
 
 	return (
 		<S.HeroWrapper
@@ -54,7 +46,7 @@ function Hero() {
 					: ""
 			}
 		>
-			{video && (
+			{videoIsOpen && (
 				<YouTube
 					className="video"
 					videoId={filmVideo.key}
@@ -84,7 +76,7 @@ function Hero() {
 					{(heroFilm.runtime || heroFilm.last_air_date) && (
 						<S.DetailsText>
 							{heroFilm.runtime
-								? toHoursAndMinutes(heroFilm.runtime)
+								? minutesToHours(heroFilm.runtime)
 								: `${heroFilm.number_of_seasons} temporada${
 										heroFilm.number_of_seasons > 1
 											? "s"
@@ -102,33 +94,27 @@ function Hero() {
 					</S.FilmText>
 				)}
 				<S.ButtonsWrapper>
-					<a href={`/watch/${heroFilm.id}`}>
-						<S.HeroButton variant="primary">
-							<Play />
-							<S.ButtonText>Assistir</S.ButtonText>
-						</S.HeroButton>
-					</a>
-					<a href={`/list/add/${heroFilm.id}`}>
-						<S.HeroButton variant="secondary">
-							<Plus />
-							<S.ButtonText>Minha Lista</S.ButtonText>
-						</S.HeroButton>
-					</a>
-					{filmVideo.key && (
+					{filmVideo && (
 						<S.HeroButton
-							variant={video ? "secondary" : "primary"}
+							variant={videoIsOpen ? "secondary" : "primary"}
 							onClick={() => {
-								if (!video) handleOutInfoAnimation();
+								if (!videoIsOpen) handleOutInfoAnimation();
 								else handleInInfoAnimation();
-								setVideo(!video);
+								setVideoIsOpen(!videoIsOpen);
 							}}
 						>
 							<Play />
 							<S.ButtonText>
-								{video ? "Sair" : "Trailer"}
+								{videoIsOpen ? "Sair" : "Trailer"}
 							</S.ButtonText>
 						</S.HeroButton>
 					)}
+						<S.HeroButton onClick={() => {
+                                setModal(heroFilm);
+                            }} variant="secondary" >
+							<InfoOutlinedIcon  style={{fontSize: '30px'}}/>
+							<S.ButtonText>Mais Informações</S.ButtonText>
+						</S.HeroButton>
 				</S.ButtonsWrapper>
 				{heroFilm.genres && (
 					<S.FilmText className="_filmGenres">

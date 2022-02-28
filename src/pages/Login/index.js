@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Checkbox, FormControlLabel } from "@mui/material";
-import * as S from "./style";
-import bgImage from "../../assets/netflix-library.jpg";
-import { UsuarioContext } from "../../common/context/Usuario";
 import { useNavigate } from "react-router-dom";
-import FirstHeader from "../FirstHeader";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import { UsuarioContext } from "../../common/context/Usuario";
+import FirstHeader from "../../components/FirstHeader";
+import bgImage from "../../assets/netflix-library.jpg";
+import * as S from "./style";
 
 function Login() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +34,6 @@ function Login() {
 						onChange={(e) => setEmail(e.target.value)}
 						error={!validity.email}
 						onBlur={(e) => {
-							console.log("blur");
 							simpleCheck("email", 10, e.target.value);
 						}}
 						helperText={

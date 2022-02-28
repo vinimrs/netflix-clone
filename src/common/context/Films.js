@@ -38,9 +38,8 @@ export const useFilms = () => {
 	const { profile } = useUsuario();
 
 	const loadHeroFilmWithId = useCallback(
-		async (id = 10752) => {
+		async (id = 10725) => {
 			const resp = await requires.getMoviesByCategoryId(id);
-			console.log(resp);
 			let randomChosen = Math.floor(
 				Math.random() * (resp.results.length - 1)
 			);
@@ -61,12 +60,12 @@ export const useFilms = () => {
 	}, [setList]);
 
 	useEffect(() => {
-		const loadAll = async () => {
-			loadHomeLists();
-			loadHeroFilmWithId(profile.preference);
-		};
+        const loadAll = async () => {
+            loadHomeLists();
+            loadHeroFilmWithId(profile.preference);
+        };
 		loadAll();
-	}, [profile, loadHeroFilmWithId, loadHomeLists]);
+	}, [loadHeroFilmWithId, loadHomeLists, profile]);
 
 	return {
 		list,

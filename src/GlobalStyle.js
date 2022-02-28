@@ -22,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: none;
     }
 
+
     body {
         background-color: var(--black);
         overflow-x: hidden;
