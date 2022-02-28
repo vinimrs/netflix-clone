@@ -232,7 +232,7 @@ export const HeroButton = styled.button`
 
     @media (max-width: 768px) {
         padding: 12px 24px;
-        margin: 8px 0;
+        margin: 8px 4px;
         display: ${props => props.disableMobile ? 'none' : 'flex'};
 
     }

@@ -5,7 +5,7 @@ import { useSwipeable } from "react-swipeable";
 import useWindowDimensions from "../../common/context/WindowDimensions";
 import * as S from './style';
 
-function List({ list }) {
+function List({ list, setModal }) {
 	const [activeList, setActiveList] = useState(false);
 	const [scrollx, setScrollx] = useState(0);
     const { width } = useWindowDimensions();
@@ -85,6 +85,10 @@ function List({ list }) {
 									src={`https://image.tmdb.org/t/p/w300${film.poster_path}`}
 									alt={film.original_title}
 									key={key}
+                                    onClick={() => {
+                                        console.log(film);
+                                        setModal(film);
+                                    }}
 								/>
 							);
 						})}

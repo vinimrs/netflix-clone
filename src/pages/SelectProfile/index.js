@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
-import * as S from './style';
 import { useUsuario } from "../../common/context/Usuario";
-import FirstHeader from "../FirstHeader";
+import FirstHeader from "../../components/FirstHeader";
+import * as S from './style';
 
 function SelectProfile() {
 	const { profiles, setProfileBySlug } = useUsuario();
