@@ -49,7 +49,6 @@ function Header({ scroll }) {
 						return (
 							<S.MenuItem
 								onClick={() => {
-                                    console.log('click')
                                     handleCloseDropdown();
                                     changeProfile(item.slug);
                                 }}
@@ -112,7 +111,10 @@ function Header({ scroll }) {
 							}}
 						></div>
 					</S.MenuItem>
-					<S.MenuItem onClick={handleCloseDropdown}>
+					<S.MenuItem onClick={() => {
+                        handleCloseDropdown();
+                        navigate('/');
+                    }}>
 						<S.MenuText>Sair da Netflix</S.MenuText>
 					</S.MenuItem>
 				</S.Menu>

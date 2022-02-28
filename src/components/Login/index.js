@@ -14,14 +14,14 @@ function Login() {
 	const history = useNavigate();
 
 	const simpleCheck = (type, size, value) => {
-        setValidity((lastVal) => {
-            return { ...lastVal, [type]: !(value.length < size) };
-        });
+		setValidity((lastVal) => {
+			return { ...lastVal, [type]: !(value.length < size) };
+		});
 	};
 
 	return (
 		<S.Background $src={bgImage}>
-			<FirstHeader/>
+			<FirstHeader />
 			<S.LoginContainer>
 				<S.LoginForm>
 					<h1>Entrar</h1>
@@ -40,7 +40,15 @@ function Login() {
 						helperText={
 							validity.email ? "" : "Informe um Email válido"
 						}
+						FormHelperTextProps={{
+							style: {
+								color: " var(--red-netflix)",
+								position: "absolute",
+								transform: "translate(0px, 57px)",
+							},
+						}}
 						inputProps={{ sx: { color: "var(--white)" } }}
+						InputLabelProps={{ style: { color: "#8c8c80" } }}
 						type="email"
 					/>
 					<div style={{ position: "relative", width: "100%" }}>
@@ -59,7 +67,15 @@ function Login() {
 									: "Informe uma senha maior que 4 caracteres."
 							}
 							onChange={(e) => setPassword(e.target.value)}
+							FormHelperTextProps={{
+								style: {
+									color: " var(--red-netflix)",
+									position: "absolute",
+									transform: "translate(0px, 57px)",
+								},
+							}}
 							inputProps={{ sx: { color: "var(--white)" } }}
+							InputLabelProps={{ style: { color: "#8c8c80" } }}
 							type={showPassword ? "text" : "password"}
 						/>
 						{password.length > 0 && (
@@ -73,6 +89,8 @@ function Login() {
 					<S.LoginButton
 						onClick={(e) => {
 							e.preventDefault();
+							setPassword("");
+							setEmail("");
 							history("/select-profile");
 						}}
 						disabled={

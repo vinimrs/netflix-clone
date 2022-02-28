@@ -57,15 +57,20 @@ export const PerfilNetflix = styled.img`
 
 export const ContainerMenu = styled.div` 
     background-color: #000000d1;
+    border-radius: 4px;
     width: 250px;
     position: absolute;
     transition: .5s;
-    top: 65px;
+    top: 87px;
     right: 24px;
     color: var(--white);
     padding: 12px;
     visibility: hidden;
     opacity: 0;
+
+    @media (max-width: 768px) {
+        top: 65px;
+    }
 `;
 
 export const Menu = styled.ul`  

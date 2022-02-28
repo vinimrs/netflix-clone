@@ -32,36 +32,6 @@ export const LoginContainer = styled.div`
 
 export const LoginForm = styled.form`
 	padding: 12px 24px;
-
-	// checkbox
-	.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
-	.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate,
-	.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
-		color: #fff6f6ee;
-	}
-
-	// inputs mui style
-	.css-cio0x1-MuiInputBase-root-MuiFilledInput-root:after {
-		border-bottom: 2px solid var(--red-netflix);
-	}
-	.css-e4w4as-MuiFormLabel-root-MuiInputLabel-root,
-	.css-o943dk-MuiFormLabel-root-MuiInputLabel-root,
-	.css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
-		color: #8c8c80;
-	}
-
-	.css-1wc848c-MuiFormHelperText-root {
-		color: var(--red-netflix);
-		position: absolute;
-		transform: translate(0px, 57px);
-	}
-
-
-.css-1fu7jd5-MuiButtonBase-root-MuiButton-root.Mui-disabled {
-    color: rgb(253 239 239 / 65%);
-    background-color: rgb(102 0 0 / 97%);
-    margin: 24px 0 12px 0;
-}
 `;
 
 export const LoginTextfield = styled(TextField)`
@@ -81,6 +51,12 @@ export const LoginButton = styled(Button)`
 	&:hover {
 		background-color: #bd0000;
 	}
+
+    &:disabled {
+        color: rgb(253 239 239 / 65%);
+        background-color: rgb(102 0 0 / 97%);
+        margin: 24px 0 12px 0;
+    }
 `;
 
 export const SecLoginButton = styled.span`
