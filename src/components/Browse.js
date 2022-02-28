@@ -1,13 +1,13 @@
 import Header from "./Header";
-import {  useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "./Hero";
 import Main from "./Main";
 import Footer from "./Footer";
 import loading from "../assets/loading1.gif";
-import { FilmsContext, useFilm } from "../common/context/Films";
+import { useFilms } from "../common/context/Films";
 
 function Browse() {
-    const { list, heroFilm } = useFilm();
+    const { list, heroFilm } = useFilms();
 	const [headerActive, setHeaderActive] = useState(false);
 
 	useEffect(() => {

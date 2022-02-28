@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import * as S from "./style.js";
 import YouTube from "react-youtube";
 import { handleInInfoAnimation, handleOutInfoAnimation } from "./style.js";
 import { ReactComponent as Plus } from "../../assets/plus.svg";
 import { ReactComponent as Play } from "../../assets/play.svg";
-import { FilmsContext } from "../../common/context/Films.js";
+import { useFilms } from "../../common/context/Films.js";
 import useWindowDimensions from "../../common/context/WindowDimensions.js";
 
 function Hero() {
-	const { heroFilm, filmVideo } = useContext(FilmsContext);
+	const { heroFilm, filmVideo } = useFilms();
 	const [video, setVideo] = useState(false);
 	const { width, height } = useWindowDimensions();
 
@@ -44,6 +44,7 @@ function Hero() {
 		handleInInfoAnimation();
 		setVideo(false);
 	};
+    console.log(filmVideo.key);
 
 	return (
 		<S.HeroWrapper
