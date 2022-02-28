@@ -5,7 +5,6 @@ import avatar2 from "../../assets/avatar-2.png";
 import avatar3 from "../../assets/avatar-3.png";
 import avatar4 from "../../assets/avatar-4.png";
 import avatar5 from "../../assets/avatar-5.png";
-import { FilmsContext } from "./Films";
 
 export const UsuarioContext = createContext();
 UsuarioContext.displayName = "Usuário";
@@ -80,24 +79,20 @@ export const useUsuario = () => {
 		email,
 		setEmail,
 	} = useContext(UsuarioContext);
-    const { setHeroFilm } = useContext(FilmsContext);
     
 	const setProfileBySlug = (slug) => {
 		const profile = profiles.find((profile) => profile.slug === slug);
-        console.log(profile);
         if (profile) {
             setProfile(profile);
 		} else {
             const profileResults = JSON.parse(localStorage.getItem('usuario'));
             setProfile(profileResults);
-            console.log(profileResults);
         }
         localStorage.setItem('usuario', JSON.stringify(profile), );
 	};
 
 	const filterToAnothersProfiles = (profile) => {
 		const result = profiles.filter((prof) => prof.slug !== profile.slug);
-		console.log(result);
 		return result;
 	};
 
@@ -107,8 +102,8 @@ export const useUsuario = () => {
 
     const changeProfile = (slug) => {
         const profile = profiles.find(prof => prof.slug === slug);
+        localStorage.setItem('usuario', JSON.stringify(profile));
         setProfile(profile);
-        setHeroFilm(profile.preference);
     };
 
 	return {

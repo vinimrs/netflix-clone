@@ -38,7 +38,6 @@ function Hero({ setModal, minutesToHours }) {
 		setVideoIsOpen(false);
 	};
 
-    console.log(heroFilm)
 	return (
 		<S.HeroWrapper
 			$src={
@@ -95,7 +94,7 @@ function Hero({ setModal, minutesToHours }) {
 					</S.FilmText>
 				)}
 				<S.ButtonsWrapper>
-					{filmVideo.key && (
+					{filmVideo && (
 						<S.HeroButton
 							variant={videoIsOpen ? "secondary" : "primary"}
 							onClick={() => {

@@ -59,7 +59,6 @@ export const HeroWrapper = styled.div`
 		margin: -68px 0 0 0;
         background-image: linear-gradient(0deg, #000e 40.0%, #00000000 95.33%),
 		url(${props => {
-            console.log(props.$src);
             return props.$src ? props.$src : heroImage
         }});
 	    background-position: center;

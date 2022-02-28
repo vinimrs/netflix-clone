@@ -36,7 +36,6 @@ function List({ list, setModal }) {
         preventDefaultTouchmoveEvent: true,
         trackMouse: true
     });
-    console.log(handlers);
 
 	return (
 		<S.ListWrapper {...handlers}>
@@ -86,7 +85,6 @@ function List({ list, setModal }) {
 									alt={film.original_title}
 									key={key}
                                     onClick={() => {
-                                        console.log(film);
                                         setModal(film);
                                     }}
 								/>

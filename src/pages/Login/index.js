@@ -34,7 +34,6 @@ function Login() {
 						onChange={(e) => setEmail(e.target.value)}
 						error={!validity.email}
 						onBlur={(e) => {
-							console.log("blur");
 							simpleCheck("email", 10, e.target.value);
 						}}
 						helperText={
