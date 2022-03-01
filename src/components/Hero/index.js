@@ -112,7 +112,7 @@ function Hero({ setModal, minutesToHours }) {
 						<S.HeroButton onClick={() => {
                                 setModal(heroFilm);
                             }} variant="secondary" >
-							<InfoOutlinedIcon  style={{fontSize: '30px'}}/>
+							<InfoOutlinedIcon />
 							<S.ButtonText>Mais Informações</S.ButtonText>
 						</S.HeroButton>
 				</S.ButtonsWrapper>

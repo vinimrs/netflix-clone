@@ -63,13 +63,13 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 				</div>
 			)}
 			<S.ModalContainer className="_modalContainer">
+                <S.CloseModal onClick={() => setModalInfo({})}>
+                    <CloseOutlinedIcon
+                        sx={{ color: "var(--white)", fontSize: "40px" }}
+                    />
+                </S.CloseModal>
 				{movie && movieVideo && (
 					<>
-						<S.CloseModal onClick={() => setModalInfo({})}>
-							<CloseOutlinedIcon
-								sx={{ color: "var(--white)", fontSize: "32px" }}
-							/>
-						</S.CloseModal>
 						<S.ModalBanner $src={movie.backdrop_path}>
 							<YouTube
 								videoId={movieVideo.key}

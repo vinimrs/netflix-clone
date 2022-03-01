@@ -44,7 +44,7 @@ export const useFilms = () => {
 				Math.random() * (resp.results.length - 1)
 			);
 			let chosen = resp.results[randomChosen];
-
+                console.log(chosen);
 			let chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
 			const videos = await requires.getMovieVideo(chosen.id);
 

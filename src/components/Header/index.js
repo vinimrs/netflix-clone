@@ -1,4 +1,4 @@
-import React, { useEffect  } from "react";
+import React, { useEffect, useState  } from "react";
 import logo from "../../assets/netflix-logo.svg";
 import { useUsuario } from "../../common/context/Usuario";
 import * as S from "./style";
@@ -10,10 +10,12 @@ import {useNavigate} from 'react-router-dom';
 
 function Header({ scroll }) {
 	const { profile, setProfile, changeProfile, getStorageProfile , filterToAnothersProfiles } = useUsuario();
-	const list = filterToAnothersProfiles(profile);
+	const [dropdown, setDropdown] = useState(false);
+    const list = filterToAnothersProfiles(profile);
     const navigate = useNavigate();
 
 	const handleOpenDropdown = () => {
+        setDropdown(true);
 		gsap.to("._containerMenu", {
 			duration: 0.1,
 			ease: Power3.easeInOut,
@@ -22,6 +24,7 @@ function Header({ scroll }) {
 	};
 
 	const handleCloseDropdown = () => {
+        setDropdown(false);
 		gsap.to("._containerMenu", {
 			duration: 0.1,
 			ease: Power3.easeInOut,
@@ -32,14 +35,15 @@ function Header({ scroll }) {
     useEffect(() => {
         if(!profile.slug) setProfile(getStorageProfile());
     })
-
+    console.log(dropdown)
     return (
 		<S.StyledHeader $active={scroll}>
 			<S.LogoNetflix onClick={() => navigate('/browse')} src={logo} alt="Logo da Netflix" />
 			<S.PerfilNetflix
-                onClick={() => navigate('/browse')}
+                onClick={() => dropdown ? handleCloseDropdown() : handleOpenDropdown()}
 				src={profile.image}
-				onMouseEnter={handleOpenDropdown}
+				onMouseEnter={() =>  dropdown ? handleCloseDropdown() : handleOpenDropdown()
+                }
 				alt="Perfil do usuário"
 			/>
 

@@ -4,7 +4,6 @@ export const ModalBG = styled.div`
 	background-color: #000000c1;
 	position: fixed;
 	z-index: 10000;
-	height: 100vh;
 	min-width: 100vw;
 	display: flex;
 	justify-content: center;
