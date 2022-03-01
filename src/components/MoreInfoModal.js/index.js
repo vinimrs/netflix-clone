@@ -10,6 +10,7 @@ import Loading from "../Loading";
 function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 	const [movie, setMovie] = useState(null);
 	const [movieVideo, setMovieVideo] = useState(null);
+    const [isReady, setIsReady] = useState(false);
 	const { width } = useWindowDimensions();
 
 	const videoOpts = {
@@ -29,14 +30,18 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 		},
 	};
 
-	const handleOnVideoEnd = (e) => {
-		e.target.playVideo();
-	};
-
 	useEffect(() => {
 		const getMovieModal = async (id, type) => {
 			const movie = await requires.getMovieInfo(id, type);
 			const video = await requires.getMovieVideo(id);
+			if (
+				video.success === false ||
+				movie.success === false ||
+				!video.results[0]
+			) {
+				setModalInfo({ success: false });
+				return;
+			}
 			setMovie(movie);
 			setMovieVideo(video.results[0]);
 		};
@@ -47,11 +52,11 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 			ease: Power3.easeInOut,
 			autoAlpha: 1,
 		});
-	}, [type, id]);
+	}, [type, id, setModalInfo]);
 
 	return (
-		<S.ModalBG data-testid='modal'>
-			{(!movie || !movieVideo) && (
+		<S.ModalBG data-testid="modal">
+			{!isReady && (
 				<div
 					style={{
 						height: "100vh",
@@ -63,11 +68,11 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 				</div>
 			)}
 			<S.ModalContainer className="_modalContainer">
-                <S.CloseModal onClick={() => setModalInfo({})}>
-                    <CloseOutlinedIcon
-                        sx={{ color: "var(--white)", fontSize: "40px" }}
-                    />
-                </S.CloseModal>
+				<S.CloseModal onClick={() => setModalInfo({ success: true })}>
+					<CloseOutlinedIcon
+						sx={{ color: "var(--white)", fontSize: "40px" }}
+					/>
+				</S.CloseModal>
 				{movie && movieVideo && (
 					<>
 						<S.ModalBanner $src={movie.backdrop_path}>
@@ -75,15 +80,17 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 								videoId={movieVideo.key}
 								opts={videoOpts}
 								allow="autoplay;"
-								onReady={(e) => e.target.playVideo()}
-								onEnd={() => handleOnVideoEnd()}
+								onReady={(e) => {
+                                    setIsReady(true);
+                                    e.target.playVideo();
+                                }}
 							/>
 						</S.ModalBanner>
 						<S.FilmInfosWrapper>
 							<div style={{ paddingLeft: "10px", order: "2" }}>
 								<h1>{movie?.title}</h1>
 								{movie.tagline && (
-									<span>"{movie?.tagline}"</span>
+									<span>"{movie.tagline}"</span>
 								)}
 								<S.MovieDetails>
 									{movie.vote_average && (
@@ -131,22 +138,25 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 										))}
 									</div>
 								)}
-                                    {movie.production_countries && (
-                                        <>
-								<h2>
-									País
-									{movie.production_countries.length > 1
-										? "es"
-										: ""}
-								</h2>
-									<div>
-										{movie.production_countries.map(
-											(country) => (
-												<span>{country.name}</span>
-											)
-										)}
-									</div>
-                                        </>
+								{movie.production_countries && (
+									<>
+										<h2>
+											País
+											{movie.production_countries.length >
+											1
+												? "es"
+												: ""}
+										</h2>
+										<div>
+											{movie.production_countries.map(
+												(country, id) => (
+													<span key={id}>
+														{country.name}
+													</span>
+												)
+											)}
+										</div>
+									</>
 								)}
 								{movie.production_companies && (
 									<S.MovieProductionCompanies>
@@ -154,7 +164,9 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 										<S.CompaniesWrapper>
 											{movie.production_companies.map(
 												(company) => (
-													<S.CompaniesBox>
+													<S.CompaniesBox
+														key={company.name}
+													>
 														{company.logo_path && (
 															<img
 																src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
@@ -177,7 +189,11 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 								<img
 									src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
 									alt={movie.title}
-									style={{ width: "200px", order: "1", marginTop: '20px' }}
+									style={{
+										width: "200px",
+										order: "1",
+										marginTop: "20px",
+									}}
 								/>
 							</div>
 						</S.FilmInfosWrapper>

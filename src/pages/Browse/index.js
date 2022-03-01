@@ -1,3 +1,4 @@
+import React from 'react';
 import { useCallback, useEffect, useState } from "react";
 import { useFilms } from "../../common/context/Films";
 import Header from "../../components/Header";
@@ -14,11 +15,12 @@ function Browse() {
 	const [modalInfo, setModalInfo] = useState({
 		id: "",
 		type: "",
+        success: true
 	});
 
 	const handleSetModalInfo = (film) => {
 		const type = film.number_of_seasons ? "tv" : "movie";
-		setModalInfo({ id: film.id, type: type });
+		setModalInfo({ ...modalInfo, id: film.id, type: type });
 	};
 
 	const toHoursAndMinutes = useCallback((totalMinutes) => {
@@ -45,6 +47,8 @@ function Browse() {
 		};
 	}, []);
 
+    console.log('modalinfo:', modalInfo);
+
 	return (
 		<>
 			{modalInfo.id && modalInfo.type && (
@@ -55,6 +59,7 @@ function Browse() {
 				/>
 			)}
 			<Header scroll={headerActive} />
+            {!modalInfo.success && <S.StyledAlert onClose={() => {setModalInfo({success: true})}} severity="error">Opa! Esse filme não foi encontrado! <strong>Tente Outro!</strong></S.StyledAlert>}
 			{heroFilm && (
 				<Hero
 					setModal={handleSetModalInfo}

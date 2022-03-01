@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox, FormControlLabel} from "@mui/material";
 import { UsuarioContext } from "../../common/context/Usuario";
 import FirstHeader from "../../components/FirstHeader";
 import bgImage from "../../assets/netflix-library.jpg";
@@ -29,6 +29,7 @@ function Login() {
 					<S.LoginTextfield
 						label="Email"
 						variant="filled"
+                        color='secondary'
 						value={email}
 						margin="normal"
 						onChange={(e) => {
@@ -56,6 +57,8 @@ function Login() {
 					<div style={{ position: "relative", width: "100%" }}>
 						<S.LoginTextfield
 							label="Senha"
+                            color="secondary"
+                            
 							variant="filled"
 							value={password}
 							margin="normal"
@@ -116,6 +119,7 @@ function Login() {
 							style={{ fontSize: "8px", color: "#8C8C80" }}
 							control={
 								<Checkbox
+                                color="secondary"
 									checked={checked}
 									onChange={() => setChecked(!checked)}
 								/>

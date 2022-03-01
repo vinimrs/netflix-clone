@@ -47,6 +47,14 @@ export const ModalContainer = styled.div`
 	@media (max-width: 768px) {
 		width: 95vw;
 		margin: 100px 0;
+        h1 {
+            padding-bottom: 12px;
+            padding-top: 22px;
+        }
+
+        h2 {
+            padding: 22px 0 12px 0;
+        }
 	}
 `;
 
@@ -77,14 +85,14 @@ export const FilmInfosWrapper = styled.div`
 
 	@media (max-width: 768px) {
 		flex-direction: column;
-		padding: 12px 12px 24px 12px;
+		padding: 8px 12px 24px 12px;
 
 	}
 `;
 
 export const MovieDetails = styled.div`
 	display: flex;
-    padding: 8px 0;
+    // padding: 8px 0;
 `;
 
 export const MovieProductionCompanies = styled.div` 

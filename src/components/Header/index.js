@@ -37,7 +37,7 @@ function Header({ scroll }) {
     })
     return (
 		<S.StyledHeader $active={scroll}>
-			<S.LogoNetflix onClick={() => navigate('/browse')} src={logo} alt="Logo da Netflix" />
+			<S.LogoNetflix onClick={() => navigate(-1)} src={logo} alt="Logo da Netflix" style={{cursor: 'pointer'}} />
 			<S.PerfilNetflix
                 onClick={() => dropdown ? handleCloseDropdown() : handleOpenDropdown()}
 				src={profile.image}
