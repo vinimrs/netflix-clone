@@ -35,7 +35,8 @@ Depois disso você pode ir no repositório e rodar o comando `npm install` para 
 ```bash
 npm install
 ```
-Finalmente, rode o comando  `npm run dev` para iniciar a aplicação:
+
+Finalmente, rode o comando `npm run dev` para iniciar a aplicação:
 
 ```bash
 npm run dev
@@ -44,7 +45,6 @@ npm run dev
 ## Melhorias 🛠
 
 Ideias de melhorias para o projeto:
+
 - Integração Back-End
 - Migração para Next.js
-
-

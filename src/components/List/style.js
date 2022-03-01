@@ -1,41 +1,41 @@
 import styled from "styled-components";
 
 export const ListWrapper = styled.div`
-	margin-bottom: 24px;
-	position: relative;
+  margin-bottom: 24px;
+  position: relative;
 `;
 
 export const ListDiv = styled.div`
-	overflow-x: hidden;
-	padding-left: 32px;
-	transition: all ease 0.5s;
+  overflow-x: hidden;
+  padding-left: 32px;
+  transition: all ease 0.5s;
 `;
 
 export const FilmsList = styled.div`
-	min-width: ${(p) => p.$length * 200}px;
-	display: flex;
-	align-items: center;
+  min-width: ${(p) => p.$length * 200}px;
+  display: flex;
+  align-items: center;
 `;
 
 export const FilmImage = styled.img`
-	width: 200px;
-	height: 300px;
-	transition: all ease 0.3s;
-	display: inline-block;
-	cursor: pointer;
-	transform: scale(0.9);
-	border-radius: 5px;
+  width: 200px;
+  height: 300px;
+  transition: all ease 0.3s;
+  display: inline-block;
+  cursor: pointer;
+  transform: scale(0.9);
+  border-radius: 5px;
 
-	&:hover {
-		transform: scale(1);
-	}
+  &:hover {
+    transform: scale(1);
+  }
 `;
 
 export const ListTitle = styled.h2`
-	font-size: 24px;
-	font-weight: 600;
-	color: var(--white);
-	margin-left: 32px;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--white);
+  margin-left: 32px;
 `;
 
 export const NavigateDiv = styled.div`
