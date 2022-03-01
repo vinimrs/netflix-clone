@@ -8,14 +8,15 @@ function SelectProfile() {
 	const history = useNavigate();
 
 	return (
-		<div>
+		<>
 			<FirstHeader />
 			<S.ProfileWrapper>
 				<h1 style={{ color: "var(--white)" }}>Quem está assistindo?</h1>
-				<S.ProfileContainer>
+				<S.ProfileContainer data-testid='profile-container'>
 					{profiles.map((prof) => (
 						<div
 							key={prof.slug}
+                            data-testid="profile"
 							onClick={() => {
 								setProfileBySlug(prof.slug);
 
@@ -28,7 +29,7 @@ function SelectProfile() {
 					))}
 				</S.ProfileContainer>
 			</S.ProfileWrapper>
-		</div>
+		</>
 	);
 }
 

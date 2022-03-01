@@ -66,6 +66,7 @@ function Browse() {
 					{list.map((category, key) => {
 						return (
 							<List
+                                
 								key={key}
 								setModal={handleSetModalInfo}
 								list={category}

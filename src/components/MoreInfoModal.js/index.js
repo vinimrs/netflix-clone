@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { gsap, Power3 } from "gsap/all";
+import { gsap, Power3 } from "gsap";
 import YouTube from "react-youtube";
 import * as S from "./style";
 import requires from "../../api/TheMb";
@@ -50,7 +50,7 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 	}, [type, id]);
 
 	return (
-		<S.ModalBG>
+		<S.ModalBG data-testid='modal'>
 			{(!movie || !movieVideo) && (
 				<div
 					style={{
@@ -131,13 +131,14 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 										))}
 									</div>
 								)}
+                                    {movie.production_countries && (
+                                        <>
 								<h2>
 									País
 									{movie.production_countries.length > 1
 										? "es"
 										: ""}
 								</h2>
-								{movie.production_countries && (
 									<div>
 										{movie.production_countries.map(
 											(country) => (
@@ -145,8 +146,9 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 											)
 										)}
 									</div>
+                                        </>
 								)}
-								{movie.production_companies[0] && (
+								{movie.production_companies && (
 									<S.MovieProductionCompanies>
 										<h2>Produção </h2>
 										<S.CompaniesWrapper>

@@ -31,8 +31,6 @@ function Hero({ setModal, minutesToHours }) {
 		return windowWidth > 768 ? 400 : 200;
 	};
 
-
-
 	const handleOnVideoEnd = () => {
 		handleInInfoAnimation();
 		setVideoIsOpen(false);
@@ -40,6 +38,7 @@ function Hero({ setModal, minutesToHours }) {
 
 	return (
 		<S.HeroWrapper
+            data-testid='hero-container'
 			$src={
 				heroFilm.backdrop_path
 					? `https://image.tmdb.org/t/p/original${heroFilm.backdrop_path}`

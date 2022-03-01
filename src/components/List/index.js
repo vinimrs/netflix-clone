@@ -38,7 +38,7 @@ function List({ list, setModal }) {
     });
 
 	return (
-		<S.ListWrapper {...handlers}>
+		<S.ListWrapper {...handlers} data-testid='list-wrapper'>
 			<S.NavigateDiv
 				onMouseEnter={() => {
 					setActiveList(true);
@@ -84,6 +84,7 @@ function List({ list, setModal }) {
 									src={`https://image.tmdb.org/t/p/w300${film.poster_path}`}
 									alt={film.original_title}
 									key={key}
+                                    data-testid='film-poster'
                                     onClick={() => {
                                         setModal(film);
                                     }}

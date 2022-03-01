@@ -5,7 +5,7 @@ import * as S from "./style";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import { gsap, Power3 } from "gsap/all";
+import { gsap, Power3 } from "gsap";
 import {useNavigate} from 'react-router-dom';
 
 function Header({ scroll }) {
@@ -35,7 +35,6 @@ function Header({ scroll }) {
     useEffect(() => {
         if(!profile.slug) setProfile(getStorageProfile());
     })
-    console.log(dropdown)
     return (
 		<S.StyledHeader $active={scroll}>
 			<S.LogoNetflix onClick={() => navigate('/browse')} src={logo} alt="Logo da Netflix" />

@@ -31,7 +31,10 @@ function Login() {
 						variant="filled"
 						value={email}
 						margin="normal"
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e) => {
+                            simpleCheck("email", 10, e.target.value);
+                            setEmail(e.target.value);
+                        }}
 						error={!validity.email}
 						onBlur={(e) => {
 							simpleCheck("email", 10, e.target.value);
@@ -65,7 +68,10 @@ function Login() {
 									? ""
 									: "Informe uma senha maior que 4 caracteres."
 							}
-							onChange={(e) => setPassword(e.target.value)}
+							onChange={(e) => {
+                                simpleCheck("password", 4, e.target.value);
+                                setPassword(e.target.value);
+                            }}
 							FormHelperTextProps={{
 								style: {
 									color: " var(--red-netflix)",
@@ -101,10 +107,11 @@ function Login() {
 						type="submit"
 						variant="contained"
 						fullWidth
+                        data-testid="Entrar"
 					>
 						Entrar
 					</S.LoginButton>
-					<div style={{ display: "flex" }}>
+					<div style={{ display: "flex", justifyContent: 'space-between' }}>
 						<FormControlLabel
 							style={{ fontSize: "8px", color: "#8C8C80" }}
 							control={
