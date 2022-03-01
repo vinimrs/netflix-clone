@@ -1,9 +1,9 @@
 import React, {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useState,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 import requires from "../../api/TheMb";
 import { useUsuario } from "./Usuario";
@@ -12,30 +12,30 @@ export const FilmsContext = createContext();
 FilmsContext.displayName = "Films";
 
 export const FilmsProvider = ({ children }) => {
-	const [list, setList] = useState(null);
-	const [heroFilm, setHeroFilm] = useState(null);
-	const [filmVideo, setFilmVideo] = useState(null);
+  const [list, setList] = useState(null);
+  const [heroFilm, setHeroFilm] = useState(null);
+  const [filmVideo, setFilmVideo] = useState(null);
 
-	return (
-		<FilmsContext.Provider
-			value={{
-				list,
-				setFilmVideo,
-				setHeroFilm,
-				setList,
-				heroFilm,
-				filmVideo,
-			}}
-		>
-			{children}
-		</FilmsContext.Provider>
-	);
+  return (
+    <FilmsContext.Provider
+      value={{
+        list,
+        setFilmVideo,
+        setHeroFilm,
+        setList,
+        heroFilm,
+        filmVideo,
+      }}
+    >
+      {children}
+    </FilmsContext.Provider>
+  );
 };
 
 export const useFilms = () => {
-	const { list, heroFilm, filmVideo, setHeroFilm, setFilmVideo, setList } =
-		useContext(FilmsContext);
-	const { profile } = useUsuario();
+  const { list, heroFilm, filmVideo, setHeroFilm, setFilmVideo, setList } =
+    useContext(FilmsContext);
+  const { profile } = useUsuario();
 
 	const loadHeroFilmWithId = useCallback(
 		async (id = 10725) => {
@@ -47,11 +47,11 @@ export const useFilms = () => {
 			let chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
 			const videos = await requires.getMovieVideo(chosen.id);
 
-			setFilmVideo(videos.results[0]);
-			setHeroFilm(chosenInfo);
-		},
-		[setFilmVideo, setHeroFilm]
-	);
+      setFilmVideo(videos.results[0]);
+      setHeroFilm(chosenInfo);
+    },
+    [setFilmVideo, setHeroFilm]
+  );
 
 	const loadHomeLists = useCallback(async () => {
 		const resultList = await requires.getHomeList();
@@ -66,14 +66,14 @@ export const useFilms = () => {
 		loadAll();
 	}, [loadHeroFilmWithId, loadHomeLists, profile]);
 
-	return {
-		list,
-		heroFilm,
-		filmVideo,
-		setHeroFilm,
-		setFilmVideo,
-		setList,
-		loadHeroFilmWithId,
-		loadHomeLists,
-	};
+  return {
+    list,
+    heroFilm,
+    filmVideo,
+    setHeroFilm,
+    setFilmVideo,
+    setList,
+    loadHeroFilmWithId,
+    loadHomeLists,
+  };
 };

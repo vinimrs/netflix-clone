@@ -8,134 +8,129 @@ import userEvent from "@testing-library/user-event";
 import SelectProfile from "../SelectProfile";
 
 const renderizaLogin = () => {
-	const history = createMemoryHistory();
-	return (
-		<UsuarioProvider>
-			<Router location={history.location} navigator={history}>
-				<Routes>
-					<Route path="/" element={<Login />} />
-				</Routes>
-			</Router>
-		</UsuarioProvider>
-	);
+  const history = createMemoryHistory();
+  return (
+    <UsuarioProvider>
+      <Router location={history.location} navigator={history}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+        </Routes>
+      </Router>
+    </UsuarioProvider>
+  );
 };
 
 describe("Página de Login", () => {
-	describe("Quando o usuário entra na página", () => {
-		it("mostra inputs e buttons", () => {
-			render(renderizaLogin());
+  describe("Quando o usuário entra na página", () => {
+    it("mostra inputs e buttons", () => {
+      render(renderizaLogin());
 
-			const botaoLogin = screen.getByTestId("Entrar");
-			const inputSenha = screen.getByLabelText("Senha");
-			const inputEmail = screen.getByLabelText("Email");
-			expect(botaoLogin).toBeInTheDocument();
-			expect(inputEmail).toBeInTheDocument();
-			expect(inputSenha).toBeInTheDocument();
-		});
+      const botaoLogin = screen.getByTestId("Entrar");
+      const inputSenha = screen.getByLabelText("Senha");
+      const inputEmail = screen.getByLabelText("Email");
+      expect(botaoLogin).toBeInTheDocument();
+      expect(inputEmail).toBeInTheDocument();
+      expect(inputSenha).toBeInTheDocument();
+    });
 
-		it("botao inicia desabilitado", () => {
-			render(renderizaLogin());
-			const botaoLogin = screen.getByTestId("Entrar");
-			expect(botaoLogin).toHaveAttribute("disabled");
-		});
-	});
+    it("botao inicia desabilitado", () => {
+      render(renderizaLogin());
+      const botaoLogin = screen.getByTestId("Entrar");
+      expect(botaoLogin).toHaveAttribute("disabled");
+    });
+  });
 
-	describe("Ao inserir no input Email:", () => {
-		it("dispara erro se for menor que 10", () => {
-			render(renderizaLogin());
+  describe("Ao inserir no input Email:", () => {
+    it("dispara erro se for menor que 10", () => {
+      render(renderizaLogin());
 
-			const inputEmail = screen.getByLabelText("Email");
-			const botaoLogin = screen.getByTestId("Entrar");
+      const inputEmail = screen.getByLabelText("Email");
+      const botaoLogin = screen.getByTestId("Entrar");
 
-			userEvent.type(inputEmail, "testando1");
+      userEvent.type(inputEmail, "testando1");
 
-			expect(inputEmail).toHaveAttribute("aria-invalid", "true");
-			expect(botaoLogin).toHaveAttribute("disabled");
-		});
+      expect(inputEmail).toHaveAttribute("aria-invalid", "true");
+      expect(botaoLogin).toHaveAttribute("disabled");
+    });
 
-		it("aceita se for maior ou igual a 10", () => {
-			render(renderizaLogin());
-			const inputEmail = screen.getByLabelText("Email");
-			
-            userEvent.type(inputEmail, "10caracteres");
+    it("aceita se for maior ou igual a 10", () => {
+      render(renderizaLogin());
+      const inputEmail = screen.getByLabelText("Email");
 
-			expect(inputEmail).toHaveAttribute("aria-invalid", "false");
-		});
-	});
+      userEvent.type(inputEmail, "10caracteres");
 
-	describe("Ao inserir no campo Senha:", () => {
-		it("dispara erro se for menor que 4", () => {
-			render(renderizaLogin());
-			const inputSenha = screen.getByLabelText("Senha");
+      expect(inputEmail).toHaveAttribute("aria-invalid", "false");
+    });
+  });
 
-			userEvent.type(inputSenha, "car");
+  describe("Ao inserir no campo Senha:", () => {
+    it("dispara erro se for menor que 4", () => {
+      render(renderizaLogin());
+      const inputSenha = screen.getByLabelText("Senha");
 
-			expect(inputSenha).toHaveAttribute("aria-invalid", "true");
-		});
-		it("aceita se for maior ou igual a 4", () => {
-			render(renderizaLogin());
-			const inputSenha = screen.getByLabelText("Senha");
+      userEvent.type(inputSenha, "car");
 
-			userEvent.type(inputSenha, "caractere");
+      expect(inputSenha).toHaveAttribute("aria-invalid", "true");
+    });
+    it("aceita se for maior ou igual a 4", () => {
+      render(renderizaLogin());
+      const inputSenha = screen.getByLabelText("Senha");
 
-			expect(inputSenha).toHaveAttribute("aria-invalid", "false");
-		});
-	});
+      userEvent.type(inputSenha, "caractere");
 
-	describe("Ao preencher os dois campos o botao:", () => {
-		it("[DISABLED] se qualquer um dos dois for invalido", () => {
-			render(renderizaLogin());
-			const inputEmail = screen.getByLabelText("Email");
-			const inputSenha = screen.getByLabelText("Senha");
-			const botaoLogin = screen.getByTestId("Entrar");
+      expect(inputSenha).toHaveAttribute("aria-invalid", "false");
+    });
+  });
 
-			userEvent.type(inputEmail, "car"); // errado
-			userEvent.type(inputSenha, "caractere"); // certo
+  describe("Ao preencher os dois campos o botao:", () => {
+    it("[DISABLED] se qualquer um dos dois for invalido", () => {
+      render(renderizaLogin());
+      const inputEmail = screen.getByLabelText("Email");
+      const inputSenha = screen.getByLabelText("Senha");
+      const botaoLogin = screen.getByTestId("Entrar");
 
-			expect(botaoLogin).toHaveAttribute("disabled");
+      userEvent.type(inputEmail, "car"); // errado
+      userEvent.type(inputSenha, "caractere"); // certo
 
-			userEvent.clear(inputSenha);
-			userEvent.clear(inputEmail);
+      expect(botaoLogin).toHaveAttribute("disabled");
 
-			userEvent.type(inputEmail, "carac@hotmail.com");
-			userEvent.type(inputSenha, "car");
+      userEvent.clear(inputSenha);
+      userEvent.clear(inputEmail);
 
-			expect(botaoLogin).toHaveAttribute("disabled");
-		});
+      userEvent.type(inputEmail, "carac@hotmail.com");
+      userEvent.type(inputSenha, "car");
 
-		it("[NOT-DISABLED] se os dois forem validos", () => {
-			render(renderizaLogin());
-			const inputEmail = screen.getByLabelText("Email");
-			const inputSenha = screen.getByLabelText("Senha");
-			const botaoLogin = screen.getByTestId("Entrar");
+      expect(botaoLogin).toHaveAttribute("disabled");
+    });
 
-			userEvent.type(inputEmail, "carac@hotmail.com"); // certo
-			userEvent.type(inputSenha, "caractere"); // certo
+    it("[NOT-DISABLED] se os dois forem validos", () => {
+      render(renderizaLogin());
+      const inputEmail = screen.getByLabelText("Email");
+      const inputSenha = screen.getByLabelText("Senha");
+      const botaoLogin = screen.getByTestId("Entrar");
 
-			expect(botaoLogin).not.toHaveAttribute("disabled");
-		});
-	});
+      userEvent.type(inputEmail, "carac@hotmail.com"); // certo
+      userEvent.type(inputSenha, "caractere"); // certo
 
-	describe("Ao clicar no Botao", () => {
-		it("será redirecionado para Select-Profile", () => {
-			const history = createMemoryHistory();
-			history.push("/select-profile");
-			render(
-				<UsuarioProvider>
-					<Router location={history.location} navigator={history}>
-						<Routes>
-							<Route
-								path="/select-profile"
-								element={<SelectProfile />}
-							/>
-						</Routes>
-					</Router>
-				</UsuarioProvider>
-			);
+      expect(botaoLogin).not.toHaveAttribute("disabled");
+    });
+  });
 
-			expect(
-				screen.getByText("Quem está assistindo?")
-			).toBeInTheDocument();
-		});
-	});
+  describe("Ao clicar no Botao", () => {
+    it("será redirecionado para Select-Profile", () => {
+      const history = createMemoryHistory();
+      history.push("/select-profile");
+      render(
+        <UsuarioProvider>
+          <Router location={history.location} navigator={history}>
+            <Routes>
+              <Route path="/select-profile" element={<SelectProfile />} />
+            </Routes>
+          </Router>
+        </UsuarioProvider>
+      );
+
+      expect(screen.getByText("Quem está assistindo?")).toBeInTheDocument();
+    });
+  });
 });
