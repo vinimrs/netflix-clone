@@ -1,9 +1,9 @@
-import React, { useState } from "react";
 import * as S from "./style.js";
-import YouTube from "react-youtube";
 import { handleInInfoAnimation, handleOutInfoAnimation } from "./style.js";
 import { ReactComponent as Play } from "../../assets/play.svg";
 import { useFilms } from "../../common/context/Films.js";
+import React, { useState } from "react";
+import YouTube from "react-youtube";
 import useWindowDimensions from "../../common/context/WindowDimensions.js";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 

@@ -1,7 +1,8 @@
+import * as S from "./style";
 import { useEffect, useState } from "react";
 import { gsap, Power3 } from "gsap";
+import React from "react";
 import YouTube from "react-youtube";
-import * as S from "./style";
 import requires from "../../api/TheMb";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import useWindowDimensions from "../../common/context/WindowDimensions";
@@ -90,7 +91,7 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 							<div style={{ paddingLeft: "10px", order: "2" }}>
 								<h1>{movie?.title}</h1>
 								{movie.tagline && (
-									<span>"{movie.tagline}"</span>
+									<span>&quot;{movie.tagline}&quot;</span>
 								)}
 								<S.MovieDetails>
 									{movie.vote_average && (

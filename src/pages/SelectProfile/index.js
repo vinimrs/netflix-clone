@@ -20,9 +20,9 @@ function SelectProfile() {
                             data-testid="profile"
 							onClick={() => {
 								setProfileBySlug(prof.slug);
-
 								history("/browse");
 							}}
+                            role="img"
 						>
 							<S.ProfileImage src={prof.image} alt={prof.slug} />
 							<h2>{prof.name}</h2>

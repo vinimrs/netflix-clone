@@ -1,12 +1,12 @@
-import React, { useEffect, useState  } from "react";
-import logo from "../../assets/netflix-logo.svg";
-import { useUsuario } from "../../common/context/Usuario";
 import * as S from "./style";
+import React, { useEffect, useState  } from "react";
+import { gsap, Power3 } from "gsap";
+import { useUsuario } from "../../common/context/Usuario";
+import {useNavigate} from 'react-router-dom';
+import logo from "../../assets/netflix-logo.svg";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import { gsap, Power3 } from "gsap";
-import {useNavigate} from 'react-router-dom';
 
 function Header({ scroll }) {
 	const { profile, setProfile, changeProfile, getStorageProfile , filterToAnothersProfiles } = useUsuario();

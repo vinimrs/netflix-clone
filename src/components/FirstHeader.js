@@ -1,6 +1,7 @@
+import { ReactComponent as Logo } from "../assets/netflix-logo.svg";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "../assets/netflix-logo.svg";
+import React from "react";
 
 export const Header = styled.header`
 	text-align: left;

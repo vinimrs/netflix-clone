@@ -1,9 +1,9 @@
+import * as S from './style';
 import React, { useRef, useState } from "react";
 import { ReactComponent as ChevronLeft } from "../../assets/chevron.svg";
 import { ReactComponent as ChevronRight } from "../../assets/chevron-right.svg";
 import { useSwipeable } from "react-swipeable";
 import useWindowDimensions from "../../common/context/WindowDimensions";
-import * as S from './style';
 
 function List({ list, setModal }) {
 	const [activeList, setActiveList] = useState(false);
