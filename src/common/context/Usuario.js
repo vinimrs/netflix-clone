@@ -10,115 +10,115 @@ export const UsuarioContext = createContext();
 UsuarioContext.displayName = "Usuário";
 
 export const UsuarioProvider = ({ children }) => {
-	const [password, setPassword] = useState("");
-	const [email, setEmail] = useState("");
-	const [checked, setChecked] = useState(true);
-	const [profile, setProfile] = useState({});
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [checked, setChecked] = useState(true);
+  const [profile, setProfile] = useState({});
 
-	const profiles = [
-		{
-			slug: "quem-paga",
-			name: "Quem paga",
-			image: avatar1,
-            preference: '12'
-		},
-		{
-			slug: "parasita1",
-			name: "Parasita 1",
-			image: avatar2,
-            preference: '10752'
-		},
-		{
-			slug: "parasita2",
-			name: "Parasita 2",
-			image: avatar3,
-            preference: '35'
-		},
-		{
-			slug: "parasita3",
-			name: "Parasita 3",
-			image: avatar4,
-            preference: '99'
-		},
-		{
-			slug: "quem-nunca-usa",
-			name: "Quem nunca usa",
-			image: avatar5,
-            preference: '10752'
-		},
-	];
+  const profiles = [
+    {
+      slug: "quem-paga",
+      name: "Quem paga",
+      image: avatar1,
+      preference: "12",
+    },
+    {
+      slug: "parasita1",
+      name: "Parasita 1",
+      image: avatar2,
+      preference: "10752",
+    },
+    {
+      slug: "parasita2",
+      name: "Parasita 2",
+      image: avatar3,
+      preference: "35",
+    },
+    {
+      slug: "parasita3",
+      name: "Parasita 3",
+      image: avatar4,
+      preference: "99",
+    },
+    {
+      slug: "quem-nunca-usa",
+      name: "Quem nunca usa",
+      image: avatar5,
+      preference: "10752",
+    },
+  ];
 
-	return (
-		<UsuarioContext.Provider
-			value={{
-				profile,
-				setProfile,
-				password,
-				setPassword,
-				checked,
-				setChecked,
-				email,
-				setEmail,
-                profiles
-			}}
-		>
-			{children}
-		</UsuarioContext.Provider>
-	);
+  return (
+    <UsuarioContext.Provider
+      value={{
+        profile,
+        setProfile,
+        password,
+        setPassword,
+        checked,
+        setChecked,
+        email,
+        setEmail,
+        profiles,
+      }}
+    >
+      {children}
+    </UsuarioContext.Provider>
+  );
 };
 
 export const useUsuario = () => {
-	const {
-		profiles,
-		setProfile,
-		profile,
-		password,
-		setPassword,
-		checked,
-		setChecked,
-		email,
-		setEmail,
-	} = useContext(UsuarioContext);
-    
-	const setProfileBySlug = (slug) => {
-		const profile = profiles.find((profile) => profile.slug === slug);
-        if (profile) {
-            setProfile(profile);
-		} else {
-            const profileResults = JSON.parse(localStorage.getItem('usuario'));
-            setProfile(profileResults);
-        }
-        localStorage.setItem('usuario', JSON.stringify(profile), );
-	};
+  const {
+    profiles,
+    setProfile,
+    profile,
+    password,
+    setPassword,
+    checked,
+    setChecked,
+    email,
+    setEmail,
+  } = useContext(UsuarioContext);
 
-	const filterToAnothersProfiles = (profile) => {
-		const result = profiles.filter((prof) => prof.slug !== profile.slug);
-		return result;
-	};
+  const setProfileBySlug = (slug) => {
+    const profile = profiles.find((profile) => profile.slug === slug);
+    if (profile) {
+      setProfile(profile);
+    } else {
+      const profileResults = JSON.parse(localStorage.getItem("usuario"));
+      setProfile(profileResults);
+    }
+    localStorage.setItem("usuario", JSON.stringify(profile));
+  };
 
-    const getStorageProfile = () => {
-        return JSON.parse(localStorage.getItem('usuario'));
-    };
+  const filterToAnothersProfiles = (profile) => {
+    const result = profiles.filter((prof) => prof.slug !== profile.slug);
+    return result;
+  };
 
-    const changeProfile = (slug) => {
-        const profile = profiles.find(prof => prof.slug === slug);
-        localStorage.setItem('usuario', JSON.stringify(profile));
-        setProfile(profile);
-    };
+  const getStorageProfile = () => {
+    return JSON.parse(localStorage.getItem("usuario"));
+  };
 
-	return {
-		setProfileBySlug,
-		filterToAnothersProfiles,
-        getStorageProfile,
-		profiles,
-        changeProfile,
-		setProfile,
-		profile,
-		password,
-		setPassword,
-		checked,
-		setChecked,
-		email,
-		setEmail,
-	};
+  const changeProfile = (slug) => {
+    const profile = profiles.find((prof) => prof.slug === slug);
+    localStorage.setItem("usuario", JSON.stringify(profile));
+    setProfile(profile);
+  };
+
+  return {
+    setProfileBySlug,
+    filterToAnothersProfiles,
+    getStorageProfile,
+    profiles,
+    changeProfile,
+    setProfile,
+    profile,
+    password,
+    setPassword,
+    checked,
+    setChecked,
+    email,
+    setEmail,
+  };
 };

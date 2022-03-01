@@ -9,75 +9,71 @@ import Loading from "../../components/Loading";
 import * as S from "./style";
 
 function Browse() {
-	const { list, heroFilm } = useFilms();
-	const [headerActive, setHeaderActive] = useState(false);
-	const [modalInfo, setModalInfo] = useState({
-		id: "",
-		type: "",
-	});
+  const { list, heroFilm } = useFilms();
+  const [headerActive, setHeaderActive] = useState(false);
+  const [modalInfo, setModalInfo] = useState({
+    id: "",
+    type: "",
+  });
 
-	const handleSetModalInfo = (film) => {
-		const type = film.number_of_seasons ? "tv" : "movie";
-		setModalInfo({ id: film.id, type: type });
-	};
+  const handleSetModalInfo = (film) => {
+    const type = film.number_of_seasons ? "tv" : "movie";
+    setModalInfo({ id: film.id, type: type });
+  };
 
-	const toHoursAndMinutes = useCallback((totalMinutes) => {
-		const minutes = totalMinutes % 60;
-		const hours = Math.floor(totalMinutes / 60);
+  const toHoursAndMinutes = useCallback((totalMinutes) => {
+    const minutes = totalMinutes % 60;
+    const hours = Math.floor(totalMinutes / 60);
 
-		return `${hours < 1 ? "" : `${hours}h`}${
-			minutes < 1 ? "" : `${minutes}min`
-		}`;
-	}, []);
+    return `${hours < 1 ? "" : `${hours}h`}${
+      minutes < 1 ? "" : `${minutes}min`
+    }`;
+  }, []);
 
-	useEffect(() => {
-		const scrollListener = () => {
-			if (window.scrollY > 10) {
-				setHeaderActive(true);
-			} else {
-				setHeaderActive(false);
-			}
-		};
+  useEffect(() => {
+    const scrollListener = () => {
+      if (window.scrollY > 10) {
+        setHeaderActive(true);
+      } else {
+        setHeaderActive(false);
+      }
+    };
 
-		window.addEventListener("scroll", scrollListener);
-		return () => {
-			window.removeEventListener("scroll", scrollListener);
-		};
-	}, []);
+    window.addEventListener("scroll", scrollListener);
+    return () => {
+      window.removeEventListener("scroll", scrollListener);
+    };
+  }, []);
 
-	return (
-		<>
-			{modalInfo.id && modalInfo.type && (
-				<MoreInfoModal
-					minutesToHours={toHoursAndMinutes}
-					{...modalInfo}
-					setModalInfo={setModalInfo}
-				/>
-			)}
-			<Header scroll={headerActive} />
-			{heroFilm && (
-				<Hero
-					setModal={handleSetModalInfo}
-					minutesToHours={toHoursAndMinutes}
-				/>
-			)}
-			{list && (
-				<S.MainWrapper>
-					{list.map((category, key) => {
-						return (
-							<List
-								key={key}
-								setModal={handleSetModalInfo}
-								list={category}
-							/>
-						);
-					})}
-				</S.MainWrapper>
-			)}
-			{(!list || !heroFilm) && <Loading />}
-			{list && <Footer />}
-		</>
-	);
+  return (
+    <>
+      {modalInfo.id && modalInfo.type && (
+        <MoreInfoModal
+          minutesToHours={toHoursAndMinutes}
+          {...modalInfo}
+          setModalInfo={setModalInfo}
+        />
+      )}
+      <Header scroll={headerActive} />
+      {heroFilm && (
+        <Hero
+          setModal={handleSetModalInfo}
+          minutesToHours={toHoursAndMinutes}
+        />
+      )}
+      {list && (
+        <S.MainWrapper>
+          {list.map((category, key) => {
+            return (
+              <List key={key} setModal={handleSetModalInfo} list={category} />
+            );
+          })}
+        </S.MainWrapper>
+      )}
+      {(!list || !heroFilm) && <Loading />}
+      {list && <Footer />}
+    </>
+  );
 }
 
 export default Browse;
