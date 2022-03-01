@@ -5,7 +5,7 @@ import { gsap, Power3 } from "gsap";
 export const handleOutInfoAnimation = () => {
 	gsap.to("._filmTitle", {
 		ease: Power3.easeInOut,
-		scale: 0.8,
+        fontSize: '52px',
 		duration: 1,
 		zIndex: -1,
 	});
@@ -13,21 +13,16 @@ export const handleOutInfoAnimation = () => {
 		ease: Power3.easeInOut,
 		display: "none",
 		duration: 1,
+
 		autoAlpha: 0,
-	});
-	gsap.to("._infoFilm", {
-		delay: 0.8,
-		duration: 1,
-		ease: Power3.easeInOut,
-		alignItems: "center",
 	});
 };
 
 export const handleInInfoAnimation = () => {
 	gsap.to("._filmTitle", {
 		duration: 0.5,
+        fontSize: '72px',
 		ease: Power3.easeInOut,
-		scale: 1,
 		y: "inherit",
 	});
 	gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
@@ -35,11 +30,6 @@ export const handleInInfoAnimation = () => {
 		display: "inherit",
 		duration: 0.5,
 		autoAlpha: 1,
-	});
-	gsap.to("._infoFilm", {
-		duration: 0.5,
-		alignItems: "flex-start",
-		ease: Power3.easeInOut,
 	});
 };
 
@@ -105,7 +95,7 @@ export const FilmTitle = styled.h1`
 	@media (max-width: 768px) {
 		font-size: 48px;
 		max-width: 90%;
-		line-height: 70px;
+		line-height: 75px;
 	}
 `;
 

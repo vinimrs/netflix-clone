@@ -44,7 +44,6 @@ export const useFilms = () => {
 				Math.random() * (resp.results.length - 1)
 			);
 			let chosen = resp.results[randomChosen];
-            console.log(chosen.id)
 			let chosenInfo = await requires.getMovieInfo(chosen.id, "movie");
 			const videos = await requires.getMovieVideo(chosen.id);
 
@@ -56,15 +55,14 @@ export const useFilms = () => {
 
 	const loadHomeLists = useCallback(async () => {
 		const resultList = await requires.getHomeList();
-        console.log(resultList);
 		setList(resultList);
 	}, [setList]);
 
 	useEffect(() => {
-        const loadAll = async () => {
-            loadHomeLists();
-            loadHeroFilmWithId(profile.preference);
-        };
+		const loadAll = async () => {
+			loadHomeLists();
+			loadHeroFilmWithId(profile.preference);
+		};
 		loadAll();
 	}, [loadHeroFilmWithId, loadHomeLists, profile]);
 

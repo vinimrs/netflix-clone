@@ -72,17 +72,14 @@ const requires = {
                 break;
             }
         }
-        console.log(info);
         return info;
     },
     getMovieVideo: async (movieId) => {
         let info = await basicFetch(`/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`);
-        console.log(info);
         return info;
     },
     getMoviesByCategoryId: async (id) => {
         let info = await basicFetch(`/discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc&with_genres=${id}`);
-        console.log(info);
         return info;
     },
 };

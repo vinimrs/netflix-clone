@@ -82,8 +82,8 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
 								opts={videoOpts}
 								allow="autoplay;"
 								onReady={(e) => {
-                                    setIsReady(true);
                                     e.target.playVideo();
+                                    setIsReady(true);
                                 }}
 							/>
 						</S.ModalBanner>
