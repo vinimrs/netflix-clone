@@ -55,51 +55,55 @@ function MoreInfoModal({ id, type, setModalInfo, minutesToHours }) {
     });
   }, [type, id, setModalInfo]);
 
-  return (
-    <S.ModalBG data-testid="modal">
-      {!isReady && (
-        <div
-          style={{
-            height: "100vh",
-            width: "100vw",
-            position: "relative",
-          }}
-        >
-          <Loading />
-        </div>
-      )}
-      <S.ModalContainer className="_modalContainer">
-        <S.CloseModal onClick={() => setModalInfo({ success: true })}>
-          <CloseOutlinedIcon sx={{ color: "var(--white)", fontSize: "40px" }} />
-        </S.CloseModal>
-        {movie && movieVideo && (
-          <>
-            <S.ModalBanner $src={movie.backdrop_path}>
-              <YouTube
-                videoId={movieVideo.key}
-                opts={videoOpts}
-                allow="autoplay;"
-                onReady={(e) => {
-                  setIsReady(true);
-                  e.target.playVideo();
-                }}
-              />
-            </S.ModalBanner>
-            <S.FilmInfosWrapper>
-              <div style={{ paddingLeft: "10px", order: "2" }}>
-                <h1>{movie?.title}</h1>
-                {movie.tagline && <span>&quot;{movie.tagline}&quot;</span>}
-                <S.MovieDetails>
-                  {movie.vote_average && (
-                    <span style={{ color: "var(--green)" }}>
-                      {movie.vote_average} pontos
-                    </span>
-                  )}
-                  {(movie.runtime || movie.last_air_date) && (
-                    <span>
-                      {movie.runtime
-                        ? minutesToHours(movie.runtime)
-                        : `${movie.number_of_seasons} 
+	return (
+		<S.ModalBG data-testid="modal">
+			{!isReady && (
+				<div
+					style={{
+						height: "100vh",
+						width: "100vw",
+						position: "relative",
+					}}
+				>
+					<Loading />
+				</div>
+			)}
+			<S.ModalContainer className="_modalContainer">
+				<S.CloseModal onClick={() => setModalInfo({ success: true })}>
+					<CloseOutlinedIcon
+						sx={{ color: "var(--white)", fontSize: "40px" }}
+					/>
+				</S.CloseModal>
+				{movie && movieVideo && (
+					<>
+						<S.ModalBanner $src={movie.backdrop_path}>
+							<YouTube
+								videoId={movieVideo.key}
+								opts={videoOpts}
+								allow="autoplay;"
+								onReady={(e) => {
+                                    e.target.playVideo();
+                                    setIsReady(true);
+                                }}
+							/>
+						</S.ModalBanner>
+						<S.FilmInfosWrapper>
+							<div style={{ paddingLeft: "10px", order: "2" }}>
+								<h1>{movie?.title}</h1>
+								{movie.tagline && (
+									<span>&quot;{movie.tagline}&quot;</span>
+								)}
+								<S.MovieDetails>
+									{movie.vote_average && (
+										<span style={{ color: "var(--green)" }}>
+											{movie.vote_average} pontos
+										</span>
+									)}
+									{(movie.runtime || movie.last_air_date) && (
+										<span>
+											{movie.runtime
+												? minutesToHours(movie.runtime)
+												: `${movie.number_of_seasons} 
                                                 temporada${
                                                   movie.number_of_seasons > 1
                                                     ? "s"

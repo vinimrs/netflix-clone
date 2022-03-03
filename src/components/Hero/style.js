@@ -3,44 +3,34 @@ import heroImage from "../../assets/hero-image-example.png";
 import { gsap, Power3 } from "gsap";
 
 export const handleOutInfoAnimation = () => {
-  gsap.to("._filmTitle", {
-    ease: Power3.easeInOut,
-    scale: 0.8,
-    duration: 1,
-    zIndex: -1,
-  });
-  gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
-    ease: Power3.easeInOut,
-    display: "none",
-    duration: 1,
-    autoAlpha: 0,
-  });
-  gsap.to("._infoFilm", {
-    delay: 0.8,
-    duration: 1,
-    ease: Power3.easeInOut,
-    alignItems: "center",
-  });
+	gsap.to("._filmTitle", {
+		ease: Power3.easeInOut,
+        fontSize: '52px',
+		duration: 1,
+		zIndex: -1,
+	});
+	gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
+		ease: Power3.easeInOut,
+		display: "none",
+		duration: 1,
+
+		autoAlpha: 0,
+	});
 };
 
 export const handleInInfoAnimation = () => {
-  gsap.to("._filmTitle", {
-    duration: 0.5,
-    ease: Power3.easeInOut,
-    scale: 1,
-    y: "inherit",
-  });
-  gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
-    ease: Power3.easeInOut,
-    display: "inherit",
-    duration: 0.5,
-    autoAlpha: 1,
-  });
-  gsap.to("._infoFilm", {
-    duration: 0.5,
-    alignItems: "flex-start",
-    ease: Power3.easeInOut,
-  });
+	gsap.to("._filmTitle", {
+		duration: 0.5,
+        fontSize: '72px',
+		ease: Power3.easeInOut,
+		y: "inherit",
+	});
+	gsap.to("._detailsDiv, ._filmDescription, ._filmGenres", {
+		ease: Power3.easeInOut,
+		display: "inherit",
+		duration: 0.5,
+		autoAlpha: 1,
+	});
 };
 
 export const HeroWrapper = styled.div`
@@ -97,6 +87,18 @@ export const InfoFilm = styled.div`
 `;
 
 export const FilmTitle = styled.h1`
+<<<<<<< HEAD
+	font-size: 72px;
+	color: var(--white);
+	max-width: 45%;
+	order: 1;
+
+	@media (max-width: 768px) {
+		font-size: 48px;
+		max-width: 90%;
+		line-height: 75px;
+	}
+=======
   font-size: 72px;
   color: var(--white);
   max-width: 45%;
@@ -107,6 +109,7 @@ export const FilmTitle = styled.h1`
     max-width: 90%;
     line-height: 70px;
   }
+>>>>>>> cfe527e6b4f665ce77a2cc39a52ef7adeca0aad0
 `;
 
 export const Details = styled.div`

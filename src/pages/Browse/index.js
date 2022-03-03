@@ -47,8 +47,6 @@ function Browse() {
     };
   }, []);
 
-  console.log("modalinfo:", modalInfo);
-
   return (
     <>
       {modalInfo.id && modalInfo.type && (
