@@ -1,20 +1,25 @@
 import * as S from './style.js';
 import { handleInInfoAnimation, handleOutInfoAnimation } from './style.js';
-import { ReactComponent as Play } from '/play.svg';
+import Play from '/play.svg';
 import { useFilms } from '../../common/context/Films.js';
 import React, { useState } from 'react';
-import YouTube from 'react-youtube';
+import YouTube, { Options } from 'react-youtube';
 import useWindowDimensions from '../../common/context/WindowDimensions.js';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-const Hero: React.FC = ({ setModal, minutesToHours }) => {
+interface Hero {
+    setModal?: (film: any) => void;
+    minutesToHours?: (totalMinutes: any) => string;
+}
+
+const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
     const { heroFilm, filmVideo } = useFilms();
     const { width, height } = useWindowDimensions();
     const [videoIsOpen, setVideoIsOpen] = useState(false);
 
-    const videoOpts = {
-        height: height,
-        width: width,
+    const videoOpts: Options = {
+        height: height.toString(),
+        width: width.toString(),
         playerVars: {
             // https://developers.google.com/youtube/player_parameters
             autoplay: 1,
@@ -22,7 +27,7 @@ const Hero: React.FC = ({ setModal, minutesToHours }) => {
             cc_load_policy: 1,
             rel: 0,
             origin: 'https://netflix-clone-vinir07.vercel.app',
-            muted: width < 769 ? '1' : '0',
+            mute: width < 769 ? 1 : 0,
         },
     };
 
@@ -39,7 +44,7 @@ const Hero: React.FC = ({ setModal, minutesToHours }) => {
     return (
         <S.HeroWrapper
             data-testid="hero-container"
-            $src={
+            src={
                 heroFilm.backdrop_path
                     ? `https://image.tmdb.org/t/p/original${heroFilm.backdrop_path}`
                     : ''
@@ -50,14 +55,14 @@ const Hero: React.FC = ({ setModal, minutesToHours }) => {
                     className="video"
                     videoId={filmVideo.key}
                     opts={videoOpts}
-                    allow="autoplay;"
+                    // allow="autoplay;"
                     onReady={e => e.target.playVideo()}
                     onEnd={() => handleOnVideoEnd()}
                 />
             )}
             <S.InfoFilm className="_infoFilm">
                 <S.FilmTitle className="_filmTitle">
-                    {heroFilm.title ? heroFilm.title : heroFilm.name}
+                    {heroFilm.title ? heroFilm.title : heroFilm.original_title}
                 </S.FilmTitle>
                 <S.Details className="_detailsDiv">
                     {heroFilm.vote_average && (

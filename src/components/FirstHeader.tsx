@@ -1,7 +1,8 @@
-import { ReactComponent as Logo } from '../assets/netflix-logo.svg';
-import { useNavigate } from 'react-router';
+import Logo from '../../public/netflix-logo.svg';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import React from 'react';
+import { authService } from '../services/auth/authService';
 
 export const Header = styled.header`
     text-align: left;
@@ -12,11 +13,17 @@ export const Header = styled.header`
 `;
 
 const FirstHeader: React.FC = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
     return (
         <Header>
             <div style={{ cursor: 'pointer' }}>
-                <Logo onClick={() => navigate(-1)} />
+                <img
+                    src={Logo}
+                    onClick={() => {
+                        router.push('/logout');
+                    }}
+                />
+                {/* <Logo onClick={() => router.back()} /> */}
             </div>
         </Header>
     );

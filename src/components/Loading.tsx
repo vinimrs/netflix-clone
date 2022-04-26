@@ -20,7 +20,7 @@ const Loading: React.FC = () => {
                 style={{
                     width: '100vw',
                 }}
-                src={loading}
+                src={loading.src}
                 alt="Animação de carregamento"
             />
         </div>

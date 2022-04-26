@@ -8,7 +8,11 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 
-const Header: React.FC = ({ scroll }) => {
+interface HeaderProps {
+    scroll: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ scroll }) => {
     const {
         profile,
         setProfile,

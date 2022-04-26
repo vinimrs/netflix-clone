@@ -8,8 +8,12 @@ import MoreInfoModal from '../components/MoreInfoModal.js/index.js';
 import List from '../components/List';
 import Loading from '../components/Loading';
 import * as S from '../styles/GlobalComponents';
+import { withSession } from '../services/auth/session';
+import { json } from 'stream/consumers';
+import { useRouter } from 'next/router';
+import { authService } from '../services/auth/authService';
 
-const Browse: React.FC = () => {
+const Browse: React.FC = props => {
     const { list, heroFilm } = useFilms();
     const [headerActive, setHeaderActive] = useState(false);
     const [modalInfo, setModalInfo] = useState({
@@ -32,6 +36,7 @@ const Browse: React.FC = () => {
         }`;
     }, []);
 
+    console.log(props);
     useEffect(() => {
         const scrollListener = () => {
             if (window.scrollY > 10) {
@@ -49,7 +54,8 @@ const Browse: React.FC = () => {
 
     return (
         <>
-            {modalInfo.id && modalInfo.type && (
+            {JSON.stringify(props)}
+            {/* {modalInfo.id && modalInfo.type && (
                 <MoreInfoModal
                     minutesToHours={toHoursAndMinutes}
                     {...modalInfo}
@@ -88,9 +94,90 @@ const Browse: React.FC = () => {
                 </S.MainWrapper>
             )}
             {(!list || !heroFilm) && <Loading />}
-            {list && <Footer />}
+            {list && <Footer />} */}
         </>
     );
 };
 
+// Decorator Pattern
+export const getServerSideProps = withSession(ctx => {
+    return {
+        props: {
+            session: ctx.req.session,
+        },
+    };
+});
+
 export default Browse;
+
+// export default function HomeScreen() {
+//     const router = useRouter();
+//     const [values, setValues] = React.useState({
+//         usuario: 'viniromualdo082@gmail.com',
+//         senha: '12345678',
+//     });
+
+//     function handleChange(event) {
+//         const fieldValue = event.target.value;
+//         const fieldName = event.target.name;
+//         setValues(currentValues => {
+//             return {
+//                 ...currentValues,
+//                 [fieldName]: fieldValue,
+//             };
+//         });
+//     }
+
+//     return (
+//         <div>
+//             <h1>Login</h1>
+//             <form
+//                 onSubmit={event => {
+//                     // onSubmit -> Controller (pega os dados o usuário e passa para um serviço)
+//                     // authService -> Serviço
+//                     event.preventDefault();
+
+//                     authService
+//                         .login({
+//                             email: values.usuario,
+//                             password: values.senha,
+//                         })
+//                         .then(() => {
+//                             // router.push('/auth-page-static');
+//                             router.push('/select-profile');
+//                         })
+//                         .catch(err => {
+//                             console.log(err);
+//                             alert('Usuário ou senha estão incorretos.');
+//                         });
+//                 }}
+//             >
+//                 <input
+//                     placeholder="Usuário"
+//                     name="usuario"
+//                     value={values.usuario}
+//                     onChange={handleChange}
+//                 />
+//                 <input
+//                     placeholder="Senha"
+//                     name="senha"
+//                     type="password"
+//                     value={values.senha}
+//                     onChange={handleChange}
+//                 />
+//                 {/* <pre>
+//           {JSON.stringify(values, null, 2)}
+//         </pre> */}
+//                 <div>
+//                     <button>Entrar</button>
+//                 </div>
+//                 <p>
+//                     <a href="/auth-page-static">auth-page-static</a>
+//                 </p>
+//                 <p>
+//                     <a href="/auth-page-ssr">auth-page-ssr</a>
+//                 </p>
+//             </form>
+//         </div>
+//     );
+// }

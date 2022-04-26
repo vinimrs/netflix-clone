@@ -66,13 +66,11 @@ export const CloseModal = styled.div`
     z-index: 30000;
 `;
 
-export const ModalBanner = styled.div`
+export const ModalBanner = styled.div<{ src?: string }>`
     width: 100%;
-    heigth: 400px;
+    height: 400px;
     background-image: linear-gradient(90deg, #000e 37%, #00000000 85.33%),
-        url(${props => {
-            return props.$src ? props.$src : '';
-        }});
+        url(${props => (props.src ? props.src : '')});
     background-size: cover;
     background-position: center;
 `;

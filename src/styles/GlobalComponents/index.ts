@@ -1,6 +1,6 @@
-import { Button, TextField } from '@mui/material'
-import styled from 'styled-components'
-import { Alert } from '@mui/material'
+import { Button, TextField } from '@mui/material';
+import styled from 'styled-components';
+import { Alert } from '@mui/material';
 
 export const StyledAlert = styled(Alert)`
     position: fixed;
@@ -12,7 +12,7 @@ export const StyledAlert = styled(Alert)`
     @media (max-width: 768px) {
         font-size: 14px;
     }
-`
+`;
 
 export const MainWrapper = styled.main`
     overflow-x: hidden;
@@ -21,19 +21,17 @@ export const MainWrapper = styled.main`
     @media (max-width: 768px) {
         margin-top: -80px;
     }
-`
+`;
 
 // login
 
-export const Background = styled.div`
+export const Background = styled.div<{ src?: string }>`
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
 
     background-image: linear-gradient(90deg, #000a 100%, #00000000 100%),
-        url(${props => {
-            return props.$src ? props.$src : ''
-        }});
+        url(${props => (props.src ? props.src : '')});
     background-size: cover;
     background-position: center;
     color: var(--white);
@@ -44,7 +42,7 @@ export const Background = styled.div`
 
     @media (max-width: 768px) {
     }
-`
+`;
 
 export const LoginContainer = styled.div`
     background-color: #000000b1;
@@ -62,11 +60,11 @@ export const LoginContainer = styled.div`
         margin: 0;
         overflow-x: hidden;
     }
-`
+`;
 
 export const LoginForm = styled.form`
     padding: 12px 24px;
-`
+`;
 
 export const LoginTextfield = styled(TextField)`
     color: #eee;
@@ -74,7 +72,7 @@ export const LoginTextfield = styled(TextField)`
     border-radius: 5px;
     width: 100%;
     margin: 12px 0 16px 0;
-`
+`;
 
 export const LoginButton = styled(Button)`
     background-color: var(--red-netflix);
@@ -90,7 +88,7 @@ export const LoginButton = styled(Button)`
         background-color: rgb(102 0 0 / 97%);
         margin: 24px 0 12px 0;
     }
-`
+`;
 
 export const LoginText = styled.span`
     color: #8c8c80;
@@ -101,7 +99,7 @@ export const LoginText = styled.span`
     &:hover {
         color: var(--white);
     }
-`
+`;
 
 export const TogglePasswordVisibility = styled.span`
     position: absolute;
@@ -110,7 +108,7 @@ export const TogglePasswordVisibility = styled.span`
     transition: 0.5s;
     transform: translate(-97px, 30px);
     color: var(--white);
-`
+`;
 
 // Select-profile
 export const ProfileContainer = styled.div`
@@ -129,7 +127,7 @@ export const ProfileContainer = styled.div`
     div:hover {
         color: var(--white);
     }
-`
+`;
 
 export const ProfileWrapper = styled.div`
     height: 100vh;
@@ -162,7 +160,7 @@ export const ProfileWrapper = styled.div`
             font-size: 12px;
         }
     }
-`
+`;
 
 export const ProfileImage = styled.img`
     width: 200px;
@@ -177,4 +175,4 @@ export const ProfileImage = styled.img`
     @media (max-width: 768px) {
         width: 100px;
     }
-`
+`;

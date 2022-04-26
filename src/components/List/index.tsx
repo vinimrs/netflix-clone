@@ -1,11 +1,17 @@
 import * as S from './style';
 import React, { useRef, useState } from 'react';
-import { ReactComponent as ChevronLeft } from '../../assets/chevron.svg';
-import { ReactComponent as ChevronRight } from '../../assets/chevron-right.svg';
+import ChevronLeft from '../../assets/chevron.svg';
+import ChevronRight from '../../assets/chevron-right.svg';
 import { useSwipeable } from 'react-swipeable';
 import useWindowDimensions from '../../common/context/WindowDimensions';
+import { IMovieData, IMovieHomeList } from '../../services/auth/moviesService';
 
-const List: React.FC = ({ list, setModal }) => {
+interface List {
+    setModal?: (film: IMovieData) => void;
+    list?: IMovieHomeList;
+}
+
+const List: React.FC<List> = ({ list, setModal }) => {
     const [activeList, setActiveList] = useState(false);
     const [scrollx, setScrollx] = useState(0);
     const { width } = useWindowDimensions();
@@ -23,7 +29,7 @@ const List: React.FC = ({ list, setModal }) => {
 
     const handleRightArrow = () => {
         let x = scrollx - Math.round(width / (width < 769 ? 1.5 : 3));
-        const listWidth = list.items.results.length * 200;
+        const listWidth = list.items.length * 200;
         if (width - listWidth > x) {
             x = width - listWidth - 64;
         }
@@ -43,8 +49,8 @@ const List: React.FC = ({ list, setModal }) => {
                 onMouseEnter={() => {
                     setActiveList(true);
                 }}
-                $left
-                $active={activeList}
+                left
+                active={activeList}
                 onMouseLeave={() => {
                     setActiveList(false);
                 }}
@@ -56,7 +62,7 @@ const List: React.FC = ({ list, setModal }) => {
                 onMouseEnter={() => {
                     setActiveList(true);
                 }}
-                $active={activeList}
+                active={activeList}
                 onMouseLeave={() => {
                     setActiveList(false);
                 }}
@@ -76,9 +82,9 @@ const List: React.FC = ({ list, setModal }) => {
                 }}
                 style={{ marginLeft: scrollx }}
             >
-                <S.FilmsList $length={list.items.results.length}>
-                    {list.items.results.length > 0 &&
-                        list.items.results.map((film, key) => {
+                <S.FilmsList length={list.items.length}>
+                    {list.items.length > 0 &&
+                        list.items.map((film, key) => {
                             return (
                                 <S.FilmImage
                                     src={`https://image.tmdb.org/t/p/w300${film.poster_path}`}

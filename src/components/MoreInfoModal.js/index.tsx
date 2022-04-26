@@ -2,8 +2,8 @@ import * as S from './style';
 import { useEffect, useState } from 'react';
 import { gsap, Power3 } from 'gsap';
 import React from 'react';
-import YouTube from 'react-youtube';
-import requires from '../../api/TheMb';
+import YouTube, { Options } from 'react-youtube';
+import { moviesService } from '../../services/auth/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import useWindowDimensions from '../../common/context/WindowDimensions';
 import Loading from '../Loading';
@@ -14,7 +14,7 @@ const MoreInfoModal = ({ id, type, setModalInfo, minutesToHours }) => {
     const [isReady, setIsReady] = useState(false);
     const { width } = useWindowDimensions();
 
-    const videoOpts = {
+    const videoOpts: Options = {
         height: '400px',
         width: '100%',
         playerVars: {
@@ -25,29 +25,29 @@ const MoreInfoModal = ({ id, type, setModalInfo, minutesToHours }) => {
             cc_load_policy: 1,
             rel: 0,
             origin: 'https://netflix-clone-vinir07.vercel.app',
-            muted: width < 769 ? '1' : '0',
+            mute: width < 769 ? 1 : 0,
             showinfo: 0,
             playlist: movieVideo?.key,
         },
     };
 
     useEffect(() => {
-        const getMovieModal = async (id, type) => {
-            const movie = await requires.getMovieInfo(id, type);
-            const video = await requires.getMovieVideo(id);
+        const getMovieModal = async (id: number) => {
+            const movie = await moviesService.getMovieInfo(id);
+            const video = await moviesService.getMovieVideos(id);
             if (
-                video.success === false ||
-                movie.success === false ||
-                !video.results[0]
+                // video.success === false ||
+                // movie.success === false ||
+                !video[0]
             ) {
                 setModalInfo({ success: false });
                 return;
             }
             setMovie(movie);
-            setMovieVideo(video.results[0]);
+            setMovieVideo(video[0]);
         };
 
-        getMovieModal(id, type);
+        getMovieModal(id);
         gsap.to('._modalContainer', {
             duration: 0.5,
             ease: Power3.easeInOut,
@@ -76,11 +76,11 @@ const MoreInfoModal = ({ id, type, setModalInfo, minutesToHours }) => {
                 </S.CloseModal>
                 {movie && movieVideo && (
                     <>
-                        <S.ModalBanner $src={movie.backdrop_path}>
+                        <S.ModalBanner src={movie.backdrop_path}>
                             <YouTube
                                 videoId={movieVideo.key}
                                 opts={videoOpts}
-                                allow="autoplay;"
+                                // allow="autoplay;"
                                 onReady={e => {
                                     e.target.playVideo();
                                     setIsReady(true);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Document, {
     DocumentContext,
     Html,
@@ -6,20 +6,20 @@ import Document, {
     NextScript,
     Head,
     DocumentProps,
-} from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+} from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document<DocumentProps> {
     static async getInitialProps(ctx: DocumentContext) {
-        const sheet = new ServerStyleSheet()
-        const originalRenderPage = ctx.renderPage
+        const sheet = new ServerStyleSheet();
+        const originalRenderPage = ctx.renderPage;
         try {
             ctx.renderPage = () =>
                 originalRenderPage({
                     enhanceApp: App => props =>
                         sheet.collectStyles(<App {...props} />),
-                })
-            const initialProps = await Document.getInitialProps(ctx)
+                });
+            const initialProps = await Document.getInitialProps(ctx);
             return {
                 ...initialProps,
                 styles: (
@@ -28,9 +28,9 @@ export default class MyDocument extends Document<DocumentProps> {
                         {sheet.getStyleElement()}
                     </>
                 ),
-            }
+            };
         } finally {
-            sheet.seal()
+            sheet.seal();
         }
     }
 
@@ -40,10 +40,10 @@ export default class MyDocument extends Document<DocumentProps> {
                 <Head>
                     <meta charSet="UTF-8" />
                     <link rel="icon" href="%PUBLIC_URL%/netflix-logo-1.svg" />
-                    <meta
+                    {/* <meta
                         name="viewport"
                         content="width=device-width, initial-scale=1"
-                    />
+                    /> */}
                     <meta name="theme-color" content="#000000" />
                     <meta name="description" content="Netflix page clone" />
                     <link
@@ -63,13 +63,12 @@ export default class MyDocument extends Document<DocumentProps> {
                         rel="apple-touch-icon"
                         href="%PUBLIC_URL%/logo192.png"
                     />
-                    <title>Netflix</title>
                 </Head>
                 <body>
                     <Main />
                     <NextScript />
                 </body>
             </Html>
-        )
+        );
     }
 }

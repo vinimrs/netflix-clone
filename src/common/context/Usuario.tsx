@@ -1,11 +1,11 @@
 import { StaticImageData } from 'next/image';
 import { createContext, useContext, useState } from 'react';
 
-import avatar1 from '/avatar-1.png';
-import avatar2 from '/avatar-2.png';
-import avatar3 from '/avatar-3.png';
-import avatar4 from '/avatar-4.png';
-import avatar5 from '/avatar-5.png';
+// import avatar1 from '/avatar-1.png';
+// import avatar2 from '/avatar-2.png';
+// import avatar3 from '/avatar-3.png';
+// import avatar4 from '/avatar-4.png';
+// import avatar5 from '/avatar-5.png';
 
 interface IProfile {
     slug: string;
@@ -36,56 +36,56 @@ interface UsuarioProviderProps {
 export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
     children,
 }) => {
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('12345678');
+    const [email, setEmail] = useState('viniromualdo082@gmail.com');
     const [checked, setChecked] = useState(true);
-    const [profile, setProfile] = useState<IProfile>(null);
+    // const [profile, setProfile] = useState<IProfile>(null);
 
-    const profiles = [
-        {
-            slug: 'quem-paga',
-            name: 'Quem paga',
-            image: avatar1,
-            preference: '12',
-        },
-        {
-            slug: 'parasita1',
-            name: 'Parasita 1',
-            image: avatar2,
-            preference: '10752',
-        },
-        {
-            slug: 'parasita2',
-            name: 'Parasita 2',
-            image: avatar3,
-            preference: '35',
-        },
-        {
-            slug: 'parasita3',
-            name: 'Parasita 3',
-            image: avatar4,
-            preference: '99',
-        },
-        {
-            slug: 'quem-nunca-usa',
-            name: 'Quem nunca usa',
-            image: avatar5,
-            preference: '10752',
-        },
-    ];
+    // const profiles = [
+    //     {
+    //         slug: 'quem-paga',
+    //         name: 'Quem paga',
+    //         image: avatar1,
+    //         preference: '12',
+    //     },
+    //     {
+    //         slug: 'parasita1',
+    //         name: 'Parasita 1',
+    //         image: avatar2,
+    //         preference: '10752',
+    //     },
+    //     {
+    //         slug: 'parasita2',
+    //         name: 'Parasita 2',
+    //         image: avatar3,
+    //         preference: '35',
+    //     },
+    //     {
+    //         slug: 'parasita3',
+    //         name: 'Parasita 3',
+    //         image: avatar4,
+    //         preference: '99',
+    //     },
+    //     {
+    //         slug: 'quem-nunca-usa',
+    //         name: 'Quem nunca usa',
+    //         image: avatar5,
+    //         preference: '10752',
+    //     },
+    // ];
 
     return (
         <UsuarioContext.Provider
             value={{
-                profile,
-                setProfile,
+                // profile,
+                // setProfile,
                 password,
                 setPassword,
                 checked,
                 setChecked,
                 email,
                 setEmail,
-                profiles,
+                // profiles,
             }}
         >
             {children}

@@ -11,8 +11,8 @@ export const ListDiv = styled.div`
     transition: all ease 0.5s;
 `;
 
-export const FilmsList = styled.div`
-    min-width: ${p => p.$length * 200}px;
+export const FilmsList = styled.div<{ length?: number }>`
+    min-width: ${p => p.length * 200}px;
     display: flex;
     align-items: center;
 `;
@@ -38,7 +38,7 @@ export const ListTitle = styled.h2`
     margin-left: 32px;
 `;
 
-export const NavigateDiv = styled.div`
+export const NavigateDiv = styled.div<{ active?: boolean; left?: boolean }>`
     position: absolute;
     z-index: 1000;
     width: 40px;
@@ -47,10 +47,10 @@ export const NavigateDiv = styled.div`
     margin-top: 55px;
     justify-content: center;
     cursor: pointer;
-    transition: all ease .5s;
-    
-    opacity: ${props => (props.$active ? '1;' : '0;')}
+    transition: all ease 0.5s;
+
+    opacity: ${props => (props.active ? '1' : '0')};
     align-items: center;
-    ${props => (props.$left ? 'left: 0;' : 'right: 0;')}
-    background-color: rgba(0, 0,0, 0.6);
+    ${props => (props.left ? 'left: 0' : 'right: 0')};
+    background-color: rgba(0, 0, 0, 0.6);
 `;
