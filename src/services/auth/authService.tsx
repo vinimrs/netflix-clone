@@ -13,23 +13,29 @@ import nookies from 'nookies';
  * HTTP only Cookie - RECOMENDADO, mais seguro de todos
  */
 
-interface IUser {
+export interface IUser {
     username?: string;
     email?: string;
 }
 
-interface IProfile {
+export interface IImageData {
+    _id: string;
+    data: ArrayBuffer;
+    contentType: string;
+}
+
+export interface IProfile {
     name?: string;
-    image_id?: string;
+    image?: IImageData;
+    preference?: string;
+    slug?: string;
 }
 
 export interface ISession extends NextResponse {
-    data: {
-        user: IUser;
-        id: string;
-        verifiedEmail: boolean;
-        profiles: IProfile[];
-    };
+    user: IUser;
+    id: string;
+    verifiedEmail: boolean;
+    profiles: IProfile[];
 }
 
 export const authService = {
@@ -103,16 +109,6 @@ export const authService = {
             if (!response.ok) throw new Error('Falha ao fazer Logout');
 
             return response.body.data;
-        });
-    },
-    async registerUser(email: string, name: string, password: string) {
-        return await HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user`, {
-            method: 'POST',
-            body: {
-                email,
-                name,
-                password,
-            },
         });
     },
 };

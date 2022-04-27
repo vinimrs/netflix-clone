@@ -15,7 +15,7 @@ import React, {
 interface IProfile {
     slug: string;
     name: string;
-    image: StaticImageData;
+    image_id: string;
     preference: string;
 }
 
@@ -50,7 +50,7 @@ export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [checked, setChecked] = useState(true);
-    // const [profile, setProfile] = useState<IProfile>(null);
+    const [profile, setProfile] = useState<IProfile>(null);
 
     // const profiles = [
     //     {
@@ -88,8 +88,8 @@ export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
     return (
         <UsuarioContext.Provider
             value={{
-                // profile,
-                // setProfile,
+                profile,
+                setProfile,
                 name,
                 setName,
                 password,
@@ -110,7 +110,6 @@ export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
 
 export const useUsuario = () => {
     const {
-        profiles,
         setProfile,
         profile,
         password,
@@ -123,37 +122,49 @@ export const useUsuario = () => {
         setName,
     } = useContext(UsuarioContext);
 
-    const setProfileBySlug = slug => {
-        const profile = profiles.find(profile => profile.slug === slug);
-        if (profile) {
-            setProfile(profile);
+    const storeProfile = prof => {
+        if (prof) {
+            setProfile(prof);
         } else {
-            const profileResults = JSON.parse(localStorage.getItem('usuario'));
+            const profileResults = JSON.parse(
+                localStorage.getItem('usuario') || ''
+            );
             setProfile(profileResults);
         }
-        localStorage.setItem('usuario', JSON.stringify(profile));
+        localStorage.setItem('usuario', JSON.stringify(prof));
     };
 
-    const filterToAnothersProfiles = profile => {
-        const result = profiles.filter(prof => prof.slug !== profile.slug);
-        return result;
-    };
+    // const filterToAnothersProfiles = profile => {
+    //     const result = profiles.filter(prof => prof.slug !== profile.slug);
+    //     return result;
+    // };
 
     const getStorageProfile = () => {
         return JSON.parse(localStorage.getItem('usuario'));
     };
 
-    const changeProfile = slug => {
-        const profile = profiles.find(prof => prof.slug === slug);
-        localStorage.setItem('usuario', JSON.stringify(profile));
+    const changeProfile = prof => {
+        // const profile = profiles.find(prof => prof.slug === slug);
+        localStorage.setItem('usuario', JSON.stringify(prof));
         setProfile(profile);
     };
 
+    const toSlug = (str: string) => {
+        const slugify = str =>
+            str
+                .toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/[\s_-]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        return slugify;
+    };
+
     return {
-        setProfileBySlug,
-        filterToAnothersProfiles,
+        // setProfileBySlug,
+        // filterToAnothersProfiles,
         getStorageProfile,
-        profiles,
+        // profiles,
         changeProfile,
         setProfile,
         profile,
@@ -165,5 +176,6 @@ export const useUsuario = () => {
         setEmail,
         name,
         setName,
+        toSlug,
     };
 };

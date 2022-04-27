@@ -7,6 +7,7 @@ import bgImage from '../../public/netflix-library.jpg';
 import * as S from '../styles/GlobalComponents';
 import { authService } from '../services/auth/authService';
 import Link from 'next/link';
+import { userService } from '../services/auth/userService';
 
 const Register: React.FC = () => {
     const [validity, setValidity] = useState({
@@ -42,7 +43,7 @@ const Register: React.FC = () => {
                     style={{ textAlign: 'center' }}
                     onSubmit={e => {
                         e.preventDefault();
-                        authService
+                        userService
                             .registerUser(email, name, password)
                             .then(res => {
                                 if (res.status === 201) {

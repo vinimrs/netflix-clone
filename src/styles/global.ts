@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components'
-import { normalize } from 'styled-normalize'
+import { createGlobalStyle } from 'styled-components';
+import { normalize } from 'styled-normalize';
 
 const GlobalStyle = createGlobalStyle` 
     ${normalize}
@@ -42,6 +42,10 @@ const GlobalStyle = createGlobalStyle`
     li {
         list-style: none;
     }
-`
 
-export default GlobalStyle
+    h1, h2, h3 {
+        color: var(--white);
+    }
+`;
+
+export default GlobalStyle;

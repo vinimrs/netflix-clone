@@ -80,7 +80,7 @@ export async function HttpClient(fethUrl: string, fetchOptions) {
                 });
                 return retryResponse;
             } catch (error) {
-                console.log(error);
+                console.log(error.message);
                 return res;
             }
         });
