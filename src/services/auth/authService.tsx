@@ -43,27 +43,26 @@ export const authService = {
         })
             .then(res => {
                 console.log(res);
-
-                if (!res.ok) throw new Error('Usuário ou senha inválidos!');
-
                 const body = res.body;
                 console.log(body);
 
                 tokenService.save(res.headers.get('Authorization'));
                 return body;
             })
-            .then(async ({ refresh_token }) => {
+            .then(async body => {
+                if (!body.refresh_token) return body;
                 const response = await HttpClient(
                     `${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh`,
                     {
                         method: 'POST',
                         body: {
-                            refresh_token: refresh_token,
+                            refresh_token: body.refresh_token,
                         },
                     }
                 );
 
                 console.log(response);
+                return body;
             })
             .catch(err => {
                 console.log(err);
@@ -71,7 +70,7 @@ export const authService = {
     },
     async getSession(ctx = null): Promise<ISession> {
         const token = tokenService.get(ctx);
-
+        console.log('baerer token session/authService.tsx', token);
         return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`, {
             method: 'GET',
             headers: {
@@ -104,6 +103,16 @@ export const authService = {
             if (!response.ok) throw new Error('Falha ao fazer Logout');
 
             return response.body.data;
+        });
+    },
+    async registerUser(email: string, name: string, password: string) {
+        return await HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user`, {
+            method: 'POST',
+            body: {
+                email,
+                name,
+                password,
+            },
         });
     },
 };

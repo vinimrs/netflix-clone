@@ -18,7 +18,7 @@ const FirstHeader: React.FC = () => {
         <Header>
             <div style={{ cursor: 'pointer' }}>
                 <img
-                    src={Logo}
+                    src={Logo.src}
                     onClick={() => {
                         router.push('/logout');
                     }}

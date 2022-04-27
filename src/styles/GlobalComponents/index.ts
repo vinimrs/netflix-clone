@@ -44,9 +44,9 @@ export const Background = styled.div<{ src?: string }>`
     }
 `;
 
-export const LoginContainer = styled.div`
+export const LoginContainer = styled.div<{ larger?: boolean }>`
     background-color: #000000b1;
-    width: 450px;
+    width: ${props => (props.larger ? '650px' : '450px')};
     position: absolute;
     top: 50%;
     left: 50%;
@@ -66,18 +66,18 @@ export const LoginForm = styled.form`
     padding: 12px 24px;
 `;
 
-export const LoginTextfield = styled(TextField)`
+export const LoginTextfield = styled(TextField)<{ width?: string }>`
     color: #eee;
     background-color: #333;
     border-radius: 5px;
-    width: 100%;
-    margin: 12px 0 16px 0;
+    width: ${props => props.width};
+    margin: 18px 0 16px 0;
 `;
 
 export const LoginButton = styled(Button)`
     background-color: var(--red-netflix);
     padding: 12px 24px;
-    margin: 24px 0 12px 0;
+    margin: 32px 0 12px 0;
 
     &:hover {
         background-color: #bd0000;
@@ -86,7 +86,6 @@ export const LoginButton = styled(Button)`
     &:disabled {
         color: rgb(253 239 239 / 65%);
         background-color: rgb(102 0 0 / 97%);
-        margin: 24px 0 12px 0;
     }
 `;
 
@@ -103,7 +102,7 @@ export const LoginText = styled.span`
 
 export const TogglePasswordVisibility = styled.span`
     position: absolute;
-    left: 10;
+    margin-top: 5px;
     cursor: pointer;
     transition: 0.5s;
     transform: translate(-97px, 30px);

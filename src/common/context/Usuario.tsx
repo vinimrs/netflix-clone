@@ -1,5 +1,10 @@
 import { StaticImageData } from 'next/image';
-import { createContext, useContext, useState } from 'react';
+import React, {
+    createContext,
+    SetStateAction,
+    useContext,
+    useState,
+} from 'react';
 
 // import avatar1 from '/avatar-1.png';
 // import avatar2 from '/avatar-2.png';
@@ -24,6 +29,10 @@ interface IUsuarioContext {
     profile?: IProfile;
     setProfile?: (value: IProfile) => void;
     profiles?: IProfile[];
+    name?: string;
+    setName?: (value: string) => void;
+    confirmPassword?: string;
+    setConfirmPassword?: (value: string) => void;
 }
 
 export const UsuarioContext = createContext<IUsuarioContext | null>(null);
@@ -36,8 +45,10 @@ interface UsuarioProviderProps {
 export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
     children,
 }) => {
-    const [password, setPassword] = useState('12345678');
-    const [email, setEmail] = useState('viniromualdo082@gmail.com');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [checked, setChecked] = useState(true);
     // const [profile, setProfile] = useState<IProfile>(null);
 
@@ -79,6 +90,8 @@ export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
             value={{
                 // profile,
                 // setProfile,
+                name,
+                setName,
                 password,
                 setPassword,
                 checked,
@@ -86,6 +99,8 @@ export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
                 email,
                 setEmail,
                 // profiles,
+                confirmPassword,
+                setConfirmPassword,
             }}
         >
             {children}
@@ -104,6 +119,8 @@ export const useUsuario = () => {
         setChecked,
         email,
         setEmail,
+        name,
+        setName,
     } = useContext(UsuarioContext);
 
     const setProfileBySlug = slug => {
@@ -146,5 +163,7 @@ export const useUsuario = () => {
         setChecked,
         email,
         setEmail,
+        name,
+        setName,
     };
 };

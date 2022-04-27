@@ -47,7 +47,6 @@ const controllers = {
                 },
             }
         );
-        console.log(refreshResponse);
         if (refreshResponse.ok) {
             nookies.set(
                 ctx,

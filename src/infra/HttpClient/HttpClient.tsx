@@ -52,7 +52,7 @@ export async function HttpClient(fethUrl: string, fetchOptions) {
 
                 const newAccessToken = refreshResponse.body.data.access_token;
                 const newRefreshToken = refreshResponse.body.data.refresh_token;
-                console.log(newAccessToken, newRefreshToken);
+                console.log('newAccessToken', newAccessToken, newRefreshToken);
                 // guardar os tokens
                 if (isServer) {
                     // com ssr

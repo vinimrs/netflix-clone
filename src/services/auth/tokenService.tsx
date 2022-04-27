@@ -14,6 +14,8 @@ export const tokenService = {
         // sessionStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
 
         // se ctx == null será guardado no cliente
+        console.log('nookies set ', accessToken);
+        console.log(ctx !== null);
         nookies.set(ctx, ACCESS_TOKEN_KEY, accessToken, {
             maxAge: ONE_YEAR,
             path: '/',

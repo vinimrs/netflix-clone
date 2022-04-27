@@ -1,0 +1,250 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import { UsuarioContext } from '../common/context/Usuario';
+import FirstHeader from '../components/FirstHeader';
+import bgImage from '../../public/netflix-library.jpg';
+import * as S from '../styles/GlobalComponents';
+import { authService } from '../services/auth/authService';
+import Link from 'next/link';
+
+const Register: React.FC = () => {
+    const [validity, setValidity] = useState({
+        email: true,
+        password: true,
+        confirmPassword: true,
+        name: true,
+    });
+    const {
+        email,
+        password,
+        setEmail,
+        setPassword,
+        name,
+        setName,
+        setConfirmPassword,
+        confirmPassword,
+    } = useContext(UsuarioContext);
+    const router = useRouter();
+
+    const simpleCheck = (type: string, size: number, value: string) => {
+        if (value.length > 0)
+            setValidity(lastVal => {
+                return { ...lastVal, [type]: !(value.length < size) };
+            });
+    };
+
+    return (
+        <S.Background src={bgImage.src}>
+            <FirstHeader />
+            <S.LoginContainer larger>
+                <S.LoginForm
+                    style={{ textAlign: 'center' }}
+                    onSubmit={e => {
+                        e.preventDefault();
+                        authService
+                            .registerUser(email, name, password)
+                            .then(res => {
+                                if (res.status === 201) {
+                                    setConfirmPassword('');
+                                    setEmail('');
+                                    setName('');
+                                    setPassword('');
+
+                                    router.push('/email-confirmation');
+                                }
+                            });
+                    }}
+                >
+                    <h1 style={{ textAlign: 'start', margin: '0 0 20px 0' }}>
+                        {' '}
+                        Cadastre-se
+                    </h1>
+
+                    <div
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            justifyContent: 'space-around',
+                            // margin: '30px 0 0 0',
+                        }}
+                    >
+                        <S.LoginTextfield
+                            label="Nome"
+                            width="95%"
+                            variant="filled"
+                            color="secondary"
+                            value={name}
+                            margin="normal"
+                            onChange={e => {
+                                simpleCheck('name', 2, e.target.value);
+                                setName(e.target.value);
+                            }}
+                            error={!validity.name}
+                            onBlur={e => {
+                                // if (e.target.value.length > 0)
+                                simpleCheck('name', 2, e.target.value);
+                            }}
+                            helperText={
+                                validity.name ? '' : 'Informe um nome válido'
+                            }
+                            FormHelperTextProps={{
+                                style: {
+                                    color: ' var(--red-netflix)',
+                                    position: 'absolute',
+                                    transform: 'translate(0px, 57px)',
+                                },
+                            }}
+                            inputProps={{ sx: { color: 'var(--white)' } }}
+                            InputLabelProps={{
+                                style: { color: '#8c8c80' },
+                            }}
+                            type="name"
+                        />
+                        <S.LoginTextfield
+                            label="Email"
+                            width="95%"
+                            variant="filled"
+                            color="secondary"
+                            value={email}
+                            margin="normal"
+                            onChange={e => {
+                                simpleCheck('email', 10, e.target.value);
+                                setEmail(e.target.value);
+                            }}
+                            error={!validity.email}
+                            onBlur={e => {
+                                // if (e.target.value.length > 0)
+                                simpleCheck('email', 10, e.target.value);
+                            }}
+                            helperText={
+                                validity.email ? '' : 'Informe um Email válido'
+                            }
+                            FormHelperTextProps={{
+                                style: {
+                                    color: ' var(--red-netflix)',
+                                    position: 'absolute',
+                                    transform: 'translate(0px, 57px)',
+                                },
+                            }}
+                            inputProps={{ sx: { color: 'var(--white)' } }}
+                            InputLabelProps={{ style: { color: '#8c8c80' } }}
+                            type="email"
+                        />
+                        <S.LoginTextfield
+                            label="Senha"
+                            width="45%"
+                            color="secondary"
+                            variant="filled"
+                            value={password}
+                            margin="normal"
+                            error={!validity.password}
+                            onBlur={e => {
+                                // if (e.target.value.length > 0)
+                                simpleCheck('password', 4, e.target.value);
+                            }}
+                            helperText={
+                                validity.password
+                                    ? ''
+                                    : 'Informe uma senha maior que 4 caracteres.'
+                            }
+                            onChange={e => {
+                                simpleCheck('password', 4, e.target.value);
+                                setPassword(e.target.value);
+                            }}
+                            FormHelperTextProps={{
+                                style: {
+                                    color: ' var(--red-netflix)',
+                                    position: 'absolute',
+                                    transform: 'translate(0px, 57px)',
+                                },
+                            }}
+                            inputProps={{ sx: { color: 'var(--white)' } }}
+                            InputLabelProps={{ style: { color: '#8c8c80' } }}
+                            type="password"
+                        />
+                        <S.LoginTextfield
+                            label="Confirme sua senha"
+                            width="45%"
+                            color="secondary"
+                            variant="filled"
+                            value={confirmPassword}
+                            margin="normal"
+                            error={!validity.confirmPassword}
+                            onBlur={e => {
+                                if (e.target.value.length > 0)
+                                    setValidity(lastVal => {
+                                        return {
+                                            ...lastVal,
+                                            ['confirmPassword']:
+                                                e.target.value === password,
+                                        };
+                                    });
+                            }}
+                            helperText={
+                                validity.confirmPassword
+                                    ? ''
+                                    : 'A senha não condiz com a senha escolhida.'
+                            }
+                            onChange={e => {
+                                setValidity(lastVal => {
+                                    return {
+                                        ...lastVal,
+                                        ['confirmPassword']:
+                                            e.target.value === password,
+                                    };
+                                });
+                                setConfirmPassword(e.target.value);
+                            }}
+                            FormHelperTextProps={{
+                                style: {
+                                    color: ' var(--red-netflix)',
+                                    position: 'absolute',
+                                    transform: 'translate(0px, 57px)',
+                                },
+                            }}
+                            inputProps={{ sx: { color: 'var(--white)' } }}
+                            InputLabelProps={{
+                                style: { color: '#8c8c80' },
+                            }}
+                            type="password"
+                        />
+                    </div>
+                    <S.LoginButton
+                        disabled={
+                            !validity.email ||
+                            !validity.password ||
+                            !validity.name ||
+                            !validity.confirmPassword ||
+                            password.length < 1 ||
+                            email.length < 1 ||
+                            name.length < 1
+                        }
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        data-testid="Entrar"
+                    >
+                        Cadastrar
+                    </S.LoginButton>
+
+                    <Link href="/login">
+                        <S.LoginText
+                            onClick={() => {
+                                // setPassword('');
+                                // setEmail('');
+                                // setName('');
+                            }}
+                        >
+                            Voltar
+                        </S.LoginText>
+                    </Link>
+                </S.LoginForm>
+            </S.LoginContainer>
+        </S.Background>
+    );
+};
+
+export default Register;

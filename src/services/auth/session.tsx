@@ -19,7 +19,7 @@ export function withSession(funcao: Function) {
             return {
                 redirect: {
                     permanent: false,
-                    destination: '/login/?error=401',
+                    destination: '/login/',
                 },
             };
             // return {
