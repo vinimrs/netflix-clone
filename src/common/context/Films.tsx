@@ -9,14 +9,15 @@ import React, {
 import {
     IMovieData,
     IMovieDataInfo,
+    IMovieHomeList,
     moviesService,
 } from '../../services/auth/moviesService';
 import { IMovieVideo } from '../../services/auth/moviesService';
 import { useUsuario } from './Usuario';
 
 interface IFilmsContext {
-    list?: IMovieData[] | null;
-    setList?: (value: IMovieData[]) => void; // React.Dispatch<React.SetStateAction<string>>
+    list?: IMovieHomeList[] | null;
+    setList?: (value: IMovieHomeList[]) => void; // React.Dispatch<React.SetStateAction<string>>
     heroFilm?: IMovieDataInfo;
     setHeroFilm?: (value: IMovieDataInfo) => void; // React.Dispatch<React.SetStateAction<string>>
     filmVideo?: IMovieVideo;
@@ -51,10 +52,12 @@ export const useFilms = () => {
     const { list, heroFilm, filmVideo, setHeroFilm, setFilmVideo, setList } =
         useContext(FilmsContext);
     const { profile } = useUsuario();
+    console.log(profile);
 
     const loadHeroFilmWithId = useCallback(
         async (id = 10725) => {
             const resp = await moviesService.getMovieListByGenre(id);
+            console.log(resp);
             let randomChosen = Math.floor(Math.random() * (resp.length - 1));
             let chosen = resp[randomChosen];
             let chosenInfo = await moviesService.getMovieInfo(chosen.id);
@@ -74,7 +77,7 @@ export const useFilms = () => {
     useEffect(() => {
         const loadAll = async () => {
             loadHomeLists();
-            loadHeroFilmWithId(profile.preference);
+            loadHeroFilmWithId(profile?.preference);
         };
         loadAll();
     }, [loadHeroFilmWithId, loadHomeLists, profile]);

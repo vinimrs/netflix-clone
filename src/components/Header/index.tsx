@@ -3,26 +3,29 @@ import React, { useEffect, useState } from 'react';
 import { gsap, Power3 } from 'gsap';
 import { useUsuario } from '../../common/context/Usuario';
 import { useRouter } from 'next/router';
-import logo from '../../assets/netflix-logo.svg';
+import logo from '../../../public/netflix-logo.svg';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import { ISession } from '../../services/auth/authService';
 
 interface HeaderProps {
     scroll: boolean;
+    session: ISession;
 }
 
-const Header: React.FC<HeaderProps> = ({ scroll }) => {
+const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
     const {
         profile,
         setProfile,
         changeProfile,
         getStorageProfile,
         filterToAnothersProfiles,
+        convertImage,
     } = useUsuario();
     const router = useRouter();
     const [dropdown, setDropdown] = useState(false);
-    const list = filterToAnothersProfiles(profile);
+    const list = filterToAnothersProfiles(session.profiles, profile);
 
     const handleOpenDropdown = () => {
         setDropdown(true);
@@ -43,30 +46,36 @@ const Header: React.FC<HeaderProps> = ({ scroll }) => {
     };
 
     useEffect(() => {
-        if (!profile.slug) setProfile(getStorageProfile());
+        if (!profile?.slug || !profile?.image.data)
+            setProfile(getStorageProfile());
+        console.log(profile);
     });
     return (
         <S.StyledHeader $active={scroll}>
             <S.LogoNetflix
                 onClick={() => router.back()}
-                src={logo}
+                src={logo.src}
                 alt="Logo da Netflix"
                 style={{ cursor: 'pointer' }}
             />
-            <S.PerfilNetflix
-                onClick={() =>
-                    dropdown ? handleCloseDropdown() : handleOpenDropdown()
-                }
-                src={profile.image.src}
-                onMouseEnter={() =>
-                    dropdown ? handleCloseDropdown() : handleOpenDropdown()
-                }
-                alt="Perfil do usuário"
-            />
+            {profile?.image.data && (
+                <S.PerfilNetflix
+                    onClick={() =>
+                        dropdown ? handleCloseDropdown() : handleOpenDropdown()
+                    }
+                    src={`data:image/image/png;base64,${convertImage(
+                        profile.image.data
+                    )}`}
+                    onMouseEnter={() =>
+                        dropdown ? handleCloseDropdown() : handleOpenDropdown()
+                    }
+                    alt="Perfil do usuário"
+                />
+            )}
 
             <S.ContainerMenu className="_containerMenu">
                 <S.Menu onMouseLeave={handleCloseDropdown}>
-                    {list.map(item => {
+                    {list?.map(item => {
                         return (
                             <S.MenuItem
                                 onClick={() => {
@@ -76,7 +85,9 @@ const Header: React.FC<HeaderProps> = ({ scroll }) => {
                                 key={item.slug}
                             >
                                 <S.MenuImage
-                                    src={item.image.src}
+                                    src={`data:image/image/png;base64,${convertImage(
+                                        item.image.data
+                                    )}`}
                                     alt="Imagem de perfil"
                                 />
                                 <S.MenuText>{item.name}</S.MenuText>

@@ -1,5 +1,5 @@
 import React from 'react';
-import loading from '../assets/loading1.gif';
+import loading from '../../public/loading1.gif';
 
 const Loading: React.FC = () => {
     return (

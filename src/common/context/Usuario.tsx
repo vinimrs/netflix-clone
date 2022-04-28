@@ -5,19 +5,13 @@ import React, {
     useContext,
     useState,
 } from 'react';
+import { IProfile } from '../../services/auth/authService';
 
 // import avatar1 from '/avatar-1.png';
 // import avatar2 from '/avatar-2.png';
 // import avatar3 from '/avatar-3.png';
 // import avatar4 from '/avatar-4.png';
 // import avatar5 from '/avatar-5.png';
-
-interface IProfile {
-    slug: string;
-    name: string;
-    image_id: string;
-    preference: string;
-}
 
 interface IUsuarioContext {
     password?: string;
@@ -33,6 +27,13 @@ interface IUsuarioContext {
     setName?: (value: string) => void;
     confirmPassword?: string;
     setConfirmPassword?: (value: string) => void;
+    storeProfile?: (prof: IProfile) => void;
+    filterToAnothersProfiles?: (
+        profiles: IProfile[],
+        prof: IProfile
+    ) => IProfile[];
+    convertImage?: (bin: ArrayBuffer) => string;
+    toSlug?: (str: string) => string;
 }
 
 export const UsuarioContext = createContext<IUsuarioContext | null>(null);
@@ -52,39 +53,6 @@ export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
     const [checked, setChecked] = useState(true);
     const [profile, setProfile] = useState<IProfile>(null);
 
-    // const profiles = [
-    //     {
-    //         slug: 'quem-paga',
-    //         name: 'Quem paga',
-    //         image: avatar1,
-    //         preference: '12',
-    //     },
-    //     {
-    //         slug: 'parasita1',
-    //         name: 'Parasita 1',
-    //         image: avatar2,
-    //         preference: '10752',
-    //     },
-    //     {
-    //         slug: 'parasita2',
-    //         name: 'Parasita 2',
-    //         image: avatar3,
-    //         preference: '35',
-    //     },
-    //     {
-    //         slug: 'parasita3',
-    //         name: 'Parasita 3',
-    //         image: avatar4,
-    //         preference: '99',
-    //     },
-    //     {
-    //         slug: 'quem-nunca-usa',
-    //         name: 'Quem nunca usa',
-    //         image: avatar5,
-    //         preference: '10752',
-    //     },
-    // ];
-
     return (
         <UsuarioContext.Provider
             value={{
@@ -98,7 +66,6 @@ export const UsuarioProvider: React.FC<UsuarioProviderProps> = ({
                 setChecked,
                 email,
                 setEmail,
-                // profiles,
                 confirmPassword,
                 setConfirmPassword,
             }}
@@ -122,9 +89,11 @@ export const useUsuario = () => {
         setName,
     } = useContext(UsuarioContext);
 
-    const storeProfile = prof => {
+    const storeProfile = (prof: IProfile) => {
+        console.log(prof);
         if (prof) {
             setProfile(prof);
+            console.log(profile);
         } else {
             const profileResults = JSON.parse(
                 localStorage.getItem('usuario') || ''
@@ -134,10 +103,12 @@ export const useUsuario = () => {
         localStorage.setItem('usuario', JSON.stringify(prof));
     };
 
-    // const filterToAnothersProfiles = profile => {
-    //     const result = profiles.filter(prof => prof.slug !== profile.slug);
-    //     return result;
-    // };
+    const filterToAnothersProfiles = (profiles: IProfile[], prof: IProfile) => {
+        if (prof) {
+            const result = profiles.filter(p => p.slug !== prof.slug);
+            return result;
+        }
+    };
 
     const getStorageProfile = () => {
         return JSON.parse(localStorage.getItem('usuario'));
@@ -149,23 +120,26 @@ export const useUsuario = () => {
         setProfile(profile);
     };
 
+    const convertImage = (bin: ArrayBuffer) => {
+        const buff = Buffer.from(bin);
+        return buff.toString('base64');
+    };
+
     const toSlug = (str: string) => {
-        const slugify = str =>
-            str
-                .toLowerCase()
-                .trim()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/[\s_-]+/g, '-')
-                .replace(/^-+|-+$/g, '');
+        const slugify = str
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
         return slugify;
     };
 
     return {
-        // setProfileBySlug,
-        // filterToAnothersProfiles,
+        filterToAnothersProfiles,
         getStorageProfile,
-        // profiles,
         changeProfile,
+        storeProfile,
         setProfile,
         profile,
         password,
@@ -177,5 +151,6 @@ export const useUsuario = () => {
         name,
         setName,
         toSlug,
+        convertImage,
     };
 };

@@ -4,16 +4,15 @@ import { useFilms } from '../common/context/Films';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Footer from '../components/Footer';
-import MoreInfoModal from '../components/MoreInfoModal.js/index.js';
+import MoreInfoModal from '../components/MoreInfoModal';
 import List from '../components/List';
 import Loading from '../components/Loading';
 import * as S from '../styles/GlobalComponents';
 import { withSession } from '../services/auth/session';
-import { json } from 'stream/consumers';
 import { useRouter } from 'next/router';
-import { authService } from '../services/auth/authService';
+import { authService, ISession } from '../services/auth/authService';
 
-const Browse: React.FC = props => {
+const Browse: React.FC<{ session: ISession }> = ({ session }) => {
     const { list, heroFilm } = useFilms();
     const [headerActive, setHeaderActive] = useState(false);
     const [modalInfo, setModalInfo] = useState({
@@ -36,7 +35,7 @@ const Browse: React.FC = props => {
         }`;
     }, []);
 
-    console.log(props);
+    console.log(list, heroFilm);
     useEffect(() => {
         const scrollListener = () => {
             if (window.scrollY > 10) {
@@ -54,15 +53,15 @@ const Browse: React.FC = props => {
 
     return (
         <>
-            {JSON.stringify(props)}
-            {/* {modalInfo.id && modalInfo.type && (
+            {/* {JSON.stringify(props)} */}
+            {modalInfo.id && modalInfo.type && (
                 <MoreInfoModal
                     minutesToHours={toHoursAndMinutes}
                     {...modalInfo}
                     setModalInfo={setModalInfo}
                 />
             )}
-            <Header scroll={headerActive} />
+            <Header session={session} scroll={headerActive} />
             {!modalInfo.success && (
                 <S.StyledAlert
                     onClose={() => {
@@ -74,7 +73,7 @@ const Browse: React.FC = props => {
                     <strong>Tente Outro!</strong>
                 </S.StyledAlert>
             )}
-            {heroFilm && (
+            {heroFilm.title && (
                 <Hero
                     setModal={handleSetModalInfo}
                     minutesToHours={toHoursAndMinutes}
@@ -94,7 +93,7 @@ const Browse: React.FC = props => {
                 </S.MainWrapper>
             )}
             {(!list || !heroFilm) && <Loading />}
-            {list && <Footer />} */}
+            {list && <Footer />}
         </>
     );
 };
@@ -109,75 +108,3 @@ export const getServerSideProps = withSession(ctx => {
 });
 
 export default Browse;
-
-// export default function HomeScreen() {
-//     const router = useRouter();
-//     const [values, setValues] = React.useState({
-//         usuario: 'viniromualdo082@gmail.com',
-//         senha: '12345678',
-//     });
-
-//     function handleChange(event) {
-//         const fieldValue = event.target.value;
-//         const fieldName = event.target.name;
-//         setValues(currentValues => {
-//             return {
-//                 ...currentValues,
-//                 [fieldName]: fieldValue,
-//             };
-//         });
-//     }
-
-//     return (
-//         <div>
-//             <h1>Login</h1>
-//             <form
-//                 onSubmit={event => {
-//                     // onSubmit -> Controller (pega os dados o usuário e passa para um serviço)
-//                     // authService -> Serviço
-//                     event.preventDefault();
-
-//                     authService
-//                         .login({
-//                             email: values.usuario,
-//                             password: values.senha,
-//                         })
-//                         .then(() => {
-//                             // router.push('/auth-page-static');
-//                             router.push('/select-profile');
-//                         })
-//                         .catch(err => {
-//                             console.log(err);
-//                             alert('Usuário ou senha estão incorretos.');
-//                         });
-//                 }}
-//             >
-//                 <input
-//                     placeholder="Usuário"
-//                     name="usuario"
-//                     value={values.usuario}
-//                     onChange={handleChange}
-//                 />
-//                 <input
-//                     placeholder="Senha"
-//                     name="senha"
-//                     type="password"
-//                     value={values.senha}
-//                     onChange={handleChange}
-//                 />
-//                 {/* <pre>
-//           {JSON.stringify(values, null, 2)}
-//         </pre> */}
-//                 <div>
-//                     <button>Entrar</button>
-//                 </div>
-//                 <p>
-//                     <a href="/auth-page-static">auth-page-static</a>
-//                 </p>
-//                 <p>
-//                     <a href="/auth-page-ssr">auth-page-ssr</a>
-//                 </p>
-//             </form>
-//         </div>
-//     );
-// }

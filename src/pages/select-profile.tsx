@@ -15,7 +15,6 @@ const SelectProfile: React.FC<{
     session?: ISession;
     images?: IImageData[];
 }> = ({ session, images }) => {
-    const profiles = session?.profiles;
     const router = useRouter();
     const [confirmMessage, setConfirmMessage] = useState({
         message: '',
@@ -24,13 +23,12 @@ const SelectProfile: React.FC<{
     const [setingProfile, setSetingProfile] = useState(false);
     const [profileHovered, setProfileHovered] = useState('');
 
-    const {} = useContext(UsuarioContext);
+    const { storeProfile } = useUsuario();
 
     const convertImage = (bin: ArrayBuffer) => {
         const buff = Buffer.from(bin);
         return buff.toString('base64');
     };
-
     return (
         <>
             <Head>
@@ -43,7 +41,7 @@ const SelectProfile: React.FC<{
                     {setingProfile && 'Crie seu perfil'}
                 </h1>
                 <S.ProfileContainer data-testid="profile-container">
-                    {profiles.length < 4 && !setingProfile && (
+                    {session.profiles.length < 4 && !setingProfile && (
                         <S.ProfileCreateProfileAnchor>
                             <S.ProfileBox
                                 onClick={() => {
@@ -73,6 +71,10 @@ const SelectProfile: React.FC<{
                                 title="Entre com o perfil"
                                 key={prof.image._id}
                                 data-testid="profile"
+                                onClick={() => {
+                                    storeProfile(prof);
+                                    router.push('/');
+                                }}
                                 onMouseEnter={() => {
                                     setProfileHovered(prof.image._id);
                                 }}

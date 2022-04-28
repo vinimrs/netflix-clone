@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import heroImage from '../../assets/hero-image-example.png';
+import heroImage from '../../../public/hero-image-example.png';
 import { gsap, Power3 } from 'gsap';
 
 export const handleOutInfoAnimation = () => {

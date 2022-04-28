@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { IImageData, ISession } from '../../services/auth/authService';
 import { userService } from '../../services/auth/userService';
 import { Router, useRouter } from 'next/router';
+import { useUsuario } from '../../common/context/Usuario';
 
 interface CreateCreateProfilesProps {
     session: ISession;
@@ -33,16 +34,7 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
     const [profileName, setProfileName] = useState('');
     const [imageData, setImageData] = useState({ id: '', data: '' });
     const router = useRouter();
-
-    const toSlug = (str: string) => {
-        const slugify = str
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-        return slugify;
-    };
+    const { toSlug } = useUsuario();
 
     const filteredImages = (
         imgs: { _id: string; data: ArrayBuffer; contentType: string }[]

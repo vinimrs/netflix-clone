@@ -20,7 +20,7 @@ export interface IMovieData {
 export interface IMovieDataInfo extends IMovieData {
     belong_to_collection?: null | string;
     budget?: number;
-    genres?: { id?: number; name?: string }[];
+    genre?: { id?: number; name?: string }[];
     homepage?: string;
     imdb_id?: string;
     production_companies?: {
@@ -63,7 +63,7 @@ export interface IMovieHomeList {
 }
 
 /*
- - Movie DB Genres list
+ - Movie DB genre list
     action 28
     animated 16
     documentary 99
@@ -92,7 +92,7 @@ export const moviesService = {
                 slug: 'trending',
                 title: 'Recomendados para Você',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/trending`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/trending`,
                     {
                         method: 'GET',
                     }
@@ -102,7 +102,7 @@ export const moviesService = {
                 slug: 'top-rated',
                 title: 'Em alta',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/top-rated`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/top-rated`,
                     {
                         method: 'GET',
                     }
@@ -112,7 +112,7 @@ export const moviesService = {
                 slug: 'action',
                 title: 'Ação',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/genres/28`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/28`,
                     {
                         method: 'GET',
                     }
@@ -122,7 +122,7 @@ export const moviesService = {
                 slug: 'war',
                 title: 'Guerra',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/genres/10752`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/10752`,
                     {
                         method: 'GET',
                     }
@@ -132,7 +132,7 @@ export const moviesService = {
                 slug: 'documentary',
                 title: 'Documentário',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/genres/99`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/99`,
                     {
                         method: 'GET',
                     }
@@ -143,7 +143,7 @@ export const moviesService = {
                 slug: 'comedy',
                 title: 'Comédia',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/genres/35`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/35`,
                     {
                         method: 'GET',
                     }
@@ -153,7 +153,7 @@ export const moviesService = {
                 slug: 'romance',
                 title: 'Romance',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/genres/10749`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/10749`,
                     {
                         method: 'GET',
                     }
@@ -163,7 +163,7 @@ export const moviesService = {
                 slug: 'crime',
                 title: 'Crimes e Investigação',
                 items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/movies/genres/80`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/80`,
                     {
                         method: 'GET',
                     }
@@ -173,7 +173,7 @@ export const moviesService = {
     },
     getMovieInfo: async (id: number): Promise<IMovieDataInfo> => {
         return await HttpClient(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/movies/${id}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/${id}`,
             {
                 method: 'GET',
             }
@@ -181,18 +181,19 @@ export const moviesService = {
     },
     getMovieVideos: async (id: number): Promise<IMovieVideo[]> => {
         return await HttpClient(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/movies/videos/${id}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/videos/${id}`,
             {
                 method: 'GET',
             }
         );
     },
     getMovieListByGenre: async (genre_id: number): Promise<IMovieData[]> => {
-        return await HttpClient(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/movies/genres/${genre_id}`,
+        const res = await HttpClient(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/${genre_id}`,
             {
                 method: 'GET',
             }
         );
+        return await res.body;
     },
 };

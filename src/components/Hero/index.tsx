@@ -1,10 +1,10 @@
-import * as S from './style.js';
-import { handleInInfoAnimation, handleOutInfoAnimation } from './style.js';
-import Play from '/play.svg';
-import { useFilms } from '../../common/context/Films.js';
+import * as S from './style';
+import { handleInInfoAnimation, handleOutInfoAnimation } from './style';
+import play from '../../../public/play.svg';
+import { useFilms } from '../../common/context/Films';
 import React, { useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
-import useWindowDimensions from '../../common/context/WindowDimensions.js';
+import useWindowDimensions from '../../common/context/WindowDimensions';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 interface Hero {
@@ -105,7 +105,7 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
                                 setVideoIsOpen(!videoIsOpen);
                             }}
                         >
-                            <Play />
+                            <img src={play.src} />
                             <S.ButtonText>
                                 {videoIsOpen ? 'Sair' : 'Trailer'}
                             </S.ButtonText>
@@ -121,10 +121,10 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
                         <S.ButtonText>Mais Informações</S.ButtonText>
                     </S.HeroButton>
                 </S.ButtonsWrapper>
-                {heroFilm.genres && (
+                {heroFilm.genre && (
                     <S.FilmText className="_filmGenres">
                         |{' '}
-                        {heroFilm.genres.map(genre => {
+                        {heroFilm.genre.map(genre => {
                             return `${genre.name} | `;
                         })}
                     </S.FilmText>

@@ -1,7 +1,7 @@
 import * as S from './style';
 import React, { useRef, useState } from 'react';
-import ChevronLeft from '../../assets/chevron.svg';
-import ChevronRight from '../../assets/chevron-right.svg';
+import chevronLeft from '../../../public/chevron.svg';
+import chevronRight from '../../../public/chevron-right.svg';
 import { useSwipeable } from 'react-swipeable';
 import useWindowDimensions from '../../common/context/WindowDimensions';
 import { IMovieData, IMovieHomeList } from '../../services/auth/moviesService';
@@ -56,7 +56,7 @@ const List: React.FC<List> = ({ list, setModal }) => {
                 }}
                 onClick={() => handleLeftArrow()}
             >
-                <ChevronLeft />
+                <img src={chevronLeft.src} />
             </S.NavigateDiv>
             <S.NavigateDiv
                 onMouseEnter={() => {
@@ -68,7 +68,7 @@ const List: React.FC<List> = ({ list, setModal }) => {
                 }}
                 onClick={() => handleRightArrow()}
             >
-                <ChevronRight />
+                <img src={chevronRight.src} />
             </S.NavigateDiv>
 
             <S.ListTitle ref={listTitle}>{list.title}</S.ListTitle>

@@ -129,6 +129,7 @@ export const ProfileContainer = styled.div`
     justify-content: center;
     width: 90%;
     color: var(--gray);
+    margin-top: 35px;
 `;
 
 export const ProfileBox = styled.div`
@@ -138,6 +139,7 @@ export const ProfileBox = styled.div`
     cursor: pointer;
     margin: 8px 0;
     border: 2px solid #8c8c80;
+    transition: all 0.3s;
 
     &:hover {
         border: 2px solid var(--white);
