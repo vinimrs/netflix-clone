@@ -51,13 +51,13 @@ export const FilmsProvider = ({ children }) => {
 export const useFilms = () => {
     const { list, heroFilm, filmVideo, setHeroFilm, setFilmVideo, setList } =
         useContext(FilmsContext);
-    const { profile } = useUsuario();
-    console.log(profile);
+    const { profile, getStorageProfile, setProfile } = useUsuario();
+    profile;
 
-    const loadHeroFilmWithId = useCallback(
-        async (id = 10725) => {
-            const resp = await moviesService.getMovieListByGenre(id);
-            console.log(resp);
+    const loadHeroFilmWithId = async (id = '10752') => {
+        const resp = await moviesService.getMovieListByGenre(id);
+        resp;
+        if (resp.length > 0) {
             let randomChosen = Math.floor(Math.random() * (resp.length - 1));
             let chosen = resp[randomChosen];
             let chosenInfo = await moviesService.getMovieInfo(chosen.id);
@@ -65,22 +65,93 @@ export const useFilms = () => {
 
             setFilmVideo(videos[0]);
             setHeroFilm(chosenInfo);
-        },
-        [setFilmVideo, setHeroFilm]
-    );
+        }
+    };
 
-    const loadHomeLists = useCallback(async () => {
-        const resultList = await moviesService.getHomeList();
-        setList(resultList);
-    }, [setList]);
+    // const loadHeroFilmWithId = useCallback(
+    //     async (id = 10752) => {
+    //         const resp = await moviesService.getMovieListByGenre(id);
+    //         resp;
+    //         if (resp.length > 0) {
+    //             let randomChosen = Math.floor(
+    //                 Math.random() * (resp.length - 1)
+    //             );
+    //             let chosen = resp[randomChosen];
+    //             let chosenInfo = await moviesService.getMovieInfo(chosen.id);
+    //             const videos = await moviesService.getMovieVideos(chosen.id);
+
+    //             setFilmVideo(videos[0]);
+    //             setHeroFilm(chosenInfo);
+    //         }
+    //     },
+    //     [setFilmVideo, setHeroFilm]
+    // );
+
+    const shuffle = (array: any[]) => {
+        let currentIndex = array.length,
+            randomIndex;
+
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex],
+                array[currentIndex],
+            ];
+        }
+
+        return array;
+    };
+
+    const loadHomeLists = async () => {
+        if (profile !== null) {
+            const resultList = await moviesService.getHomeList(profile);
+            const fixedLists = await moviesService.getFixedHomeLists();
+            console.log(resultList.length, fixedLists.length);
+            const lists = [...resultList, ...fixedLists];
+            let res = await Promise.all(
+                lists.map(async item => {
+                    console.log(item);
+                    return { ...item, items: item.items.body };
+                })
+            );
+            res = shuffle(res);
+            setList(res);
+        }
+    };
+    // const loadHomeLists = useCallback(async () => {
+    //     if (profile !== null) {
+    //         const resultList = await moviesService.getHomeList(profile);
+    //         let res = resultList.map(list => {
+    //             return { ...list, items: list.items.body };
+    //         });
+    //         console.log(res);
+    //         res = shuffle(res);
+    //         setList(res);
+    //     }
+    // }, [setList]);
 
     useEffect(() => {
+        console.log('useeffect');
+        if (profile === null || profile === undefined) {
+            setProfile(getStorageProfile());
+        }
         const loadAll = async () => {
+            console.log(profile);
             loadHomeLists();
-            loadHeroFilmWithId(profile?.preference);
+            loadHeroFilmWithId(
+                profile?.preference[
+                    Math.floor(Math.random() * profile?.preference.length)
+                ]
+            );
         };
+
         loadAll();
-    }, [loadHeroFilmWithId, loadHomeLists, profile]);
+    }, [profile, setList]);
 
     return {
         list,

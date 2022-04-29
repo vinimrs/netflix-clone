@@ -103,6 +103,7 @@ const Register: React.FC = () => {
                                 style: { color: '#8c8c80' },
                             }}
                             type="name"
+                            required
                         />
                         <S.LoginTextfield
                             label="Email"
@@ -133,6 +134,7 @@ const Register: React.FC = () => {
                             inputProps={{ sx: { color: 'var(--white)' } }}
                             InputLabelProps={{ style: { color: '#8c8c80' } }}
                             type="email"
+                            required
                         />
                         <S.LoginTextfield
                             label="Senha"
@@ -165,6 +167,7 @@ const Register: React.FC = () => {
                             inputProps={{ sx: { color: 'var(--white)' } }}
                             InputLabelProps={{ style: { color: '#8c8c80' } }}
                             type="password"
+                            required
                         />
                         <S.LoginTextfield
                             label="Confirme sua senha"
@@ -211,8 +214,21 @@ const Register: React.FC = () => {
                                 style: { color: '#8c8c80' },
                             }}
                             type="password"
+                            required
                         />
                     </div>
+                    <p
+                        style={{
+                            color: '#ccc',
+                            marginTop: '30px',
+                            textAlign: 'justify',
+                        }}
+                    >
+                        *TODOS os dados coletados não serão usados para promoção
+                        ou qualquer outro fim. SOMENTE são usados para
+                        simulação, você pode deletar o usuário a qualquer
+                        momento.
+                    </p>
                     <S.LoginButton
                         disabled={
                             !validity.email ||

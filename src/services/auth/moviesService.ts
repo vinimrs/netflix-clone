@@ -1,4 +1,5 @@
 import { HttpClient } from '../../infra/HttpClient/HttpClient';
+import { IProfile } from './authService';
 
 export interface IMovieData {
     adult?: boolean;
@@ -59,135 +60,147 @@ export interface IMovieVideo {
 export interface IMovieHomeList {
     slug: string;
     title: string;
-    items: IMovieData[];
+    items: IMovieHomeList[];
 }
 
-/*
- - Movie DB genre list
-    action 28
-    animated 16
-    documentary 99
-    drama 18
-    family 10751
-    fantasy 14
-    history 36
-    comedy 35
-    war 10752
-    crime 80
-    music 10402
-    mystery 9648
-    romance 10749
-    sci fi 878
-    horror 27
-    TV movie 10770
-    thriller 53
-    western 37
-    adventure 12
-*/
+export const moviesGenres = [
+    {
+        slug: 'acao',
+        title: 'Ação',
+        id: 28,
+    },
+
+    {
+        slug: 'animacao',
+        title: 'Animação',
+        id: 16,
+    },
+
+    {
+        slug: 'documentario',
+        title: 'Documentário',
+        id: 99,
+    },
+    {
+        slug: 'drama',
+        title: 'Drama',
+        id: 18,
+    },
+    {
+        slug: 'familia',
+        title: 'Família',
+        id: 10751,
+    },
+    {
+        slug: 'historia',
+        title: 'História',
+        id: 36,
+    },
+    {
+        slug: 'comedia',
+        title: 'Comédia',
+        id: 35,
+    },
+    {
+        slug: 'guerra',
+        title: 'Guerra',
+        id: 10752,
+    },
+    {
+        slug: 'crimes',
+        title: 'Crime e Investigação',
+        id: 80,
+    },
+    {
+        slug: 'musical',
+        title: 'Musical',
+        id: 10402,
+    },
+    {
+        slug: 'misterio',
+        title: 'Mistério',
+        id: 9648,
+    },
+    {
+        slug: 'Romance',
+        title: 'Romance',
+        id: 10749,
+    },
+    {
+        slug: 'terror',
+        title: 'Terror',
+        id: 27,
+    },
+    {
+        slug: 'aventura',
+        title: 'Aventura',
+        id: 12,
+    },
+];
 
 export const moviesService = {
-    getHomeList: async (): Promise<IMovieHomeList[]> => {
-        return [
-            {
-                slug: 'trending',
-                title: 'Recomendados para Você',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/trending`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
-            {
-                slug: 'top-rated',
-                title: 'Em alta',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/top-rated`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
-            {
-                slug: 'action',
-                title: 'Ação',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/28`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
-            {
-                slug: 'war',
-                title: 'Guerra',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/10752`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
-            {
-                slug: 'documentary',
-                title: 'Documentário',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/99`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
+    getHomeList: async (profile: IProfile): Promise<any[]> => {
+        console.log(profile);
+        return await Promise.all(
+            profile.preference.map(async prefId => {
+                const genre = moviesGenres.find(
+                    genre => genre.id === Number(prefId)
+                );
 
-            {
-                slug: 'comedy',
-                title: 'Comédia',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/35`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
-            {
-                slug: 'romance',
-                title: 'Romance',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/10749`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
-            {
-                slug: 'crime',
-                title: 'Crimes e Investigação',
-                items: await HttpClient(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/80`,
-                    {
-                        method: 'GET',
-                    }
-                ),
-            },
-        ];
+                return {
+                    slug: genre.slug,
+                    title: genre.title,
+                    items: await HttpClient(
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/${genre.id}`,
+                        {
+                            method: 'GET',
+                        }
+                    ),
+                };
+            })
+        );
     },
+    getFixedHomeLists: async (): Promise<any[]> => [
+        {
+            slug: 'trending',
+            title: 'Recomendados para Você',
+            items: await HttpClient(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/trending`,
+                {
+                    method: 'GET',
+                }
+            ),
+        },
+        {
+            slug: 'top-rated',
+            title: 'Em alta',
+            items: await HttpClient(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/top-rated`,
+                {
+                    method: 'GET',
+                }
+            ),
+        },
+    ],
     getMovieInfo: async (id: number): Promise<IMovieDataInfo> => {
-        return await HttpClient(
+        const res = await HttpClient(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/${id}`,
             {
                 method: 'GET',
             }
         );
+        return await res.body;
     },
     getMovieVideos: async (id: number): Promise<IMovieVideo[]> => {
-        return await HttpClient(
+        const res = await HttpClient(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/videos/${id}`,
             {
                 method: 'GET',
             }
         );
+        return res.body;
     },
-    getMovieListByGenre: async (genre_id: number): Promise<IMovieData[]> => {
+    getMovieListByGenre: async (genre_id: string): Promise<IMovieData[]> => {
         const res = await HttpClient(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/${genre_id}`,
             {

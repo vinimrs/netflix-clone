@@ -8,7 +8,25 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import useWindowDimensions from '../../common/context/WindowDimensions';
 import Loading from '../Loading';
 
-const MoreInfoModal = ({ id, type, setModalInfo, minutesToHours }) => {
+interface ModeInfoModalProps {
+    id: number;
+    type: string;
+    setModalInfo: React.Dispatch<
+        React.SetStateAction<{
+            id: string;
+            type: string;
+            success: boolean;
+        }>
+    >;
+    minutesToHours: (totalMinutes: any) => string;
+}
+
+const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
+    id,
+    type,
+    setModalInfo,
+    minutesToHours,
+}) => {
     const [movie, setMovie] = useState(null);
     const [movieVideo, setMovieVideo] = useState(null);
     const [isReady, setIsReady] = useState(false);
@@ -40,7 +58,9 @@ const MoreInfoModal = ({ id, type, setModalInfo, minutesToHours }) => {
                 // movie.success === false ||
                 !video[0]
             ) {
-                setModalInfo({ success: false });
+                setModalInfo(lastval => {
+                    return { ...lastval, success: false };
+                });
                 return;
             }
             setMovie(movie);
@@ -69,7 +89,11 @@ const MoreInfoModal = ({ id, type, setModalInfo, minutesToHours }) => {
                 </div>
             )}
             <S.ModalContainer className="_modalContainer">
-                <S.CloseModal onClick={() => setModalInfo({ success: true })}>
+                <S.CloseModal
+                    onClick={() =>
+                        setModalInfo({ id: '', type: '', success: true })
+                    }
+                >
                     <CloseOutlinedIcon
                         sx={{ color: 'var(--white)', fontSize: '40px' }}
                     />

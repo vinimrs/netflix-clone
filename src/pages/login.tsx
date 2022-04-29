@@ -4,9 +4,11 @@ import { Checkbox, FormControlLabel } from '@mui/material';
 import { UsuarioContext } from '../common/context/Usuario';
 import FirstHeader from '../components/FirstHeader';
 import bgImage from '../../public/netflix-library.jpg';
+import load from '../../public/loading-white.svg';
 import * as S from '../styles/GlobalComponents';
 import { authService } from '../services/auth/authService';
 import Link from 'next/link';
+import Head from 'next/head';
 
 const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +19,7 @@ const Login: React.FC = () => {
         confirmPassword: true,
         name: true,
     });
+    const [loading, setLoading] = useState(false);
     const { email, password, checked, setChecked, setEmail, setPassword } =
         useContext(UsuarioContext);
     const router = useRouter();
@@ -30,9 +33,39 @@ const Login: React.FC = () => {
 
     return (
         <S.Background src={bgImage.src}>
+            <Head>
+                <title>Netflix - Login</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+            </Head>
             <FirstHeader />
             <S.LoginContainer>
-                <S.LoginForm style={{ textAlign: 'center' }}>
+                <S.LoginForm
+                    style={{ textAlign: 'center' }}
+                    onSubmit={e => {
+                        e.preventDefault();
+                        setLoading(true);
+                        authService
+                            .login({ email, password })
+                            .then(res => {
+                                console.log(res);
+                                if (res.error) {
+                                    setErrorMessage(res.error);
+                                    setLoading(false);
+                                } else {
+                                    router.push('/select-profile');
+                                    setEmail('');
+                                    setPassword('');
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                setLoading(false);
+                            });
+                    }}
+                >
                     <h1 style={{ textAlign: 'start', margin: '0 0 20px 0' }}>
                         {' '}
                         Entrar
@@ -66,6 +99,7 @@ const Login: React.FC = () => {
                         inputProps={{ sx: { color: 'var(--white)' } }}
                         InputLabelProps={{ style: { color: '#8c8c80' } }}
                         type="email"
+                        required
                     />
                     <div
                         style={{
@@ -108,6 +142,7 @@ const Login: React.FC = () => {
                             }}
                             InputLabelProps={{ style: { color: '#8c8c80' } }}
                             type={showPassword ? 'text' : 'password'}
+                            required
                         />
                         {password.length > 0 && (
                             <S.TogglePasswordVisibility
@@ -118,23 +153,6 @@ const Login: React.FC = () => {
                         )}
                     </div>
                     <S.LoginButton
-                        onClick={e => {
-                            e.preventDefault();
-                            authService
-                                .login({ email, password })
-                                .then(res => {
-                                    console.log(res);
-                                    if (res.error) {
-                                        setErrorMessage(res.error);
-                                    } else {
-                                        router.push('/select-profile');
-                                    }
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                    alert('Usuário ou senha estão incorretos.');
-                                });
-                        }}
                         disabled={
                             !validity.email ||
                             !validity.password ||
@@ -146,7 +164,16 @@ const Login: React.FC = () => {
                         fullWidth
                         data-testid="Entrar"
                     >
-                        Entrar
+                        {!loading && 'Entrar'}
+                        {loading && (
+                            <img
+                                style={{
+                                    width: '30px',
+                                }}
+                                src={load.src}
+                                alt="Animação de carregamento"
+                            />
+                        )}
                     </S.LoginButton>
                     <div
                         style={{
@@ -176,7 +203,7 @@ const Login: React.FC = () => {
                             onClick={() => {
                                 setPassword('');
                                 setEmail('');
-                                setChecked(false);
+                                // setChecked(false);
                                 // router.push('/register');
                             }}
                         >

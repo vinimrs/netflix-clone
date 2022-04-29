@@ -1,18 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { UsuarioContext } from '../common/context/Usuario';
+import React from 'react';
 import FirstHeader from '../components/FirstHeader';
-import bgImage from '../../public/netflix-library.jpg';
 import * as S from '../styles/GlobalComponents';
 import Link from 'next/link';
+import Head from 'next/head';
 
 const Login: React.FC = () => {
-    const { email, password, setEmail, setPassword, name, setName } =
-        useContext(UsuarioContext);
-    const router = useRouter();
-
     return (
         <S.Background>
+            <Head>
+                <title>Netflix - Confirmação de Email</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+            </Head>
             <FirstHeader />
             <div
                 style={{
@@ -20,15 +21,15 @@ const Login: React.FC = () => {
                     width: '100vw',
                     display: 'flex',
                     justifyContent: 'center',
-                    alignContent: 'center',
+                    alignItems: 'center',
                     flexDirection: 'column',
                     textAlign: 'center',
                 }}
             >
-                <h1 style={{ color: 'red' }}>Conta Criada</h1>
-                <h2>
+                <h1 style={{ color: 'red' }}>Conta Criada!</h1>
+                <h2 style={{ maxWidth: '600px' }}>
                     Confirme em seu e-mail para completar o cadastro e faça seu
-                    login!
+                    login normalmente!
                 </h2>
                 <Link href="/login">
                     <a style={{ color: 'white', margin: '30px' }}>

@@ -90,10 +90,10 @@ export const useUsuario = () => {
     } = useContext(UsuarioContext);
 
     const storeProfile = (prof: IProfile) => {
-        console.log(prof);
+        prof;
         if (prof) {
             setProfile(prof);
-            console.log(profile);
+            profile;
         } else {
             const profileResults = JSON.parse(
                 localStorage.getItem('usuario') || ''

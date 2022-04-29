@@ -14,12 +14,12 @@ export default function LogoutPage() {
                 method: 'DELETE',
             }).then(() => {
                 tokenService.delete();
-                router.push('/');
+                router.push('/login');
             });
         } catch (error) {
             alert(error.message);
         }
     }, []);
 
-    return <h1>Você será redirecionado em instantes...</h1>;
+    return <h2>Você será redirecionado em instantes...</h2>;
 }

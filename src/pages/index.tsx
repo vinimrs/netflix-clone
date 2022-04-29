@@ -11,15 +11,18 @@ import * as S from '../styles/GlobalComponents';
 import { withSession } from '../services/auth/session';
 import { useRouter } from 'next/router';
 import { authService, ISession } from '../services/auth/authService';
+import Head from 'next/head';
+import DeleteAccountModal from '../components/DeleteAccountModal';
 
 const Browse: React.FC<{ session: ISession }> = ({ session }) => {
-    const { list, heroFilm } = useFilms();
+    const { list, setList, setHeroFilm, heroFilm } = useFilms();
     const [headerActive, setHeaderActive] = useState(false);
     const [modalInfo, setModalInfo] = useState({
         id: '',
         type: '',
         success: true,
     });
+    // const [deleteModal, setDeleteModal] = useState(false);
 
     const handleSetModalInfo = film => {
         const type = film.number_of_seasons ? 'tv' : 'movie';
@@ -35,8 +38,10 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
         }`;
     }, []);
 
-    console.log(list, heroFilm);
     useEffect(() => {
+        if (list.length > 0) setList([]);
+        if (heroFilm.title) setHeroFilm({ title: '' });
+        console.log('useEffect');
         const scrollListener = () => {
             if (window.scrollY > 10) {
                 setHeaderActive(true);
@@ -51,16 +56,26 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
         };
     }, []);
 
+    console.log(session, list);
     return (
         <>
-            {/* {JSON.stringify(props)} */}
-            {modalInfo.id && modalInfo.type && (
+            <Head>
+                <title>Netflix</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+            </Head>
+            {modalInfo.id && (
                 <MoreInfoModal
                     minutesToHours={toHoursAndMinutes}
-                    {...modalInfo}
+                    // {...modalInfo}
+                    id={Number(modalInfo.id)}
+                    type={modalInfo.type}
                     setModalInfo={setModalInfo}
                 />
             )}
+
             <Header session={session} scroll={headerActive} />
             {!modalInfo.success && (
                 <S.StyledAlert
@@ -73,13 +88,13 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
                     <strong>Tente Outro!</strong>
                 </S.StyledAlert>
             )}
-            {heroFilm.title && (
+            {heroFilm.title && list.length > 7 && (
                 <Hero
                     setModal={handleSetModalInfo}
                     minutesToHours={toHoursAndMinutes}
                 />
             )}
-            {list && (
+            {heroFilm.title && list.length > 7 && (
                 <S.MainWrapper>
                     {list.map((category, key) => {
                         return (
@@ -92,8 +107,9 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
                     })}
                 </S.MainWrapper>
             )}
-            {(!list || !heroFilm) && <Loading />}
-            {list && <Footer />}
+            {/* {deleteModal && (<DeleteAccountModal setDeleteModal={setDeleteModal} />)} */}
+            {!(heroFilm.title && list.length > 7) && <Loading />}
+            {heroFilm.title && list.length > 7 && <Footer />}
         </>
     );
 };

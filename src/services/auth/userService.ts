@@ -26,11 +26,25 @@ export const userService = {
             },
         });
     },
+    async deleteUser(userId: string, ctx: NextPageContext = null) {
+        const token = tokenService.get(ctx);
+
+        return await HttpClient(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/${userId}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                refresh: true,
+            }
+        );
+    },
 
     async createNewProfile(
         slug: string,
         name: string,
-        preference: string,
+        preference: string[],
         image_id: string,
         user_id: string,
         ctx: NextPageContext = null
@@ -88,13 +102,14 @@ export const userService = {
     async updateUserProfile(
         slug: string,
         name: string,
-        preference: string,
+        preference: string[],
         image: string,
         userId: string,
+        index: string,
         ctx: NextPageContext = null
     ) {
         const token = tokenService.get(ctx);
-
+        console.log(userId);
         try {
             const response = await HttpClient(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/user-profile/${userId}`,
@@ -108,6 +123,7 @@ export const userService = {
                         name,
                         preference,
                         image,
+                        index,
                     },
                     refresh: true,
                 }

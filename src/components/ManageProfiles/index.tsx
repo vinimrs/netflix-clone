@@ -1,5 +1,6 @@
 import * as S from '../../styles/GlobalComponents';
 import {
+    Chip,
     FormControl,
     InputLabel,
     MenuItem,
@@ -11,6 +12,9 @@ import { IImageData, ISession } from '../../services/auth/authService';
 import { userService } from '../../services/auth/userService';
 import { Router, useRouter } from 'next/router';
 import { useUsuario } from '../../common/context/Usuario';
+import { Box } from '@mui/system';
+import { moviesGenres } from '../../services/auth/moviesService';
+import { SliderValueLabelUnstyled } from '@mui/base';
 
 interface CreateCreateProfilesProps {
     session: ISession;
@@ -22,6 +26,7 @@ interface CreateCreateProfilesProps {
         }>
     >;
     setSetingProfile: React.Dispatch<React.SetStateAction<boolean>>;
+    editProfileId?: string;
 }
 
 const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
@@ -29,8 +34,9 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
     images,
     setMessage,
     setSetingProfile,
+    editProfileId,
 }) => {
-    const [preference, setPreference] = useState('');
+    const [preferences, setPreferences] = useState<string[]>([]);
     const [profileName, setProfileName] = useState('');
     const [imageData, setImageData] = useState({ id: '', data: '' });
     const router = useRouter();
@@ -54,7 +60,7 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
 
     return (
         <S.CreateProfileForm
-            onSubmit={e => {
+            onSubmit={async e => {
                 e.preventDefault();
                 if (!imageData.id) {
                     setMessage({
@@ -85,26 +91,44 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                     });
                     return;
                 }
-                userService
-                    .createNewProfile(
+                const preferencesId = preferences.map(pref => {
+                    const genre = moviesGenres.find(
+                        genre => genre.title === pref
+                    );
+                    return genre.id.toString();
+                });
+
+                let res;
+                if (editProfileId) {
+                    console.log('edit', session);
+                    res = await userService.createNewProfile(
                         slug,
                         profileName,
-                        preference,
+                        preferencesId,
                         imageData.id,
                         session.id
-                    )
-                    .then(res => {
-                        console.log(res);
-                        setMessage({
-                            message: res.body.message,
-                            error: !res.ok,
-                        });
-                        if (res.ok) {
-                            setSetingProfile(false);
-                            router.push('/select-profile');
-                        }
-                    })
-                    .catch(err => console.log(err));
+                    );
+                } else {
+                    console.log('create', session);
+
+                    res = await userService.updateUserProfile(
+                        slug,
+                        profileName,
+                        preferencesId,
+                        imageData.id,
+                        editProfileId,
+                        session.id
+                    );
+                }
+                console.log(res);
+                // setMessage({
+                //     message: res.body.message,
+                //     error: !res.ok,
+                // });
+                // if (res.ok) {
+                //     setSetingProfile(false);
+                //     router.push('/select-profile');
+                // }
             }}
         >
             <S.CreateProfileWrapper>
@@ -178,15 +202,25 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                                 style={{ color: '#8c8c80' }}
                                 id="demo-simple-select-autowidth-label"
                             >
-                                Qual gênero mais gosta?
+                                Quais gêneros mais gosta?
                             </InputLabel>
                             <Select
                                 color="secondary"
+                                size="medium"
                                 labelId="demo-simple-select-autowidth-label"
                                 id="demo-simple-select-autowidth"
-                                value={preference}
+                                multiple
+                                value={preferences}
                                 onChange={e => {
-                                    setPreference(e.target.value);
+                                    let value = e.target.value;
+
+                                    console.log(value);
+                                    // setPreference(value);
+                                    if (typeof value === 'string') {
+                                        console.log('string');
+                                        value = value.split(',');
+                                    }
+                                    if (value.length < 7) setPreferences(value);
                                 }}
                                 SelectDisplayProps={{
                                     style: {
@@ -199,32 +233,39 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                                 inputProps={{
                                     style: { color: '#eee' },
                                 }}
-                                // autoWidth
-                                label="Qual gênero mais gosta?"
+                                label="Quais gêneros mais gosta?"
                                 MenuProps={{
                                     sx: {
                                         maxHeight: '200px',
                                     },
                                 }}
+                                renderValue={(selected: string[]) => (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexWrap: 'wrap',
+                                            gap: 0.5,
+                                        }}
+                                    >
+                                        {selected.map(value => (
+                                            <Chip
+                                                style={{
+                                                    color: 'white',
+                                                    backgroundColor: '#ff1111',
+                                                }}
+                                                key={value}
+                                                label={value}
+                                            />
+                                        ))}
+                                    </Box>
+                                )}
                                 required
                             >
-                                <MenuItem value={'28'}>Ação</MenuItem>
-                                <MenuItem value={'16'}>Animação</MenuItem>
-                                <MenuItem value={'12'}>Aventura</MenuItem>
-                                <MenuItem value={'99'}>Documentário</MenuItem>
-                                <MenuItem value={'18'}>Drama</MenuItem>
-                                <MenuItem value={'10751'}>
-                                    Para a família
-                                </MenuItem>
-                                <MenuItem value={'14'}>Fantasia</MenuItem>
-                                <MenuItem value={'36'}>História</MenuItem>
-                                <MenuItem value={'35'}>Comédia</MenuItem>
-                                <MenuItem value={'10752'}>Guerra</MenuItem>
-                                <MenuItem value={'80'}>Crimes</MenuItem>
-                                <MenuItem value={'10402'}>Música</MenuItem>
-                                <MenuItem value={'9648'}>Mistério</MenuItem>
-                                <MenuItem value={'10749'}>Romance</MenuItem>
-                                <MenuItem value={'27'}>Terror</MenuItem>
+                                {moviesGenres.map(genre => (
+                                    <MenuItem value={genre.title}>
+                                        {genre.title}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </S.CreateProfileInputsWrapper>
@@ -270,9 +311,10 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                     type="submit"
                     variant="contained"
                     data-testid="Entrar"
-                    width="50%"
+                    width="40%"
                 >
-                    Criar
+                    {editProfileId && 'Editar'}
+                    {!editProfileId && 'Criar'}
                 </S.LoginButton>
                 <S.LoginText
                     onClick={() => {

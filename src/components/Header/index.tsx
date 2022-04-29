@@ -8,6 +8,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { ISession } from '../../services/auth/authService';
+import DeleteAccountModal from '../DeleteAccountModal';
 
 interface HeaderProps {
     scroll: boolean;
@@ -25,6 +26,8 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
     } = useUsuario();
     const router = useRouter();
     const [dropdown, setDropdown] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
     const list = filterToAnothersProfiles(session.profiles, profile);
 
     const handleOpenDropdown = () => {
@@ -46,14 +49,14 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
     };
 
     useEffect(() => {
-        if (!profile?.slug || !profile?.image.data)
+        if (profile === undefined || profile === null)
             setProfile(getStorageProfile());
-        console.log(profile);
+        profile;
     });
     return (
         <S.StyledHeader $active={scroll}>
             <S.LogoNetflix
-                onClick={() => router.back()}
+                onClick={() => router.push('/select-profile')}
                 src={logo.src}
                 alt="Logo da Netflix"
                 style={{ cursor: 'pointer' }}
@@ -80,7 +83,8 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
                             <S.MenuItem
                                 onClick={() => {
                                     handleCloseDropdown();
-                                    changeProfile(item.slug);
+                                    changeProfile(item);
+                                    router.reload();
                                 }}
                                 key={item.slug}
                             >
@@ -97,7 +101,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
                     <S.MenuItem
                         onClick={() => {
                             handleCloseDropdown();
-                            router.push('/select-profile');
+                            router.back();
                         }}
                     >
                         <EditOutlinedIcon />
@@ -147,13 +151,35 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
                     <S.MenuItem
                         onClick={() => {
                             handleCloseDropdown();
-                            router.push('/');
+                            router.push('/logout');
                         }}
                     >
                         <S.MenuText>Sair da Netflix</S.MenuText>
                     </S.MenuItem>
+                    <S.MenuItem
+                        onClick={() => {
+                            handleCloseDropdown();
+                            setOpenDeleteModal(true);
+                        }}
+                    >
+                        <S.MenuText
+                            style={{
+                                color: 'var(--red-netflix)',
+                                fontWeight: '800',
+                            }}
+                        >
+                            Apagar conta
+                        </S.MenuText>
+                    </S.MenuItem>
                 </S.Menu>
             </S.ContainerMenu>
+            {openDeleteModal && (
+                <DeleteAccountModal
+                    userId={session.id}
+                    openDeleteModal={openDeleteModal}
+                    setOpenDeleteModal={setOpenDeleteModal}
+                />
+            )}
         </S.StyledHeader>
     );
 };

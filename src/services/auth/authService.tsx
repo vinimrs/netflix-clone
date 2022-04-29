@@ -27,7 +27,7 @@ export interface IImageData {
 export interface IProfile {
     name?: string;
     image?: IImageData;
-    preference?: string;
+    preference?: string[];
     slug?: string;
 }
 

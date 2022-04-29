@@ -6,23 +6,27 @@ import { useRouter } from 'next/router';
 import { withSession } from '../services/auth/session';
 import { IImageData, ISession } from '../services/auth/authService';
 import Head from 'next/head';
-import { Add, DeleteOutline, RemoveCircleOutline } from '@mui/icons-material';
+import {
+    Add,
+    DeleteOutline,
+    EditOutlined,
+    RemoveCircleOutline,
+} from '@mui/icons-material';
 import { HttpClient } from '../infra/HttpClient/HttpClient';
-import CreateProfiles from '../components/CreateProfiles';
+import CreateProfiles from '../components/ManageProfiles';
 import { userService } from '../services/auth/userService';
+import Link from 'next/link';
 
 const SelectProfile: React.FC<{
     session?: ISession;
     images?: IImageData[];
-}> = ({ session, images }) => {
+}> = ({ session }) => {
     const router = useRouter();
     const [confirmMessage, setConfirmMessage] = useState({
         message: '',
         error: false,
     });
-    const [setingProfile, setSetingProfile] = useState(false);
     const [profileHovered, setProfileHovered] = useState('');
-
     const { storeProfile } = useUsuario();
 
     const convertImage = (bin: ArrayBuffer) => {
@@ -36,47 +40,37 @@ const SelectProfile: React.FC<{
             </Head>
             <FirstHeader />
             <S.ProfileWrapper>
-                <h1 style={{ color: 'var(--white)' }}>
-                    {!setingProfile && 'Quem está assistindo?'}
-                    {setingProfile && 'Crie seu perfil'}
-                </h1>
+                <h1 style={{ color: 'var(--white)' }}>Quem está assistindo?</h1>
                 <S.ProfileContainer data-testid="profile-container">
-                    {session.profiles.length < 4 && !setingProfile && (
+                    {session.profiles.length < 4 && (
                         <S.ProfileCreateProfileAnchor>
                             <S.ProfileBox
                                 onClick={() => {
-                                    setSetingProfile(!setingProfile);
+                                    router.push('/manage-profile?create=true');
                                 }}
                             >
                                 <Add
                                     fontSize="large"
-                                    style={{ width: '190px', height: '190px' }}
+                                    style={{
+                                        width: '190px',
+                                        height: '190px',
+                                    }}
                                 />
                             </S.ProfileBox>
                             <h2>Criar um perfil</h2>
                         </S.ProfileCreateProfileAnchor>
                     )}
-                    {setingProfile && (
-                        <CreateProfiles
-                            setSetingProfile={setSetingProfile}
-                            images={images}
-                            session={session}
-                            setMessage={setConfirmMessage}
-                        />
-                    )}
+
                     {session.profiles.length > 0 &&
-                        !setingProfile &&
-                        session.profiles.map(prof => (
+                        // !setingProfile &&
+                        // !editProfile &&
+                        session.profiles.map((prof, index) => (
                             <S.ProfileImageBox
                                 title="Entre com o perfil"
-                                key={prof.image._id}
+                                key={index}
                                 data-testid="profile"
-                                onClick={() => {
-                                    storeProfile(prof);
-                                    router.push('/');
-                                }}
                                 onMouseEnter={() => {
-                                    setProfileHovered(prof.image._id);
+                                    setProfileHovered(index.toString());
                                 }}
                                 onMouseLeave={() => {
                                     setProfileHovered('');
@@ -85,6 +79,10 @@ const SelectProfile: React.FC<{
                                 style={{ textAlign: 'center' }}
                             >
                                 <S.ProfileImage
+                                    onClick={() => {
+                                        storeProfile(prof);
+                                        router.push('/');
+                                    }}
                                     src={`data:image/image/png;base64,${convertImage(
                                         prof.image.data
                                     )}`}
@@ -95,7 +93,7 @@ const SelectProfile: React.FC<{
                                     style={{
                                         transition: '0.3s',
                                         opacity:
-                                            profileHovered === prof.image._id
+                                            profileHovered === index.toString()
                                                 ? 1
                                                 : 0,
                                         marginTop: 20,
@@ -128,6 +126,22 @@ const SelectProfile: React.FC<{
                                     titleAccess="Delete o perfil"
                                     fontSize="large"
                                 />
+                                <Link href={`/manage-profile?edit=${index}`}>
+                                    <EditOutlined
+                                        style={{
+                                            transition: '0.3s',
+                                            opacity:
+                                                profileHovered ===
+                                                index.toString()
+                                                    ? 1
+                                                    : 0,
+                                            color: 'var(--white)',
+                                            margin: '20px 0 0 20px',
+                                        }}
+                                        titleAccess="Edite o perfil"
+                                        fontSize="large"
+                                    />
+                                </Link>
                             </S.ProfileImageBox>
                         ))}
                 </S.ProfileContainer>
@@ -147,16 +161,8 @@ const SelectProfile: React.FC<{
 };
 
 export const getServerSideProps = withSession(async ctx => {
-    const res = await HttpClient(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/image`,
-        {
-            method: 'GET',
-        }
-    );
-
     return {
         props: {
-            images: res.body,
             session: ctx.req.session,
         },
     };

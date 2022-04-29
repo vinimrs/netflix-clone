@@ -254,9 +254,10 @@ export const CreateProfileWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-around;
+    justify-content: center;
 
     @media (max-width: 768px) {
+        justify-content: space-around;
         flex-direction: column-reverse;
     }
 `;
