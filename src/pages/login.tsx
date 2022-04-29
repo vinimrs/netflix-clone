@@ -50,18 +50,20 @@ const Login: React.FC = () => {
                         authService
                             .login({ email, password })
                             .then(res => {
-                                console.log(res);
+                                res;
                                 if (res.error) {
                                     setErrorMessage(res.error);
                                     setLoading(false);
                                 } else {
                                     router.push('/select-profile');
-                                    setEmail('');
-                                    setPassword('');
+                                    // setEmail('');
+                                    // setPassword('');
                                 }
                             })
                             .catch(err => {
-                                console.log(err);
+                                if (err instanceof Error) {
+                                    setErrorMessage(err.message);
+                                }
                                 setLoading(false);
                             });
                     }}

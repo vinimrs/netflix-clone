@@ -140,7 +140,6 @@ export const moviesGenres = [
 
 export const moviesService = {
     getHomeList: async (profile: IProfile): Promise<any[]> => {
-        console.log(profile);
         return await Promise.all(
             profile.preference.map(async prefId => {
                 const genre = moviesGenres.find(

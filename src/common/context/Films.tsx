@@ -111,11 +111,9 @@ export const useFilms = () => {
         if (profile !== null) {
             const resultList = await moviesService.getHomeList(profile);
             const fixedLists = await moviesService.getFixedHomeLists();
-            console.log(resultList.length, fixedLists.length);
             const lists = [...resultList, ...fixedLists];
             let res = await Promise.all(
                 lists.map(async item => {
-                    console.log(item);
                     return { ...item, items: item.items.body };
                 })
             );
@@ -123,25 +121,12 @@ export const useFilms = () => {
             setList(res);
         }
     };
-    // const loadHomeLists = useCallback(async () => {
-    //     if (profile !== null) {
-    //         const resultList = await moviesService.getHomeList(profile);
-    //         let res = resultList.map(list => {
-    //             return { ...list, items: list.items.body };
-    //         });
-    //         console.log(res);
-    //         res = shuffle(res);
-    //         setList(res);
-    //     }
-    // }, [setList]);
 
     useEffect(() => {
-        console.log('useeffect');
         if (profile === null || profile === undefined) {
             setProfile(getStorageProfile());
         }
         const loadAll = async () => {
-            console.log(profile);
             loadHomeLists();
             loadHeroFilmWithId(
                 profile?.preference[

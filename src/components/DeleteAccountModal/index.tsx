@@ -34,7 +34,6 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
 
     const deleteUser = (userId: string) => {
         userService.deleteUser(userId).then(res => {
-            console.log(res);
             if (res.ok) {
                 setConfirmMessage({
                     message: 'Usuário deletado com sucesso',

@@ -48,10 +48,7 @@ export const authService = {
             },
         })
             .then(res => {
-                console.log(res);
                 const body = res.body;
-                console.log(body);
-
                 tokenService.save(res.headers.get('Authorization'));
                 return body;
             })
@@ -66,8 +63,6 @@ export const authService = {
                         },
                     }
                 );
-
-                console.log(response);
                 return body;
             })
             .catch(err => {
@@ -76,7 +71,6 @@ export const authService = {
     },
     async getSession(ctx = null): Promise<ISession> {
         const token = tokenService.get(ctx);
-        console.log('baerer token session/authService.tsx', token);
         return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`, {
             method: 'GET',
             headers: {

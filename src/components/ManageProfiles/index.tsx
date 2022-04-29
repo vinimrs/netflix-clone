@@ -58,39 +58,58 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
         return buff.toString('base64');
     };
 
+    const validations = (
+        pref: string[],
+        imageInfo: { id: string; data: string },
+        session: ISession
+    ) => {
+        if (pref.length < 6) {
+            setMessage({
+                message:
+                    'Você deve escolher no mínimo 6 gêneros para esse perfil',
+                error: true,
+            });
+            return false;
+        }
+        if (!imageInfo.id) {
+            setMessage({
+                message: 'Você deve escolher uma imagem para seu perfil',
+                error: true,
+            });
+            return false;
+        }
+
+        if (session.profiles.length > 3) {
+            setMessage({
+                message: 'Você chegou no limite de perfis',
+                error: true,
+            });
+            return false;
+        }
+
+        const slug = toSlug(profileName);
+        const exists = session.profiles.find(prof => {
+            return prof.slug === slug;
+        });
+
+        if (exists) {
+            setMessage({
+                message: 'Nome de perfil já usado',
+                error: true,
+            });
+            return false;
+        }
+        return true;
+    };
+
     return (
         <S.CreateProfileForm
             onSubmit={async e => {
                 e.preventDefault();
-                if (!imageData.id) {
-                    setMessage({
-                        message:
-                            'Você deve escolher uma imagem para seu perfil',
-                        error: true,
-                    });
-                    return;
-                }
 
-                if (session.profiles.length > 3) {
-                    setMessage({
-                        message: 'Você chegou no limite de perfis',
-                        error: true,
-                    });
-                    return;
-                }
+                if (!validations(preferences, imageData, session)) return;
 
                 const slug = toSlug(profileName);
-                const exists = session.profiles.find(prof => {
-                    return prof.slug === slug;
-                });
-
-                if (exists) {
-                    setMessage({
-                        message: 'Nome de perfil já usado',
-                        error: true,
-                    });
-                    return;
-                }
                 const preferencesId = preferences.map(pref => {
                     const genre = moviesGenres.find(
                         genre => genre.title === pref
@@ -100,7 +119,6 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
 
                 let res;
                 if (editProfileId) {
-                    console.log('edit', session);
                     res = await userService.createNewProfile(
                         slug,
                         profileName,
@@ -109,8 +127,6 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                         session.id
                     );
                 } else {
-                    console.log('create', session);
-
                     res = await userService.updateUserProfile(
                         slug,
                         profileName,
@@ -120,15 +136,14 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                         session.id
                     );
                 }
-                console.log(res);
-                // setMessage({
-                //     message: res.body.message,
-                //     error: !res.ok,
-                // });
-                // if (res.ok) {
-                //     setSetingProfile(false);
-                //     router.push('/select-profile');
-                // }
+                setMessage({
+                    message: res.body.message,
+                    error: !res.ok,
+                });
+                if (res.ok) {
+                    setSetingProfile(false);
+                    router.push('/select-profile');
+                }
             }}
         >
             <S.CreateProfileWrapper>
@@ -213,11 +228,7 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                                 value={preferences}
                                 onChange={e => {
                                     let value = e.target.value;
-
-                                    console.log(value);
-                                    // setPreference(value);
                                     if (typeof value === 'string') {
-                                        console.log('string');
                                         value = value.split(',');
                                     }
                                     if (value.length < 7) setPreferences(value);
@@ -228,6 +239,7 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                                         color: '#eee',
                                         borderRadius: '5px',
                                         width: '100%',
+                                        maxWidth: '350px',
                                     },
                                 }}
                                 inputProps={{

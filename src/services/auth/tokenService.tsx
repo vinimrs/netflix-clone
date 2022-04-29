@@ -10,12 +10,6 @@ const ONE_YEAR = ONE_DAY * 365;
 
 export const tokenService = {
     save(accessToken, ctx = null) {
-        // localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-        // sessionStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-
-        // se ctx == null será guardado no cliente
-        console.log('nookies set ', accessToken);
-        console.log(ctx !== null);
         nookies.set(ctx, ACCESS_TOKEN_KEY, accessToken, {
             maxAge: ONE_YEAR,
             path: '/',
@@ -24,12 +18,8 @@ export const tokenService = {
     get(ctx = null) {
         const cookies = nookies.get(ctx);
         return cookies[ACCESS_TOKEN_KEY] || '';
-        // return localStorage.getItem(ACCESS_TOKEN_KEY);
-        // return sessionStorage.getItem(ACCESS_TOKEN_KEY);
     },
     delete(ctx = null) {
-        // sessionStorage.removeItem(ACCESS_TOKEN_KEY);
-        // localStorage.removeItem(ACCESS_TOKEN_KEY);
         nookies.destroy(ctx, ACCESS_TOKEN_KEY);
     },
 };

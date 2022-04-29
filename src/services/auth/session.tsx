@@ -15,60 +15,54 @@ export function withSession(funcao: Function) {
             };
             return funcao(modifiedCtx);
         } catch (error) {
-            console.log(error);
-            // if (!ctx) return;
             return {
                 redirect: {
                     permanent: false,
                     destination: '/login/',
                 },
             };
-            // return {
-            //     props: {},
-            // };
         }
     };
 }
 
-export function useSession() {
-    const [session, setSession] = React.useState(null);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
+// export function useSession() {
+//     const [session, setSession] = React.useState(null);
+//     const [loading, setLoading] = React.useState(true);
+//     const [error, setError] = React.useState(null);
 
-    React.useEffect(() => {
-        authService
-            .getSession()
-            .then(session => {
-                console.log(session);
-                setSession(session);
-            })
-            .catch(err => setError(err))
-            .finally(() => setLoading(false));
-    }, []);
+//     React.useEffect(() => {
+//         authService
+//             .getSession()
+//             .then(session => {
+//                 setSession(session);
+//             })
+//             .catch(err => setError(err))
+//             .finally(() => setLoading(false));
+//     }, []);
 
-    return {
-        data: {
-            session,
-        },
-        error,
-        loading,
-    };
-}
+//     return {
+//         data: {
+//             session,
+//         },
+//         error,
+//         loading,
+//     };
+// }
 
-// Componente de Ordem Superior Static-pages
-export function withSessionHOC(Component: React.ComponentType) {
-    return function Wrapper(props) {
-        const router = useRouter();
-        const session = useSession();
+// // Componente de Ordem Superior Static-pages
+// export function withSessionHOC(Component: React.ComponentType) {
+//     return function Wrapper(props) {
+//         const router = useRouter();
+//         const session = useSession();
 
-        if (!session.loading && session.error) {
-            router.push('/?error=401');
-        }
+//         if (!session.loading && session.error) {
+//             router.push('/?error=401');
+//         }
 
-        const modifiedProps = {
-            ...props,
-            session: session.data.session,
-        };
-        return <Component {...modifiedProps} />;
-    };
-}
+//         const modifiedProps = {
+//             ...props,
+//             session: session.data.session,
+//         };
+//         return <Component {...modifiedProps} />;
+//     };
+// }

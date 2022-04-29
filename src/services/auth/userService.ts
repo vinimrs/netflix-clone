@@ -109,7 +109,6 @@ export const userService = {
         ctx: NextPageContext = null
     ) {
         const token = tokenService.get(ctx);
-        console.log(userId);
         try {
             const response = await HttpClient(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/user-profile/${userId}`,

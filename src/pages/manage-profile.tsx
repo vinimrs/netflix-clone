@@ -106,7 +106,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
     };
 
     useEffect(() => {
-        console.log(router.query);
         if (router.query.create) setEditProfile('');
         if (typeof router.query.edit === 'string') {
             setEditProfile(router.query.edit);
@@ -140,7 +139,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
 
                             let res;
                             if (!editProfile) {
-                                console.log('edit', session);
                                 res = await userService.createNewProfile(
                                     slug,
                                     profileName,
@@ -149,8 +147,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                     session.id
                                 );
                             } else {
-                                console.log('create', session);
-
                                 res = await userService.updateUserProfile(
                                     slug,
                                     profileName,
@@ -160,7 +156,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                     editProfile
                                 );
                             }
-                            console.log(res);
                             setConfirmMessage({
                                 message: res.body.message,
                                 error: !res.ok,
@@ -256,10 +251,7 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                             value={preferences}
                                             onChange={e => {
                                                 let value = e.target.value;
-
-                                                console.log(value);
                                                 if (typeof value === 'string') {
-                                                    console.log('string');
                                                     value = value.split(',');
                                                 }
                                                 if (value.length < 7)

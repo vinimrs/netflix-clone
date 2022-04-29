@@ -225,9 +225,9 @@ const Register: React.FC = () => {
                         }}
                     >
                         *TODOS os dados coletados não serão usados para promoção
-                        ou qualquer outro fim. SOMENTE são usados para
-                        simulação, você pode deletar o usuário a qualquer
-                        momento.
+                        ou qualquer outro fim. SOMENTE são usados para simular a
+                        aplicação real, você pode deletar o usuário e seus dados
+                        a qualquer momento.
                     </p>
                     <S.LoginButton
                         disabled={

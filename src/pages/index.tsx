@@ -41,7 +41,6 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
     useEffect(() => {
         if (list.length > 0) setList([]);
         if (heroFilm.title) setHeroFilm({ title: '' });
-        console.log('useEffect');
         const scrollListener = () => {
             if (window.scrollY > 10) {
                 setHeaderActive(true);
@@ -56,7 +55,6 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
         };
     }, []);
 
-    console.log(session, list);
     return (
         <>
             <Head>
