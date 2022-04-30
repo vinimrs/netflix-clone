@@ -81,35 +81,38 @@ export const useFilms = () => {
     };
 
     const loadHomeLists = async () => {
-        if (profile !== null) {
-            const resultList = await moviesService.getHomeList(profile);
-            const fixedLists = await moviesService.getFixedHomeLists();
-            const lists = [...resultList, ...fixedLists];
-            let res = await Promise.all(
-                lists.map(async item => {
-                    return { ...item, items: item.items.body };
-                })
-            );
-            res = shuffle(res);
-            setList(res);
-        }
+        // if (profile !== null) {
+        const resultList = await moviesService.getHomeList(profile);
+        const fixedLists = await moviesService.getFixedHomeLists();
+        const lists = [...resultList, ...fixedLists];
+        let res = await Promise.all(
+            lists.map(async item => {
+                return { ...item, items: item.items.body };
+            })
+        );
+        console.log(res);
+        res = shuffle(res);
+        setList(res);
+        // }
     };
 
     useEffect(() => {
-        if (profile === null || profile === undefined) {
+        console.log('useeffect');
+        if (profile !== null || profile !== undefined) {
+            console.log('useeffect OK');
+            const loadAll = async () => {
+                loadHomeLists();
+                loadHeroFilmWithId(
+                    profile?.preference[
+                        Math.floor(Math.random() * profile?.preference.length)
+                    ]
+                );
+            };
+            loadAll();
+        } else {
             setProfile(getStorageProfile());
         }
-        const loadAll = async () => {
-            loadHomeLists();
-            loadHeroFilmWithId(
-                profile?.preference[
-                    Math.floor(Math.random() * profile?.preference.length)
-                ]
-            );
-        };
-
-        loadAll();
-    }, [profile, setList]);
+    }, []);
 
     return {
         list,
