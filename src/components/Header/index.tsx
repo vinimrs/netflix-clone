@@ -101,7 +101,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
                     <S.MenuItem
                         onClick={() => {
                             handleCloseDropdown();
-                            router.back();
+                            router.push('/select-profile');
                         }}
                     >
                         <EditOutlinedIcon />

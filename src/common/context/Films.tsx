@@ -1,18 +1,10 @@
-import React, {
-    createContext,
-    SetStateAction,
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-    IMovieData,
     IMovieDataInfo,
     IMovieHomeList,
     moviesService,
-} from '../../services/auth/moviesService';
-import { IMovieVideo } from '../../services/auth/moviesService';
+} from '../../services/moviesService';
+import { IMovieVideo } from '../../services/moviesService';
 import { useUsuario } from './Usuario';
 
 interface IFilmsContext {
@@ -67,25 +59,6 @@ export const useFilms = () => {
             setHeroFilm(chosenInfo);
         }
     };
-
-    // const loadHeroFilmWithId = useCallback(
-    //     async (id = 10752) => {
-    //         const resp = await moviesService.getMovieListByGenre(id);
-    //         resp;
-    //         if (resp.length > 0) {
-    //             let randomChosen = Math.floor(
-    //                 Math.random() * (resp.length - 1)
-    //             );
-    //             let chosen = resp[randomChosen];
-    //             let chosenInfo = await moviesService.getMovieInfo(chosen.id);
-    //             const videos = await moviesService.getMovieVideos(chosen.id);
-
-    //             setFilmVideo(videos[0]);
-    //             setHeroFilm(chosenInfo);
-    //         }
-    //     },
-    //     [setFilmVideo, setHeroFilm]
-    // );
 
     const shuffle = (array: any[]) => {
         let currentIndex = array.length,

@@ -1,21 +1,14 @@
 import * as S from '../styles/GlobalComponents';
-import {
-    Chip,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-} from '@mui/material';
+import { Chip, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { IImageData, ISession } from '../services/auth/authService';
-import { userService } from '../services/auth/userService';
+import { userService } from '../services/userService';
 import { useRouter } from 'next/router';
 import { useUsuario } from '../common/context/Usuario';
 import { Box } from '@mui/system';
-import { moviesGenres } from '../services/auth/moviesService';
-import Head from 'next/head';
+import { moviesGenres } from '../services/moviesService';
 import { withSession } from '../services/auth/session';
+import Head from 'next/head';
 import Link from 'next/link';
 import { HttpClient } from '../infra/HttpClient/HttpClient';
 import load from '../../public/loading-white.svg';
@@ -39,13 +32,13 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
 }) => {
     const [preferences, setPreferences] = useState<string[]>([]);
     const [profileName, setProfileName] = useState('');
+    const [imageData, setImageData] = useState({ id: '', data: '' });
     // const [setingProfile, setSetingProfile] = useState(false);
     const [editProfile, setEditProfile] = useState('');
     const [confirmMessage, setConfirmMessage] = useState({
         message: '',
         error: false,
     });
-    const [imageData, setImageData] = useState({ id: '', data: '' });
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const { toSlug } = useUsuario();
@@ -66,31 +59,36 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
         return buff.toString('base64');
     };
 
-    const validations = () => {
-        if (preferences.length < 6) {
+    const validations = (
+        pref: string[],
+        imageInfo: { data: string; id: string },
+        profName: string,
+        session: ISession
+    ) => {
+        if (pref.length < 6) {
             setConfirmMessage({
                 message: 'Você deve escolher no mínimo 6 gêneros!',
                 error: true,
             });
-            return;
+            return false;
         }
-        if (!imageData.id) {
+        if (!imageInfo.id) {
             setConfirmMessage({
                 message: 'Você deve escolher uma imagem para seu perfil',
                 error: true,
             });
-            return;
+            return false;
         }
 
-        if (session.profiles.length > 3) {
+        if (session.profiles.length > 3 && !editProfile) {
             setConfirmMessage({
                 message: 'Você chegou no limite de perfis',
                 error: true,
             });
-            return;
+            return false;
         }
 
-        const slug = toSlug(profileName);
+        const slug = toSlug(profName);
         const exists = session.profiles.find(prof => {
             return prof.slug === slug;
         });
@@ -100,9 +98,9 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                 message: 'Nome de perfil já usado',
                 error: true,
             });
-            return;
+            return false;
         }
-        return slug;
+        return true;
     };
 
     useEffect(() => {
@@ -115,7 +113,11 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
     return (
         <>
             <Head>
-                <title>Netflix = Manage Profiles</title>
+                <title>Netflix - Manage Profiles</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
             </Head>
             <S.ProfileWrapper>
                 <S.ProfileContainer>
@@ -128,7 +130,19 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                             e.preventDefault();
                             setLoading(true);
 
-                            const slug = validations();
+                            if (
+                                !validations(
+                                    preferences,
+                                    imageData,
+                                    profileName,
+                                    session
+                                )
+                            ) {
+                                setLoading(false);
+                                return;
+                            }
+
+                            const slug = toSlug(profileName);
 
                             const preferencesId = preferences.map(pref => {
                                 const genre = moviesGenres.find(
@@ -161,7 +175,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                 error: !res.ok,
                             });
                             if (res.ok) {
-                                setEditProfile('');
                                 router.push('/select-profile');
                             }
                         }}
@@ -188,7 +201,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                                             image.data
                                                         ),
                                                     });
-                                                    // setImageId(e.target);
                                                 }}
                                             >
                                                 <S.CreateProfileImageBox
@@ -212,7 +224,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                         variant="filled"
                                         value={profileName}
                                         margin="normal"
-                                        // helperText="O nome de usuário deve ser menor que 20 caracteres"
                                         onChange={e => {
                                             if (e.target.value.length < 11)
                                                 setProfileName(e.target.value);
@@ -263,7 +274,8 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                                     color: '#eee',
                                                     borderRadius: '5px',
                                                     width: '100%',
-                                                    maxWidth: '430px',
+                                                    minWidth: '400px',
+                                                    // minWidth: '400px',
                                                 },
                                             }}
                                             inputProps={{

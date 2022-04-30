@@ -20,10 +20,9 @@ const FirstHeader: React.FC = () => {
                 <img
                     src={Logo.src}
                     onClick={() => {
-                        router.push('/logout');
+                        router.push('/login');
                     }}
                 />
-                {/* <Logo onClick={() => router.back()} /> */}
             </div>
         </Header>
     );

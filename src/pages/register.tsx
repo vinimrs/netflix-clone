@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Checkbox, FormControlLabel } from '@mui/material';
 import { UsuarioContext } from '../common/context/Usuario';
 import FirstHeader from '../components/FirstHeader';
 import bgImage from '../../public/netflix-library.jpg';
 import * as S from '../styles/GlobalComponents';
-import { authService } from '../services/auth/authService';
 import Link from 'next/link';
-import { userService } from '../services/auth/userService';
+import { userService } from '../services/userService';
+import Head from 'next/head';
 
 const Register: React.FC = () => {
     const [validity, setValidity] = useState({
@@ -38,6 +37,13 @@ const Register: React.FC = () => {
     return (
         <S.Background src={bgImage.src}>
             <FirstHeader />
+            <Head>
+                <title>Netflix - Registro de Perfis</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+            </Head>
             <S.LoginContainer larger>
                 <S.LoginForm
                     style={{ textAlign: 'center' }}
@@ -69,7 +75,6 @@ const Register: React.FC = () => {
                             display: 'flex',
                             flexWrap: 'wrap',
                             justifyContent: 'space-around',
-                            // margin: '30px 0 0 0',
                         }}
                     >
                         <S.LoginTextfield
@@ -85,7 +90,6 @@ const Register: React.FC = () => {
                             }}
                             error={!validity.name}
                             onBlur={e => {
-                                // if (e.target.value.length > 0)
                                 simpleCheck('name', 2, e.target.value);
                             }}
                             helperText={
@@ -118,7 +122,6 @@ const Register: React.FC = () => {
                             }}
                             error={!validity.email}
                             onBlur={e => {
-                                // if (e.target.value.length > 0)
                                 simpleCheck('email', 10, e.target.value);
                             }}
                             helperText={
@@ -145,7 +148,6 @@ const Register: React.FC = () => {
                             margin="normal"
                             error={!validity.password}
                             onBlur={e => {
-                                // if (e.target.value.length > 0)
                                 simpleCheck('password', 4, e.target.value);
                             }}
                             helperText={

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { gsap, Power3 } from 'gsap';
 import React from 'react';
 import YouTube, { Options } from 'react-youtube';
-import { moviesService } from '../../services/auth/moviesService';
+import { moviesService } from '../../services/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import useWindowDimensions from '../../common/context/WindowDimensions';
 import Loading from '../Loading';

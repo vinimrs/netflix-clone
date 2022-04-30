@@ -4,7 +4,7 @@ import chevronLeft from '../../../public/chevron.svg';
 import chevronRight from '../../../public/chevron-right.svg';
 import { useSwipeable } from 'react-swipeable';
 import useWindowDimensions from '../../common/context/WindowDimensions';
-import { IMovieData, IMovieHomeList } from '../../services/auth/moviesService';
+import { IMovieData, IMovieHomeList } from '../../services/moviesService';
 
 interface List {
     setModal?: (film: IMovieData) => void;

@@ -8,7 +8,7 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import { userService } from '../../services/auth/userService';
+import { userService } from '../../services/userService';
 import { useRouter } from 'next/router';
 
 interface DeleteAccountModalProps {
@@ -27,10 +27,6 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
         message: '',
         error: false,
     });
-
-    const handleClickOpen = () => {
-        setOpenDeleteModal(true);
-    };
 
     const deleteUser = (userId: string) => {
         userService.deleteUser(userId).then(res => {
@@ -76,7 +72,6 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
                     onClick={() => {
                         deleteUser(userId);
                     }}
-                    autoFocus
                 >
                     Deletar mesmo assim
                 </Button>

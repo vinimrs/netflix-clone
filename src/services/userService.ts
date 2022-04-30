@@ -1,19 +1,6 @@
 import { NextPageContext } from 'next';
-import { FetchEventResult } from 'next/dist/server/web/types';
-import { NextResponse } from 'next/server';
-import { HttpClient } from '../../infra/HttpClient/HttpClient';
-import { tokenService } from './tokenService';
-
-interface IUser {
-    username?: string;
-    email?: string;
-}
-
-interface IProfile {
-    name?: string;
-    image_id?: string;
-    preference?: string;
-}
+import { HttpClient } from '../infra/HttpClient/HttpClient';
+import { tokenService } from './auth/tokenService';
 
 export const userService = {
     async registerUser(email: string, name: string, password: string) {

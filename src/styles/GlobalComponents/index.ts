@@ -209,6 +209,14 @@ export const ProfileImageBox = styled.div`
             color: var(--white);
         }
     }
+
+    @media (max-width: 768px) {
+        margin: 12px 0;
+
+        h2 {
+            color: var(--white);
+        }
+    }
 `;
 
 export const ProfileCreateProfileAnchor = styled.div`
@@ -225,6 +233,11 @@ export const ProfileCreateProfileAnchor = styled.div`
             color: var(--white);
         }
     }
+
+    @media (max-width: 768px) {
+        width: 150px;
+        margin: 8px 0;
+    }
 `;
 
 export const ProfileImage = styled.img`
@@ -238,7 +251,7 @@ export const ProfileImage = styled.img`
     }
 
     @media (max-width: 768px) {
-        width: 100px;
+        width: 150px;
     }
 `;
 
@@ -283,7 +296,6 @@ export const CreateProfileInputsWrapper = styled.div`
     justify-content: center;
 
     @media (max-width: 768px) {
-        width: 100%;
         margin: 0 12px;
     }
 `;
@@ -291,6 +303,12 @@ export const CreateProfileInputsWrapper = styled.div`
 export const CreateProfileEditSession = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+
+    @media (max-width: 768px) {
+        max-width: 768px;
+    }
 `;
 
 export const CreateProfileImageBox = styled.img<{ checked?: boolean }>`

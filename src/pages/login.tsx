@@ -56,8 +56,8 @@ const Login: React.FC = () => {
                                     setLoading(false);
                                 } else {
                                     router.push('/select-profile');
-                                    // setEmail('');
-                                    // setPassword('');
+                                    setEmail('');
+                                    setPassword('');
                                 }
                             })
                             .catch(err => {

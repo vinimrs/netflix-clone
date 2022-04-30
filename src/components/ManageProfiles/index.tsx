@@ -1,20 +1,12 @@
 import * as S from '../../styles/GlobalComponents';
-import {
-    Chip,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-} from '@mui/material';
+import { Chip, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import React, { useState } from 'react';
 import { IImageData, ISession } from '../../services/auth/authService';
-import { userService } from '../../services/auth/userService';
-import { Router, useRouter } from 'next/router';
+import { userService } from '../../services/userService';
+import { useRouter } from 'next/router';
 import { useUsuario } from '../../common/context/Usuario';
 import { Box } from '@mui/system';
-import { moviesGenres } from '../../services/auth/moviesService';
-import { SliderValueLabelUnstyled } from '@mui/base';
+import { moviesGenres } from '../../services/moviesService';
 
 interface CreateCreateProfilesProps {
     session: ISession;

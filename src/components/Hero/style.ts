@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import heroImage from '../../../public/hero-image-example.png';
 import { gsap, Power3 } from 'gsap';
 
 export const handleOutInfoAnimation = () => {
@@ -56,7 +55,7 @@ export const HeroWrapper = styled.div<{ src?: string }>`
     @media (max-width: 768px) {
         margin: -68px 0 0 0;
         background-image: linear-gradient(0deg, #000e 40%, #00000000 95.33%),
-            url(${props => (props.src ? props.src : heroImage.src)});
+            url(${props => (props.src ? props.src : '')});
         background-position: center;
         align-items: end;
     }

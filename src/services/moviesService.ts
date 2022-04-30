@@ -1,5 +1,5 @@
-import { HttpClient } from '../../infra/HttpClient/HttpClient';
-import { IProfile } from './authService';
+import { HttpClient } from '../infra/HttpClient/HttpClient';
+import { IProfile } from './auth/authService';
 
 export interface IMovieData {
     adult?: boolean;
@@ -60,7 +60,7 @@ export interface IMovieVideo {
 export interface IMovieHomeList {
     slug: string;
     title: string;
-    items: IMovieHomeList[];
+    items: IMovieData[];
 }
 
 export const moviesGenres = [

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useUsuario, UsuarioContext } from '../common/context/Usuario';
 import FirstHeader from '../components/FirstHeader';
 import * as S from '../styles/GlobalComponents';
@@ -14,8 +14,9 @@ import {
 } from '@mui/icons-material';
 import { HttpClient } from '../infra/HttpClient/HttpClient';
 import CreateProfiles from '../components/ManageProfiles';
-import { userService } from '../services/auth/userService';
+import { userService } from '../services/userService';
 import Link from 'next/link';
+import useWindowDimensions from '../common/context/WindowDimensions';
 
 const SelectProfile: React.FC<{
     session?: ISession;
@@ -28,6 +29,7 @@ const SelectProfile: React.FC<{
     });
     const [profileHovered, setProfileHovered] = useState('');
     const { storeProfile } = useUsuario();
+    const { width } = useWindowDimensions();
 
     const convertImage = (bin: ArrayBuffer) => {
         const buff = Buffer.from(bin);
@@ -37,6 +39,10 @@ const SelectProfile: React.FC<{
         <>
             <Head>
                 <title>Netflix - Select Profiles</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
             </Head>
             <FirstHeader />
             <S.ProfileWrapper>
@@ -52,8 +58,8 @@ const SelectProfile: React.FC<{
                                 <Add
                                     fontSize="large"
                                     style={{
-                                        width: '190px',
-                                        height: '190px',
+                                        width: width < 768 ? '140px' : '190px',
+                                        height: width < 768 ? '140px' : '190px',
                                     }}
                                 />
                             </S.ProfileBox>
@@ -93,10 +99,11 @@ const SelectProfile: React.FC<{
                                     style={{
                                         transition: '0.3s',
                                         opacity:
-                                            profileHovered === index.toString()
+                                            profileHovered ===
+                                                index.toString() || width < 768
                                                 ? 1
                                                 : 0,
-                                        marginTop: 20,
+                                        marginTop: 15,
                                         color: 'var(--white)',
                                     }}
                                     onClick={() => {
@@ -132,11 +139,15 @@ const SelectProfile: React.FC<{
                                             transition: '0.3s',
                                             opacity:
                                                 profileHovered ===
-                                                index.toString()
+                                                    index.toString() ||
+                                                width < 768
                                                     ? 1
                                                     : 0,
                                             color: 'var(--white)',
-                                            margin: '20px 0 0 20px',
+                                            margin:
+                                                width < 768
+                                                    ? '15px 0 0 30px'
+                                                    : '15px 0 0 20px',
                                         }}
                                         titleAccess="Edite o perfil"
                                         fontSize="large"

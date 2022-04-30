@@ -4,6 +4,7 @@ import nookies from 'nookies';
 import { HttpClient } from '../infra/HttpClient/HttpClient';
 import { authService } from '../services/auth/authService';
 import { tokenService } from '../services/auth/tokenService';
+import Head from 'next/head';
 
 export default function LogoutPage() {
     const router = useRouter();
@@ -21,5 +22,16 @@ export default function LogoutPage() {
         }
     }, []);
 
-    return <h2>Você será redirecionado em instantes...</h2>;
+    return (
+        <>
+            <Head>
+                <title>Netflix - Logout</title>
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+            </Head>
+            <h2>Você será redirecionado em instantes...</h2>
+        </>
+    );
 }

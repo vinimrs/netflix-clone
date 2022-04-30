@@ -1,17 +1,5 @@
-import { StaticImageData } from 'next/image';
-import React, {
-    createContext,
-    SetStateAction,
-    useContext,
-    useState,
-} from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { IProfile } from '../../services/auth/authService';
-
-// import avatar1 from '/avatar-1.png';
-// import avatar2 from '/avatar-2.png';
-// import avatar3 from '/avatar-3.png';
-// import avatar4 from '/avatar-4.png';
-// import avatar5 from '/avatar-5.png';
 
 interface IUsuarioContext {
     password?: string;
@@ -115,7 +103,6 @@ export const useUsuario = () => {
     };
 
     const changeProfile = prof => {
-        // const profile = profiles.find(prof => prof.slug === slug);
         localStorage.setItem('usuario', JSON.stringify(prof));
         setProfile(profile);
     };
