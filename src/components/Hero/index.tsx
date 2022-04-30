@@ -106,7 +106,7 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
                                 setVideoIsOpen(!videoIsOpen);
                             }}
                         >
-                            <Image src={play.src} width="30px" height="30px" />
+                            <Image src={play.src} width="20px" height="20px" />
                             <S.ButtonText>
                                 {videoIsOpen ? 'Sair' : 'Trailer'}
                             </S.ButtonText>
