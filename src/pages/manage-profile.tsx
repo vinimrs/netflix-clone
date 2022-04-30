@@ -276,7 +276,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                                     borderRadius: '5px',
                                                     width: '100%',
                                                     minWidth: '400px',
-                                                    // minWidth: '400px',
                                                 },
                                             }}
                                             inputProps={{
@@ -330,6 +329,7 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                     style={{
                                         fontSize: '32px',
                                         color: 'var(--white)',
+                                        marginBottom: '12px',
                                     }}
                                 >
                                     Seu novo perfil
@@ -338,7 +338,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                     <Image
                                         style={{
                                             borderRadius: '10px',
-                                            margin: '8px 0',
                                         }}
                                         width="200px"
                                         height="200px"
@@ -370,7 +369,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                         >
                             <S.LoginButton
                                 type="submit"
-                                variant="contained"
                                 data-testid="Entrar"
                                 width="40%"
                             >

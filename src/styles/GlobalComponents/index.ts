@@ -71,7 +71,7 @@ export const LoginTextfield = styled(TextField)<{ width?: string }>`
     background-color: #333;
     border-radius: 5px;
     width: ${props => props.width};
-    margin: 18px 0 16px 0;
+    margin: 16px 0;
 `;
 
 export const CustomSelectField = styled(Select)<{ width?: string }>`
@@ -82,10 +82,29 @@ export const CustomSelectField = styled(Select)<{ width?: string }>`
     margin: 18px 0 16px 0;
 `;
 
-export const LoginButton = styled(Button)<{ width?: string }>`
-    background-color: var(--red-netflix);
-    padding: 12px 24px;
+export const LoginButton = styled.button<{ width?: string }>`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+    vertical-align: middle;
+    text-transform: uppercase;
+    font-family: 'Roboto';
+    padding: 12px 48px;
     margin: 32px 0 12px 0;
+    outline: 0;
+    border-radius: 4px;
+    border: 0;
+    font-size: 0.875rem;
+    line-height: 1.75;
+    letter-spacing: 0.02857em;
+    min-width: 64px;
+    background-color: var(--red-netflix);
+    color: var(--white);
+    cursor: pointer;
+    transition: 0.3s;
+
     width: ${props => props.width};
 
     &:hover {
@@ -93,7 +112,7 @@ export const LoginButton = styled(Button)<{ width?: string }>`
     }
 
     &:disabled {
-        color: rgb(253 239 239 / 65%);
+        color: #aaa;
         background-color: rgb(102 0 0 / 97%);
     }
 

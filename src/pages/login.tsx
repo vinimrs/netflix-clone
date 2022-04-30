@@ -163,9 +163,8 @@ const Login: React.FC = () => {
                             email.length < 1
                         }
                         type="submit"
-                        variant="contained"
-                        fullWidth
                         data-testid="Entrar"
+                        width="100%"
                     >
                         {!loading && 'Entrar'}
                         {loading && (

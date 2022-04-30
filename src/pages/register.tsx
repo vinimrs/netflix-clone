@@ -242,8 +242,7 @@ const Register: React.FC = () => {
                             name.length < 1
                         }
                         type="submit"
-                        variant="contained"
-                        fullWidth
+                        width="100%"
                         data-testid="Entrar"
                     >
                         Cadastrar
