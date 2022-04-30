@@ -122,6 +122,12 @@ export const useUsuario = () => {
         return slugify;
     };
 
+    const refreshProfile = () => {
+        const profileStorage = getStorageProfile();
+        setProfile(profileStorage);
+        return profileStorage;
+    };
+
     return {
         filterToAnothersProfiles,
         getStorageProfile,
@@ -139,5 +145,6 @@ export const useUsuario = () => {
         setName,
         toSlug,
         convertImage,
+        refreshProfile,
     };
 };

@@ -88,7 +88,11 @@ const List: React.FC<List> = ({ list, setModal }) => {
                         list.items.map((film, key) => {
                             return (
                                 <S.FilmImage
-                                    src={`https://image.tmdb.org/t/p/w300${film.poster_path}`}
+                                    src={
+                                        film.poster_path
+                                            ? `https://image.tmdb.org/t/p/w300${film.poster_path}`
+                                            : ''
+                                    }
                                     alt={film.original_title}
                                     key={key}
                                     data-testid="film-poster"

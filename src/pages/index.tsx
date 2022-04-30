@@ -1,5 +1,6 @@
-import React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import Head from 'next/head';
+import * as S from '../styles/GlobalComponents';
 import { useFilms } from '../common/context/Films';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
@@ -7,13 +8,14 @@ import Footer from '../components/Footer';
 import MoreInfoModal from '../components/MoreInfoModal';
 import List from '../components/List';
 import Loading from '../components/Loading';
-import * as S from '../styles/GlobalComponents';
+import { useUsuario } from '../common/context/Usuario';
 import { withSession } from '../services/auth/session';
 import { ISession } from '../services/auth/authService';
-import Head from 'next/head';
+import { IMovieDataInfo } from '../services/moviesService';
 
 const Browse: React.FC<{ session: ISession }> = ({ session }) => {
-    const { list, setList, setHeroFilm, heroFilm } = useFilms();
+    const { list, loadAll, heroFilm } = useFilms();
+    const { profile, refreshProfile } = useUsuario();
     const [headerActive, setHeaderActive] = useState(false);
     const [modalInfo, setModalInfo] = useState({
         id: '',
@@ -21,9 +23,9 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
         success: true,
     });
 
-    const handleSetModalInfo = film => {
+    const handleSetModalInfo = (film: IMovieDataInfo) => {
         const type = film.number_of_seasons ? 'tv' : 'movie';
-        setModalInfo({ ...modalInfo, id: film.id, type: type });
+        setModalInfo({ ...modalInfo, id: film.id.toString(), type: type });
     };
 
     const toHoursAndMinutes = useCallback(totalMinutes => {
@@ -36,8 +38,13 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
     }, []);
 
     useEffect(() => {
-        if (list.length > 0) setList([]);
-        if (heroFilm.title) setHeroFilm({ title: '' });
+        if (!profile) {
+            const prof = refreshProfile();
+            loadAll(prof);
+        } else {
+            loadAll(profile);
+        }
+
         const scrollListener = () => {
             if (window.scrollY > 10) {
                 setHeaderActive(true);
@@ -78,8 +85,8 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
                     }}
                     severity="error"
                 >
-                    Opa! Esse filme não foi encontrado!{' '}
-                    <strong>Tente Outro!</strong>
+                    Opa! Não encontramos informações sobre esse filme!{' '}
+                    <strong>Tente Novamente!</strong>
                 </S.StyledAlert>
             )}
             {heroFilm.title && list.length > 7 && (
