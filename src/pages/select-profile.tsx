@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useUsuario } from '../common/context/Usuario';
-import FirstHeader from '../components/FirstHeader';
 import * as S from '../styles/GlobalComponents';
 import { useRouter } from 'next/router';
 import { withSession } from '../services/auth/session';
@@ -9,7 +8,8 @@ import Head from 'next/head';
 import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import { userService } from '../services/userService';
 import Link from 'next/link';
-import useWindowDimensions from '../common/context/WindowDimensions';
+import { WindowDimsContext } from '../common/context/WindowDimensions';
+import FirstHeader from '../components/FirstHeader';
 
 const SelectProfile: React.FC<{
     session?: ISession;
@@ -21,8 +21,8 @@ const SelectProfile: React.FC<{
         error: false,
     });
     const [profileHovered, setProfileHovered] = useState('');
+    const { width } = useContext(WindowDimsContext);
     const { storeProfile } = useUsuario();
-    const { width } = useWindowDimensions();
 
     const convertImage = (bin: ArrayBuffer) => {
         const buff = Buffer.from(bin);

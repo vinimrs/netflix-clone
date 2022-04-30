@@ -5,6 +5,7 @@ import GlobalStyle from '../styles/global';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { FilmsProvider } from '../common/context/Films';
 import { UsuarioProvider } from '../common/context/Usuario';
+import { WindowDimsProvider } from '../common/context/WindowDimensions';
 
 const theme = createTheme({
     palette: {
@@ -29,8 +30,10 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <ThemeProvider theme={theme}>
             <UsuarioProvider>
                 <FilmsProvider>
-                    <Component {...pageProps} />
-                    <GlobalStyle />
+                    <WindowDimsProvider>
+                        <Component {...pageProps} />
+                        <GlobalStyle />
+                    </WindowDimsProvider>
                 </FilmsProvider>
             </UsuarioProvider>
         </ThemeProvider>

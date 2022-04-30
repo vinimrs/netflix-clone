@@ -1,29 +1,26 @@
-import Logo from '../../public/netflix-logo.svg';
-import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import Image from 'next/image';
 import React from 'react';
-
-export const Header = styled.header`
-    text-align: left;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 16px 0 0 32px;
-`;
+import logo from '../../public/netflix-logo.svg';
 
 const FirstHeader: React.FC = () => {
-    const router = useRouter();
     return (
-        <Header>
-            <div style={{ cursor: 'pointer' }}>
-                <img
-                    src={Logo.src}
-                    onClick={() => {
-                        router.push('/login');
-                    }}
-                />
-            </div>
-        </Header>
+        <div
+            style={{
+                position: 'fixed',
+                top: 0,
+                width: '100vw',
+                height: '80px',
+                paddingRight: '80vw',
+                paddingLeft: '50px',
+            }}
+        >
+            <Image
+                src={logo.src}
+                width="150px"
+                height="100px"
+                style={{ display: 'flex', justifyContent: 'start' }}
+            />
+        </div>
     );
 };
 

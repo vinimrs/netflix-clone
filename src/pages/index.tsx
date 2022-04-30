@@ -20,7 +20,6 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
         type: '',
         success: true,
     });
-    // const [deleteModal, setDeleteModal] = useState(false);
 
     const handleSetModalInfo = film => {
         const type = film.number_of_seasons ? 'tv' : 'movie';
@@ -65,7 +64,6 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
             {modalInfo.id && (
                 <MoreInfoModal
                     minutesToHours={toHoursAndMinutes}
-                    // {...modalInfo}
                     id={Number(modalInfo.id)}
                     type={modalInfo.type}
                     setModalInfo={setModalInfo}
@@ -103,7 +101,6 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
                     })}
                 </S.MainWrapper>
             )}
-            {/* {deleteModal && (<DeleteAccountModal setDeleteModal={setDeleteModal} />)} */}
             {!(heroFilm.title && list.length > 7) && <Loading />}
             {heroFilm.title && list.length > 7 && <Footer />}
         </>

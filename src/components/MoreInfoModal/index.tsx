@@ -1,12 +1,13 @@
 import * as S from './style';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { gsap, Power3 } from 'gsap';
 import React from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { moviesService } from '../../services/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import useWindowDimensions from '../../common/context/WindowDimensions';
+import { WindowDimsContext } from '../../common/context/WindowDimensions';
 import Loading from '../Loading';
+import Image from 'next/image';
 
 interface ModeInfoModalProps {
     id: number;
@@ -30,7 +31,7 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
     const [movie, setMovie] = useState(null);
     const [movieVideo, setMovieVideo] = useState(null);
     const [isReady, setIsReady] = useState(false);
-    const { width } = useWindowDimensions();
+    const { width } = useContext(WindowDimsContext);
 
     const videoOpts: Options = {
         height: '400px',
@@ -193,7 +194,7 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
                                                         key={company.name}
                                                     >
                                                         {company.logo_path && (
-                                                            <img
+                                                            <Image
                                                                 src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
                                                                 alt={
                                                                     company.name
@@ -211,7 +212,7 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
                                 )}
                             </div>
                             <div style={{ textAlign: 'center' }}>
-                                <img
+                                <Image
                                     src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                                     alt={movie.title}
                                     style={{

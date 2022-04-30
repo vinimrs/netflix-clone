@@ -12,6 +12,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { HttpClient } from '../infra/HttpClient/HttpClient';
 import load from '../../public/loading-white.svg';
+import Image from 'next/image';
 
 interface CreateManageProfilesProps {
     session: ISession;
@@ -334,12 +335,13 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                     Seu novo perfil
                                 </h2>
                                 {imageData.data && (
-                                    <img
+                                    <Image
                                         style={{
-                                            width: '200px',
                                             borderRadius: '10px',
                                             margin: '8px 0',
                                         }}
+                                        width="200px"
+                                        height="200px"
                                         src={`data:image/image/png;base64,${imageData.data}`}
                                     />
                                 )}

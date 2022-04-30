@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useUsuario } from '../../common/context/Usuario';
 import { Box } from '@mui/system';
 import { moviesGenres } from '../../services/moviesService';
+import Image from 'next/image';
 
 interface CreateCreateProfilesProps {
     session: ISession;
@@ -279,12 +280,14 @@ const CreateProfiles: React.FC<CreateCreateProfilesProps> = ({
                         Seu novo perfil
                     </h2>
                     {imageData.data && (
-                        <img
+                        <Image
                             style={{
-                                width: '200px',
+                                // width: '200px',
                                 borderRadius: '10px',
                                 margin: '8px 0',
                             }}
+                            width="200px"
+                            height="150px"
                             src={`data:image/image/png;base64,${imageData.data}`}
                         />
                     )}

@@ -2,10 +2,11 @@ import * as S from './style';
 import { handleInInfoAnimation, handleOutInfoAnimation } from './style';
 import play from '../../../public/play.svg';
 import { useFilms } from '../../common/context/Films';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
-import useWindowDimensions from '../../common/context/WindowDimensions';
+import { WindowDimsContext } from '../../common/context/WindowDimensions';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import Image from 'next/image';
 
 interface Hero {
     setModal?: (film: any) => void;
@@ -14,7 +15,7 @@ interface Hero {
 
 const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
     const { heroFilm, filmVideo } = useFilms();
-    const { width, height } = useWindowDimensions();
+    const { width, height } = useContext(WindowDimsContext);
     const [videoIsOpen, setVideoIsOpen] = useState(false);
 
     const videoOpts: Options = {
@@ -105,7 +106,7 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
                                 setVideoIsOpen(!videoIsOpen);
                             }}
                         >
-                            <img src={play.src} />
+                            <Image src={play.src} width="30px" height="30px" />
                             <S.ButtonText>
                                 {videoIsOpen ? 'Sair' : 'Trailer'}
                             </S.ButtonText>

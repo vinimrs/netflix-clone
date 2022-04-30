@@ -2,13 +2,14 @@ import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { UsuarioContext } from '../common/context/Usuario';
-import FirstHeader from '../components/FirstHeader';
 import bgImage from '../../public/netflix-library.jpg';
 import load from '../../public/loading-white.svg';
 import * as S from '../styles/GlobalComponents';
 import { authService } from '../services/auth/authService';
 import Link from 'next/link';
 import Head from 'next/head';
+import Image from 'next/image';
+import FirstHeader from '../components/FirstHeader';
 
 const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -168,10 +169,9 @@ const Login: React.FC = () => {
                     >
                         {!loading && 'Entrar'}
                         {loading && (
-                            <img
-                                style={{
-                                    width: '30px',
-                                }}
+                            <Image
+                                width="30px"
+                                height="30px"
                                 src={load.src}
                                 alt="Animação de carregamento"
                             />

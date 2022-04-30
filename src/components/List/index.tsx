@@ -1,10 +1,11 @@
 import * as S from './style';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import chevronLeft from '../../../public/chevron.svg';
 import chevronRight from '../../../public/chevron-right.svg';
 import { useSwipeable } from 'react-swipeable';
-import useWindowDimensions from '../../common/context/WindowDimensions';
+import { WindowDimsContext } from '../../common/context/WindowDimensions';
 import { IMovieData, IMovieHomeList } from '../../services/moviesService';
+import Image from 'next/image';
 
 interface List {
     setModal?: (film: IMovieData) => void;
@@ -14,7 +15,7 @@ interface List {
 const List: React.FC<List> = ({ list, setModal }) => {
     const [activeList, setActiveList] = useState(false);
     const [scrollx, setScrollx] = useState(0);
-    const { width } = useWindowDimensions();
+    const { width } = useContext(WindowDimsContext);
 
     const listTitle = useRef(null);
     const listDiv = useRef(null);
@@ -56,7 +57,7 @@ const List: React.FC<List> = ({ list, setModal }) => {
                 }}
                 onClick={() => handleLeftArrow()}
             >
-                <img src={chevronLeft.src} />
+                <Image src={chevronLeft.src} width="30px" height="30px" />
             </S.NavigateDiv>
             <S.NavigateDiv
                 onMouseEnter={() => {
@@ -68,7 +69,7 @@ const List: React.FC<List> = ({ list, setModal }) => {
                 }}
                 onClick={() => handleRightArrow()}
             >
-                <img src={chevronRight.src} />
+                <Image src={chevronRight.src} width="30px" height="30px" />
             </S.NavigateDiv>
 
             <S.ListTitle ref={listTitle}>{list.title}</S.ListTitle>
