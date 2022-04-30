@@ -15,7 +15,6 @@
         "nookies": "^2.5.2",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-scripts": "^5.0.1",
         "react-swipeable": "^6.2.0",
         "react-youtube": "^7.14.0",
         "styled-components": "^5.3.3",
@@ -25,8 +24,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start",
-        "now-build": "react-scripts build"
+        "start": "next start"
     },
     "eslintConfig": {
         "extends": [
