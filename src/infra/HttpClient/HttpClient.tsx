@@ -22,7 +22,6 @@ export async function HttpClient(fethUrl: string, fetchOptions) {
         })
 
         .then(async res => {
-            // console.log(res);
             if (!fetchOptions.refresh) return res;
             if (res.status !== 401) return res;
 
@@ -30,7 +29,7 @@ export async function HttpClient(fethUrl: string, fetchOptions) {
             const currentRefreshToken =
                 fetchOptions?.ctx?.req?.cookies['REFRESH_TOKEN_NAME'];
 
-            console.log('Atualizando tokens');
+            // console.log('Atualizando tokens');
 
             /*
             -Sempre use try catch para capturar os erros desconhecidos. 
