@@ -81,7 +81,6 @@ export const useFilms = () => {
     };
 
     const loadHomeLists = async () => {
-        // if (profile !== null) {
         const resultList = await moviesService.getHomeList(profile);
         const fixedLists = await moviesService.getFixedHomeLists();
         const lists = [...resultList, ...fixedLists];
@@ -90,16 +89,12 @@ export const useFilms = () => {
                 return { ...item, items: item.items.body };
             })
         );
-        console.log(res);
         res = shuffle(res);
         setList(res);
-        // }
     };
 
     useEffect(() => {
-        console.log('useeffect');
-        if (profile !== null || profile !== undefined) {
-            console.log('useeffect OK');
+        if (profile !== null && profile !== undefined) {
             const loadAll = async () => {
                 loadHomeLists();
                 loadHeroFilmWithId(
@@ -110,9 +105,9 @@ export const useFilms = () => {
             };
             loadAll();
         } else {
-            setProfile(getStorageProfile());
+            if (list.length < 1) setProfile(getStorageProfile());
         }
-    }, []);
+    }, [profile]);
 
     return {
         list,
