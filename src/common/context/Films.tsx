@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { IProfile } from '../../services/auth/authService';
 import {
     IMovieDataInfo,
     IMovieHomeList,
     moviesService,
 } from '../../services/moviesService';
 import { IMovieVideo } from '../../services/moviesService';
-import { useUsuario } from './Usuario';
 
 interface IFilmsContext {
     list?: IMovieHomeList[] | null;
@@ -43,12 +43,9 @@ export const FilmsProvider = ({ children }) => {
 export const useFilms = () => {
     const { list, heroFilm, filmVideo, setHeroFilm, setFilmVideo, setList } =
         useContext(FilmsContext);
-    const { profile, getStorageProfile, setProfile } = useUsuario();
-    profile;
 
     const loadHeroFilmWithId = async (id = '10752') => {
         const resp = await moviesService.getMovieListByGenre(id);
-        resp;
         if (resp.length > 0) {
             let randomChosen = Math.floor(Math.random() * (resp.length - 1));
             let chosen = resp[randomChosen];
@@ -80,7 +77,7 @@ export const useFilms = () => {
         return array;
     };
 
-    const loadHomeLists = async () => {
+    const loadHomeLists = async (profile: IProfile) => {
         const resultList = await moviesService.getHomeList(profile);
         const fixedLists = await moviesService.getFixedHomeLists();
         const lists = [...resultList, ...fixedLists];
@@ -93,21 +90,14 @@ export const useFilms = () => {
         setList(res);
     };
 
-    useEffect(() => {
-        if (profile !== null && profile !== undefined) {
-            const loadAll = async () => {
-                loadHomeLists();
-                loadHeroFilmWithId(
-                    profile?.preference[
-                        Math.floor(Math.random() * profile?.preference.length)
-                    ]
-                );
-            };
-            loadAll();
-        } else {
-            if (list.length < 1) setProfile(getStorageProfile());
-        }
-    }, [profile]);
+    const loadAll = (profile: IProfile) => {
+        loadHomeLists(profile);
+        loadHeroFilmWithId(
+            profile?.preference[
+                Math.floor(Math.random() * profile?.preference.length)
+            ]
+        );
+    };
 
     return {
         list,
@@ -118,5 +108,6 @@ export const useFilms = () => {
         setList,
         loadHeroFilmWithId,
         loadHomeLists,
+        loadAll,
     };
 };

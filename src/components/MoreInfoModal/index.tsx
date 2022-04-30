@@ -3,7 +3,11 @@ import { useContext, useEffect, useState } from 'react';
 import { gsap, Power3 } from 'gsap';
 import React from 'react';
 import YouTube, { Options } from 'react-youtube';
-import { moviesService } from '../../services/moviesService';
+import {
+    IMovieData,
+    IMovieDataInfo,
+    moviesService,
+} from '../../services/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { WindowDimsContext } from '../../common/context/WindowDimensions';
 import Loading from '../Loading';
@@ -28,9 +32,10 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
     setModalInfo,
     minutesToHours,
 }) => {
-    const [movie, setMovie] = useState(null);
+    const [movie, setMovie] = useState<IMovieDataInfo>(null);
     const [movieVideo, setMovieVideo] = useState(null);
     const [isReady, setIsReady] = useState(false);
+    const [missingError, setMissingError] = useState(false);
     const { width } = useContext(WindowDimsContext);
 
     const videoOpts: Options = {
@@ -54,14 +59,9 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
         const getMovieModal = async (id: number) => {
             const movie = await moviesService.getMovieInfo(id);
             const video = await moviesService.getMovieVideos(id);
-            if (
-                // video.success === false ||
-                // movie.success === false ||
-                !video[0]
-            ) {
-                setModalInfo(lastval => {
-                    return { ...lastval, success: false };
-                });
+            if (!video[0]) {
+                setModalInfo({ id: '', type: '', success: false });
+                setMissingError(true);
                 return;
             }
             setMovie(movie);
@@ -74,11 +74,11 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
             ease: Power3.easeInOut,
             autoAlpha: 1,
         });
-    }, [type, id, setModalInfo]);
+    }, []);
 
     return (
         <S.ModalBG data-testid="modal">
-            {!isReady && (
+            {!isReady && !missingError && (
                 <div
                     style={{
                         height: '100vh',
@@ -194,7 +194,7 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
                                                         key={company.name}
                                                     >
                                                         {company.logo_path && (
-                                                            <Image
+                                                            <img
                                                                 src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
                                                                 alt={
                                                                     company.name
@@ -212,8 +212,12 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
                                 )}
                             </div>
                             <div style={{ textAlign: 'center' }}>
-                                <Image
-                                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                                <img
+                                    src={
+                                        movie.poster_path
+                                            ? `https://image.tmdb.org/t/p/original${movie.poster_path}`
+                                            : ''
+                                    }
                                     alt={movie.title}
                                     style={{
                                         width: '200px',

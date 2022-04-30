@@ -21,7 +21,7 @@ export interface IMovieData {
 export interface IMovieDataInfo extends IMovieData {
     belong_to_collection?: null | string;
     budget?: number;
-    genre?: { id?: number; name?: string }[];
+    genres?: { id?: number; name?: string }[];
     homepage?: string;
     imdb_id?: string;
     production_companies?: {

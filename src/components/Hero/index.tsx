@@ -122,10 +122,10 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
                         <S.ButtonText>Mais Informações</S.ButtonText>
                     </S.HeroButton>
                 </S.ButtonsWrapper>
-                {heroFilm.genre && (
+                {heroFilm.genres && (
                     <S.FilmText className="_filmGenres">
                         |{' '}
-                        {heroFilm.genre.map(genre => {
+                        {heroFilm.genres.map(genre => {
                             return `${genre.name} | `;
                         })}
                     </S.FilmText>
