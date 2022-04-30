@@ -34,7 +34,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
     const [preferences, setPreferences] = useState<string[]>([]);
     const [profileName, setProfileName] = useState('');
     const [imageData, setImageData] = useState({ id: '', data: '' });
-    // const [setingProfile, setSetingProfile] = useState(false);
     const [editProfile, setEditProfile] = useState('');
     const [confirmMessage, setConfirmMessage] = useState({
         message: '',
@@ -203,6 +202,7 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                                         ),
                                                     });
                                                 }}
+                                                role="img"
                                             >
                                                 <S.CreateProfileImageBox
                                                     src={`data:image/image/png;base64,${convertImage(
@@ -275,7 +275,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                                                     color: '#eee',
                                                     borderRadius: '5px',
                                                     width: '100%',
-                                                    minWidth: '400px',
                                                 },
                                             }}
                                             inputProps={{
@@ -327,7 +326,6 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                             <div style={{ textAlign: 'center' }}>
                                 <h2
                                     style={{
-                                        fontSize: '32px',
                                         color: 'var(--white)',
                                         marginBottom: '12px',
                                     }}

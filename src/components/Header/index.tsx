@@ -9,6 +9,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { ISession } from '../../services/auth/authService';
 import DeleteAccountModal from '../DeleteAccountModal';
+import Link from 'next/link';
 
 interface HeaderProps {
     scroll: boolean;
@@ -55,12 +56,14 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
     });
     return (
         <S.StyledHeader $active={scroll}>
-            <S.LogoNetflix
-                onClick={() => router.push('/select-profile')}
-                src={logo.src}
-                alt="Logo da Netflix"
-                style={{ cursor: 'pointer' }}
-            />
+            <Link href="/select-profile">
+                <S.LogoNetflix
+                    // onClick={() => router.push('/select-profile')}
+                    src={logo.src}
+                    alt="Logo da Netflix"
+                    style={{ cursor: 'pointer' }}
+                />
+            </Link>
             {profile?.image.data && (
                 <S.PerfilNetflix
                     onClick={() =>

@@ -32,9 +32,15 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
         },
     };
 
-    const getTextLimit = () => {
+    const limitedText = (text: string, type: string) => {
         const windowWidth = width;
-        return windowWidth > 768 ? 400 : 200;
+        const limits = {
+            title: windowWidth > 768 ? 40 : 10,
+            description: windowWidth > 768 ? 250 : 100,
+        };
+        return text.length > limits[type]
+            ? text.substring(0, limits[type]) + '...'
+            : text;
     };
 
     const handleOnVideoEnd = () => {
@@ -63,7 +69,9 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
             )}
             <S.InfoFilm className="_infoFilm">
                 <S.FilmTitle className="_filmTitle">
-                    {heroFilm.title ? heroFilm.title : heroFilm.original_title}
+                    {heroFilm.title
+                        ? limitedText(heroFilm.title, 'title')
+                        : limitedText(heroFilm.original_title, 'title')}
                 </S.FilmTitle>
                 <S.Details className="_detailsDiv">
                     {heroFilm.vote_average && (
@@ -90,10 +98,8 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
                 </S.Details>
                 {heroFilm.overview && (
                     <S.FilmText className="_filmDescription">
-                        {heroFilm.overview.length > getTextLimit()
-                            ? heroFilm.overview.substring(0, getTextLimit()) +
-                              '...'
-                            : heroFilm.overview}
+                        {heroFilm.overview &&
+                            limitedText(heroFilm.overview, 'description')}
                     </S.FilmText>
                 )}
                 <S.ButtonsWrapper>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { gsap, Power3 } from 'gsap';
 
-export const handleOutInfoAnimation = () => {
+export const handleOutInfoAnimation = (): void => {
     gsap.to('._filmTitle', {
         ease: Power3.easeInOut,
         fontSize: '52px',
@@ -12,12 +12,11 @@ export const handleOutInfoAnimation = () => {
         ease: Power3.easeInOut,
         display: 'none',
         duration: 1,
-
         autoAlpha: 0,
     });
 };
 
-export const handleInInfoAnimation = () => {
+export const handleInInfoAnimation = (): void => {
     gsap.to('._filmTitle', {
         duration: 0.5,
         fontSize: '72px',

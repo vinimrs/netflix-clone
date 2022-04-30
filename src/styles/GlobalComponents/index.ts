@@ -58,6 +58,7 @@ export const LoginContainer = styled.div<{ larger?: boolean }>`
         width: 100vw;
         padding: 24px 8px;
         margin: 0;
+        margin-top: 20px;
         overflow-x: hidden;
     }
 `;
@@ -117,7 +118,7 @@ export const LoginButton = styled.button<{ width?: string }>`
     }
 
     @media (max-width: 768px) {
-        width: 90%;
+        width: 100%;
     }
 `;
 
@@ -149,6 +150,10 @@ export const ProfileContainer = styled.div`
     width: 90%;
     color: var(--gray);
     margin-top: 35px;
+
+    @media (max-width: 768px) {
+        margin-top: 10px;
+    }
 `;
 
 export const ProfileBox = styled.div`
@@ -170,8 +175,6 @@ export const ProfileWrapper = styled.div`
     height: 100vh;
     width: 100vw;
     display: flex;
-    /* margin-top: 80px; */
-    /* margin-bottom: 100px; */
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -184,15 +187,11 @@ export const ProfileWrapper = styled.div`
     }
 
     h2 {
-        font-size: 24px;
+        font-size: 32px;
         font-weight: 700;
         color: #8c8c80;
         transition: 0.3s;
     }
-
-    /* h2:hover {
-        color: var(--white);
-    } */
 
     h3 {
         font-size: 22px;
@@ -202,17 +201,17 @@ export const ProfileWrapper = styled.div`
 
     @media (max-width: 768px) {
         height: auto;
-        margin-top: 100px;
+        margin-top: 140px;
         margin-bottom: 70px;
         h1 {
             font-size: 32px;
             margin-bottom: 12px;
         }
         h2 {
-            font-size: 18px;
+            font-size: 28px;
         }
         h3 {
-            font-size: 16px;
+            font-size: 22px;
         }
     }
 `;

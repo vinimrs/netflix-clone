@@ -1,3 +1,4 @@
+import { NextPageContext } from 'next';
 import nookies from 'nookies';
 
 const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN_KEY';
@@ -9,17 +10,17 @@ const ONE_DAY = ONE_HOUR * 24;
 const ONE_YEAR = ONE_DAY * 365;
 
 export const tokenService = {
-    save(accessToken, ctx = null) {
+    save(accessToken: string, ctx: NextPageContext = null): void {
         nookies.set(ctx, ACCESS_TOKEN_KEY, accessToken, {
             maxAge: ONE_YEAR,
             path: '/',
         });
     },
-    get(ctx = null) {
+    get(ctx: NextPageContext = null) {
         const cookies = nookies.get(ctx);
         return cookies[ACCESS_TOKEN_KEY] || '';
     },
-    delete(ctx = null) {
+    delete(ctx: NextPageContext = null): void {
         nookies.destroy(ctx, ACCESS_TOKEN_KEY);
     },
 };

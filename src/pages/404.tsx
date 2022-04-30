@@ -1,24 +1,31 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import styled from 'styled-components';
 import logo from '../../public/netflix-logo.svg';
+
+const Error404Div = styled.div`
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 22px;
+        }
+    }
+`;
 
 export default function Custom404() {
     return (
-        <div
-            style={{
-                width: '100vw',
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-            }}
-        >
+        <Error404Div>
             <Head>
                 <title>404 - Página não encontrada</title>
             </Head>
             <Image src={logo.src} width="300px" height="150px" />
             <h1>Oops - Página não encontrada</h1>
-        </div>
+        </Error404Div>
     );
 }
