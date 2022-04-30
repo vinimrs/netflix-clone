@@ -5,16 +5,17 @@
 Projeto de clone de um dos mais famosos serviços de Streaming. Buscando a maior fidelidade possível.
 
 ## Confira 🔦
+
 ![pagina-principal](https://user-images.githubusercontent.com/92659173/155800583-0948465a-b167-490a-823e-3e3fc3995f45.png)
 
 ## Tecnologias ⚡
 
-- [React](https://pt-br.reactjs.org)
-- [The Movie DB](https://pt-br.reactjs.org)
+-   [React](https://pt-br.reactjs.org)
+-   [The Movie DB](https://pt-br.reactjs.org)
 
 ## Features :hammer:
 
-- `Veja o Trailer do filme na íntegra`: em um clique!
+-   `Veja o Trailer do filme na íntegra`: em um clique!
 
 ## Como rodar a aplicação :arrow_forward:
 
@@ -29,7 +30,8 @@ Depois disso você pode ir no repositório e rodar o comando `npm install` para 
 ```bash
 npm install
 ```
-Finalmente, rode o comando  `npm run dev` para iniciar a aplicação:
+
+Finalmente, rode o comando `npm run dev` para iniciar a aplicação:
 
 ```bash
 npm run dev
@@ -38,6 +40,3 @@ npm run dev
 ## Melhorias 🛠
 
 Ideias de melhorias para o projeto:
-
-
-

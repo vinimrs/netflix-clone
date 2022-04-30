@@ -4,4 +4,4 @@ module.exports = {
     arrowParens: 'avoid',
     endOfLine: 'auto',
     tabWidth: 4,
-}
+};
