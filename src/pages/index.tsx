@@ -52,7 +52,6 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
         };
     }, []);
 
-    console.log(heroFilm, list);
     return (
         <>
             <Head>
