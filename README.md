@@ -1,21 +1,31 @@
-# Netflix Clone
+# Netflix Clone - V2
 
-<img src="https://github.com/ViniR07/netflix-clone/blob/master/src/assets/netflix-logo.svg" width="500px" />
+<img src="https://github.com/ViniR07/netflix-clone/blob/master/public/netflix-logo.svg" width="400px" />
 
-Projeto de clone de um dos mais famosos serviços de Streaming. Buscando a maior fidelidade possível.
+**Projeto de clone de um dos mais famosos serviços de Streaming em sua versão 2.**
 
 ## Confira 🔦
 
+![gif-exemplo](https://user-images.githubusercontent.com/92659173/166121891-46220c7c-54bb-4d8c-a7e7-9f5332335610.gif)
+![browse](https://user-images.githubusercontent.com/92659173/166117634-f50e8d09-e33e-49fd-aff1-f67314b1c685.png)
+![login](https://user-images.githubusercontent.com/92659173/166117726-574ff103-2fc7-40bc-8ec5-16aaba976056.png)
+![select-profile](https://user-images.githubusercontent.com/92659173/166117695-49837b3b-c6de-43b5-9680-69a8e4da4c71.png)
+![edit-profile](https://user-images.githubusercontent.com/92659173/166117748-3c005c50-2230-4098-88f9-83b8eeb32d38.png)
+
 ## Tecnologias ⚡
 
--   [React](https://pt-br.reactjs.org)
--   [The Movie DB](https://pt-br.reactjs.org)
+-   [Typescript](https://www.typescriptlang.org)
+-   [NextJs](https://nextjs.org)
 
 ## Features :hammer:
 
--   `Veja o Trailer do filme na íntegra`: em um clique!
--   `Top filmes da semana`: não fique por fora das novidades!
--   `Se aventure em novas histórias todos os dias`: dos mais variados filmes!
+-   `Criação de conta com autenticação`: guarde suas preferências!
+-   `Gerenciamento completo de perfis`: crie, edite e remova perfis personalizados!
+-   `Teasers dos filmes mais aclamados`: veja tudo na íntegra!
+
+## Backend 💾
+
+**Backend dedicado em NodeJs com Express, pode ser visto no [repositório](https://github.com/ViniR07/netflix-backend)**
 
 ## Como rodar a aplicação :arrow_forward:
 
@@ -41,5 +51,3 @@ npm run dev
 
 Ideias de melhorias para o projeto:
 
--   Integração Back-End
--   Migração para Next.js
