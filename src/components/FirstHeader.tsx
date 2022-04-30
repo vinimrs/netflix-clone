@@ -2,7 +2,6 @@ import Logo from '../../public/netflix-logo.svg';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import React from 'react';
-import { authService } from '../services/auth/authService';
 
 export const Header = styled.header`
     text-align: left;

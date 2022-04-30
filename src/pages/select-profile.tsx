@@ -1,19 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useUsuario, UsuarioContext } from '../common/context/Usuario';
+import React, { useState } from 'react';
+import { useUsuario } from '../common/context/Usuario';
 import FirstHeader from '../components/FirstHeader';
 import * as S from '../styles/GlobalComponents';
 import { useRouter } from 'next/router';
 import { withSession } from '../services/auth/session';
 import { IImageData, ISession } from '../services/auth/authService';
 import Head from 'next/head';
-import {
-    Add,
-    DeleteOutline,
-    EditOutlined,
-    RemoveCircleOutline,
-} from '@mui/icons-material';
-import { HttpClient } from '../infra/HttpClient/HttpClient';
-import CreateProfiles from '../components/ManageProfiles';
+import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import { userService } from '../services/userService';
 import Link from 'next/link';
 import useWindowDimensions from '../common/context/WindowDimensions';
@@ -122,7 +115,7 @@ const SelectProfile: React.FC<{
                                                 }
                                                 router.push('/select-profile');
                                             })
-                                            .catch(err => {
+                                            .catch(() => {
                                                 setConfirmMessage({
                                                     message:
                                                         'Erro ao deletar o perfil',

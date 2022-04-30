@@ -32,7 +32,7 @@ const Hero: React.FC<Hero> = ({ setModal, minutesToHours }) => {
     };
 
     const getTextLimit = () => {
-        let windowWidth = width;
+        const windowWidth = width;
         return windowWidth > 768 ? 400 : 200;
     };
 

@@ -9,10 +9,8 @@ import List from '../components/List';
 import Loading from '../components/Loading';
 import * as S from '../styles/GlobalComponents';
 import { withSession } from '../services/auth/session';
-import { useRouter } from 'next/router';
-import { authService, ISession } from '../services/auth/authService';
+import { ISession } from '../services/auth/authService';
 import Head from 'next/head';
-import DeleteAccountModal from '../components/DeleteAccountModal';
 
 const Browse: React.FC<{ session: ISession }> = ({ session }) => {
     const { list, setList, setHeroFilm, heroFilm } = useFilms();
