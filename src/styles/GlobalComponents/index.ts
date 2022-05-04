@@ -1,4 +1,4 @@
-import { Button, Select, TextField } from '@mui/material';
+import { Select, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { Alert } from '@mui/material';
 
@@ -171,7 +171,7 @@ export const ProfileBox = styled.div`
     }
 `;
 
-export const ProfileWrapper = styled.div`
+export const ProfileWrapper = styled.div<{ manage?: boolean }>`
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -187,7 +187,7 @@ export const ProfileWrapper = styled.div`
     }
 
     h2 {
-        font-size: 32px;
+        font-size: ${({ manage }) => (manage ? '32px' : '24px')};
         font-weight: 700;
         color: #8c8c80;
         transition: 0.3s;
@@ -208,7 +208,7 @@ export const ProfileWrapper = styled.div`
             margin-bottom: 12px;
         }
         h2 {
-            font-size: 28px;
+            font-size: ${({ manage }) => (manage ? '28px' : '18px')};
         }
         h3 {
             font-size: 22px;

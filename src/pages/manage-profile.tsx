@@ -119,7 +119,7 @@ const ManageProfiles: React.FC<CreateManageProfilesProps> = ({
                     content="width=device-width, initial-scale=1"
                 />
             </Head>
-            <S.ProfileWrapper>
+            <S.ProfileWrapper manage>
                 <S.ProfileContainer>
                     <h1 style={{ color: 'var(--white)' }}>
                         {!editProfile && 'Crie seu perfil'}
