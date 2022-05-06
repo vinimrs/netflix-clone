@@ -71,6 +71,8 @@ export const useUsuario = () => {
     setEmail,
     name,
     setName,
+    setConfirmPassword,
+    confirmPassword,
   } = useContext(UsuarioContext);
 
   const storeProfile = (prof: IProfile) => {
@@ -140,5 +142,7 @@ export const useUsuario = () => {
     toSlug,
     convertImage,
     refreshProfile,
+    setConfirmPassword,
+    confirmPassword,
   };
 };

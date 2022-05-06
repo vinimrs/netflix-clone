@@ -15,7 +15,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@types": ["src/@types"]
+      "@types": ["src/@types"],
+      "@constants": ["src/common/constants.ts"],
+      "@contexts": ["src/common/context"]
     },
     "baseUrl": "."
   },

@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState } from 'react';
 import chevronLeft from '../../../public/chevron.svg';
 import chevronRight from '../../../public/chevron-right.svg';
 import { useSwipeable } from 'react-swipeable';
-import { WindowDimsContext } from '../../common/context/WindowDimensions';
+import { WindowDimsContext } from '@contexts';
 import { IMovieData, IMovieHomeList } from '@types';
 import Image from 'next/image';
 

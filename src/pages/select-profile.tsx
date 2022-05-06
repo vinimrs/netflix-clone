@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { useUsuario } from '../common/context/Usuario';
 import * as S from '../styles/GlobalComponents';
 import { useRouter } from 'next/router';
 import { withSession } from '../services/auth/session';
@@ -8,7 +7,7 @@ import Head from 'next/head';
 import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import { userService } from '../services/userService';
 import Link from 'next/link';
-import { WindowDimsContext } from '../common/context/WindowDimensions';
+import { WindowDimsContext, useUsuario } from '@contexts';
 import FirstHeader from '../components/FirstHeader';
 
 const SelectProfile: React.FC<{

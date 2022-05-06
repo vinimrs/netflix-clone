@@ -1,31 +1,27 @@
 import * as S from './style';
 import { useContext, useEffect, useState } from 'react';
-import { gsap, Power3 } from 'gsap';
 import React from 'react';
-import YouTube, { Options } from 'react-youtube';
+import YouTube from 'react-youtube';
 import { moviesService } from '../../services/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { WindowDimsContext } from '../../common/context/WindowDimensions';
 import Loading from '../Loading';
-import { IMovieData, IMovieDataInfo } from '@types';
-import Image from 'next/image';
+import { WindowDimsContext } from '@contexts';
+import { IMovieDataInfo } from '@types';
+import { videoOpts } from '@constants';
 
 interface ModeInfoModalProps {
   id: number;
-  type: string;
   setModalInfo: React.Dispatch<
     React.SetStateAction<{
       id: string;
-      type: string;
       success: boolean;
     }>
   >;
-  minutesToHours: (totalMinutes: any) => string;
+  minutesToHours: (totalMinutes: number) => string;
 }
 
 const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
   id,
-  type,
   setModalInfo,
   minutesToHours,
 }) => {
@@ -35,29 +31,12 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
   const [missingError, setMissingError] = useState(false);
   const { width } = useContext(WindowDimsContext);
 
-  const videoOpts: Options = {
-    height: '400px',
-    width: '100%',
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
-      controls: 0,
-      loop: 1,
-      cc_load_policy: 1,
-      rel: 0,
-      origin: 'https://netflix-clone-vinir07.vercel.app',
-      mute: width < 769 ? 1 : 0,
-      showinfo: 0,
-      playlist: movieVideo?.key,
-    },
-  };
-
   useEffect(() => {
     const getMovieModal = async (id: number) => {
       const movie = await moviesService.getMovieInfo(id);
       const video = await moviesService.getMovieVideos(id);
       if (!video[0]) {
-        setModalInfo({ id: '', type: '', success: false });
+        setModalInfo({ id: '', success: false });
         setMissingError(true);
         return;
       }
@@ -66,13 +45,9 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
     };
 
     getMovieModal(id);
-    gsap.to('._modalContainer', {
-      duration: 0.5,
-      ease: Power3.easeInOut,
-      autoAlpha: 1,
-    });
   }, []);
 
+  console.log(width);
   return (
     <S.ModalBG data-testid="modal">
       {!isReady && !missingError && (
@@ -86,19 +61,25 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
           <Loading />
         </div>
       )}
-      <S.ModalContainer className="_modalContainer">
-        <S.CloseModal
-          onClick={() => setModalInfo({ id: '', type: '', success: true })}
+      <S.ModalContainer
+        animate={{
+          opacity: 1,
+          visibility: 'inherit',
+        }}
+        transition={{ duration: 0.5 }}
+      >
+        <div
+          className="close-button"
+          onClick={() => setModalInfo({ id: '', success: true })}
         >
           <CloseOutlinedIcon sx={{ color: 'var(--white)', fontSize: '40px' }} />
-        </S.CloseModal>
+        </div>
         {movie && movieVideo && (
           <>
             <S.ModalBanner src={movie.backdrop_path}>
               <YouTube
                 videoId={movieVideo.key}
-                opts={videoOpts}
-                // allow="autoplay;"
+                opts={videoOpts('100%', '400px', width < 769 ? 1 : 0)}
                 onReady={e => {
                   e.target.playVideo();
                   setIsReady(true);
@@ -164,7 +145,7 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
                       {movie.production_companies.map(company => (
                         <S.CompaniesBox key={company.name}>
                           {company.logo_path && (
-                            <img
+                            <S.CompanyImg
                               src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
                               alt={company.name}
                             />
@@ -176,19 +157,18 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
                   </S.MovieProductionCompanies>
                 )}
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <img
+              <div
+                style={{
+                  textAlign: 'center',
+                }}
+              >
+                <S.PosterImg
                   src={
                     movie.poster_path
                       ? `https://image.tmdb.org/t/p/original${movie.poster_path}`
                       : ''
                   }
                   alt={movie.title}
-                  style={{
-                    width: '200px',
-                    order: '1',
-                    marginTop: '20px',
-                  }}
                 />
               </div>
             </S.FilmInfosWrapper>

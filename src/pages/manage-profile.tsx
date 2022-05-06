@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { IImageData, ISession } from '@types';
 import { userService } from '../services/userService';
 import { useRouter } from 'next/router';
-import { useUsuario } from '../common/context/Usuario';
+import { useUsuario } from '@contexts';
 import { moviesGenres } from '../common/constants';
 import { withSession } from '../services/auth/session';
 import Head from 'next/head';

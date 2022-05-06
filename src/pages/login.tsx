@@ -2,12 +2,11 @@ import React, {
   ChangeEventHandler,
   FocusEventHandler,
   FormEventHandler,
-  useContext,
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
 import { Checkbox, FormControlLabel } from '@mui/material';
-import { UsuarioContext } from '../common/context/Usuario';
+import { useUsuario } from '@contexts';
 import bgImage from '../../public/netflix-library.jpg';
 import load from '../../public/loading-white.svg';
 import * as S from '../styles/GlobalComponents';
@@ -27,7 +26,7 @@ const Login: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const { email, password, checked, setChecked, setEmail, setPassword } =
-    useContext(UsuarioContext);
+    useUsuario();
   const router = useRouter();
 
   const fieldValidation = (type: string, value: string) => {

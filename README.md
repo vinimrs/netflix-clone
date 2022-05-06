@@ -14,14 +14,14 @@
 
 ## Tecnologias ⚡
 
--   [Typescript](https://www.typescriptlang.org)
--   [NextJs](https://nextjs.org)
+- [Typescript](https://www.typescriptlang.org)
+- [NextJs](https://nextjs.org)
 
 ## Features :hammer:
 
--   `Criação de conta com autenticação`: guarde suas preferências!
--   `Gerenciamento completo de perfis`: crie, edite e remova perfis personalizados!
--   `Teasers dos filmes mais aclamados`: veja tudo na íntegra!
+- `Criação de conta com autenticação`: guarde suas preferências!
+- `Gerenciamento completo de perfis`: crie, edite e remova perfis personalizados!
+- `Teasers dos filmes mais aclamados`: veja tudo na íntegra!
 
 ## Backend 💾
 
@@ -50,4 +50,3 @@ npm run dev
 ## Melhorias 🛠
 
 Ideias de melhorias para o projeto:
-

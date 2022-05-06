@@ -2,11 +2,10 @@ import React, {
   ChangeEventHandler,
   FocusEventHandler,
   FormEventHandler,
-  useContext,
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
-import { UsuarioContext } from '../common/context/Usuario';
+import { useUsuario } from '@contexts';
 import FirstHeader from '../components/FirstHeader';
 import bgImage from '../../public/netflix-library.jpg';
 import * as S from '../styles/GlobalComponents';
@@ -31,7 +30,7 @@ const Register: React.FC = () => {
     setName,
     setConfirmPassword,
     confirmPassword,
-  } = useContext(UsuarioContext);
+  } = useUsuario();
   const router = useRouter();
 
   const fieldValidation = (type: string, value: string) => {

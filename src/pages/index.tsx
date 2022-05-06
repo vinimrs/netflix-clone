@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import * as S from '../styles/GlobalComponents';
-import { useFilms } from '../common/context/Films';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 import MoreInfoModal from '../components/MoreInfoModal';
 import List from '../components/List';
 import Loading from '../components/Loading';
-import { useUsuario } from '../common/context/Usuario';
+import { useUsuario, useFilms } from '@contexts';
 import { withSession } from '../services/auth/session';
 import { ISession, IMovieDataInfo } from '@types';
 
@@ -18,16 +17,14 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
   const [headerActive, setHeaderActive] = useState(false);
   const [modalInfo, setModalInfo] = useState({
     id: '',
-    type: '',
     success: true,
   });
 
   const handleSetModalInfo = (film: IMovieDataInfo) => {
-    const type = film.number_of_seasons ? 'tv' : 'movie';
-    setModalInfo({ ...modalInfo, id: film.id.toString(), type: type });
+    setModalInfo({ ...modalInfo, id: film.id.toString() });
   };
 
-  const toHoursAndMinutes = useCallback(totalMinutes => {
+  const toHoursAndMinutes = useCallback((totalMinutes: number) => {
     const minutes = totalMinutes % 60;
     const hours = Math.floor(totalMinutes / 60);
 
@@ -68,7 +65,6 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
         <MoreInfoModal
           minutesToHours={toHoursAndMinutes}
           id={Number(modalInfo.id)}
-          type={modalInfo.type}
           setModalInfo={setModalInfo}
         />
       )}
@@ -87,7 +83,7 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
       )}
       {heroFilm.title && list.length > 7 && (
         <Hero
-          setModal={handleSetModalInfo}
+          handleSetModal={handleSetModalInfo}
           minutesToHours={toHoursAndMinutes}
         />
       )}

@@ -1,7 +1,6 @@
 import * as S from './style';
 import React, { useEffect, useState } from 'react';
-import { gsap, Power3 } from 'gsap';
-import { useUsuario } from '../../common/context/Usuario';
+import { useUsuario } from '@contexts';
 import { useRouter } from 'next/router';
 import logo from '../../../public/netflix-logo.svg';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -10,6 +9,7 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { ISession } from '@types';
 import DeleteAccountModal from '../DeleteAccountModal';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface HeaderProps {
   scroll: boolean;
@@ -31,34 +31,19 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 
   const list = filterToAnothersProfiles(session.profiles, profile);
 
-  const handleOpenDropdown = () => {
-    setDropdown(true);
-    gsap.to('._containerMenu', {
-      duration: 0.1,
-      ease: Power3.easeInOut,
-      autoAlpha: 1,
-    });
-  };
+  const handleOpenDropdown = () => setDropdown(true);
 
-  const handleCloseDropdown = () => {
-    setDropdown(false);
-    gsap.to('._containerMenu', {
-      duration: 0.1,
-      ease: Power3.easeInOut,
-      autoAlpha: 0,
-    });
-  };
+  const handleCloseDropdown = () => setDropdown(false);
 
   useEffect(() => {
     if (profile === undefined || profile === null)
       setProfile(getStorageProfile());
-    profile;
-  });
+  }, [profile]);
+
   return (
     <S.StyledHeader $active={scroll}>
-      <Link href="/select-profile">
+      <Link href="/select-profile" passHref>
         <S.LogoNetflix
-          // onClick={() => router.push('/select-profile')}
           src={logo.src}
           alt="Logo da Netflix"
           style={{ cursor: 'pointer' }}
@@ -78,104 +63,117 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
           alt="Perfil do usuário"
         />
       )}
-
-      <S.ContainerMenu className="_containerMenu">
-        <S.Menu onMouseLeave={handleCloseDropdown}>
-          {list?.map(item => {
-            return (
-              <S.MenuItem
-                onClick={() => {
-                  handleCloseDropdown();
-                  changeProfile(item);
-                  router.reload();
-                }}
-                key={item.slug}
-              >
-                <S.MenuImage
-                  src={`data:image/image/png;base64,${convertImage(
-                    item.image.data
-                  )}`}
-                  alt="Imagem de perfil"
-                />
-                <S.MenuText>{item.name}</S.MenuText>
-              </S.MenuItem>
-            );
-          })}
-          <S.MenuItem
-            onClick={() => {
-              handleCloseDropdown();
-              router.push('/select-profile');
-            }}
-          >
-            <EditOutlinedIcon />
-            <S.MenuText>Gerenciar Perfis</S.MenuText>
-          </S.MenuItem>
-          <S.MenuItem onClick={handleCloseDropdown}>
-            <div
-              style={{
-                borderBottom: '1px solid #f5f5f5b1',
-                height: '1px',
-                width: '100%',
-                margin: '8px 0',
-              }}
-            ></div>
-          </S.MenuItem>
-          <S.MenuItem onClick={handleCloseDropdown}>
-            <S.MenuText>Infantis</S.MenuText>
-          </S.MenuItem>
-          <S.MenuItem onClick={handleCloseDropdown}>
-            <div
-              style={{
-                borderBottom: '1px solid #f5f5f5b1',
-                height: '1px',
-                width: '100%',
-                margin: '8px 0',
-              }}
-            ></div>
-          </S.MenuItem>
-          <S.MenuItem onClick={handleCloseDropdown}>
-            <PersonOutlineOutlinedIcon />
-            <S.MenuText>Conta</S.MenuText>
-          </S.MenuItem>
-          <S.MenuItem onClick={handleCloseDropdown}>
-            <HelpOutlineOutlinedIcon />
-            <S.MenuText>Centro de Ajuda</S.MenuText>
-          </S.MenuItem>
-          <S.MenuItem>
-            <div
-              style={{
-                borderBottom: '1px solid #f5f5f5b1',
-                height: '1px',
-                width: '100%',
-                margin: '8px 0',
-              }}
-            ></div>
-          </S.MenuItem>
-          <S.MenuItem
-            onClick={() => {
-              handleCloseDropdown();
-              router.push('/logout');
-            }}
-          >
-            <S.MenuText>Sair da Netflix</S.MenuText>
-          </S.MenuItem>
-          <S.MenuItem
-            onClick={() => {
-              handleCloseDropdown();
-              setOpenDeleteModal(true);
-            }}
-          >
-            <S.MenuText
-              style={{
-                color: 'var(--red-netflix)',
-                fontWeight: '800',
+      <S.WrappedMenu>
+        <S.ContainerMenu
+          animate={{
+            opacity: dropdown ? 1 : 0,
+            visibility: dropdown ? 'inherit' : 'hidden',
+            rotateX: dropdown ? 0 : -15,
+          }}
+          transition={{
+            opacity: { duration: 0.05 },
+            rotateX: { duration: 0.05 },
+          }}
+        >
+          <ul onMouseLeave={handleCloseDropdown}>
+            {list?.map(item => {
+              return (
+                <li
+                  onClick={() => {
+                    handleCloseDropdown();
+                    changeProfile(item);
+                    router.reload();
+                  }}
+                  key={item.slug}
+                >
+                  <Image
+                    src={`data:image/image/png;base64,${convertImage(
+                      item.image.data
+                    )}`}
+                    alt="Imagem de perfil"
+                    width="35px"
+                    height="35px"
+                  />
+                  <span>{item.name}</span>
+                </li>
+              );
+            })}
+            <li
+              onClick={() => {
+                handleCloseDropdown();
+                router.push('/select-profile');
               }}
             >
-              Apagar conta
-            </S.MenuText>
-          </S.MenuItem>
-        </S.Menu>
-      </S.ContainerMenu>
+              <EditOutlinedIcon />
+              <span>Gerenciar Perfis</span>
+            </li>
+            <li onClick={handleCloseDropdown}>
+              <div
+              // style={{
+              //   borderBottom: '1px solid #f5f5f5b1',
+              //   height: '1px',
+              //   width: '100%',
+              //   margin: '8px 0',
+              // }}
+              ></div>
+            </li>
+            <li onClick={handleCloseDropdown}>
+              <span>Infantis</span>
+            </li>
+            <li onClick={handleCloseDropdown}>
+              <div
+              // style={{
+              //   borderBottom: '1px solid #f5f5f5b1',
+              //   height: '1px',
+              //   width: '100%',
+              //   margin: '8px 0',
+              // }}
+              ></div>
+            </li>
+            <li onClick={handleCloseDropdown}>
+              <PersonOutlineOutlinedIcon />
+              <span>Conta</span>
+            </li>
+            <li onClick={handleCloseDropdown}>
+              <HelpOutlineOutlinedIcon />
+              <span>Centro de Ajuda</span>
+            </li>
+            <li>
+              <div
+              // style={{
+              //   borderBottom: '1px solid #f5f5f5b1',
+              //   height: '1px',
+              //   width: '100%',
+              //   margin: '8px 0',
+              // }}
+              ></div>
+            </li>
+            <li
+              onClick={() => {
+                handleCloseDropdown();
+                router.push('/logout');
+              }}
+            >
+              <span>Sair da Netflix</span>
+            </li>
+            <li
+              onClick={() => {
+                handleCloseDropdown();
+                setOpenDeleteModal(true);
+              }}
+            >
+              <span
+                style={{
+                  color: 'var(--red-netflix)',
+                  fontWeight: '800',
+                }}
+              >
+                Apagar conta
+              </span>
+            </li>
+          </ul>
+        </S.ContainerMenu>
+      </S.WrappedMenu>
       {openDeleteModal && (
         <DeleteAccountModal
           userId={session.id}
