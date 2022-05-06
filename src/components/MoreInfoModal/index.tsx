@@ -47,7 +47,6 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({
     getMovieModal(id);
   }, []);
 
-  console.log(width);
   return (
     <S.ModalBG data-testid="modal">
       {!isReady && !missingError && (
