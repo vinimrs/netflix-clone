@@ -1,114 +1,82 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
 import * as S from '../styles/GlobalComponents';
-import Header from '../components/Header';
-import Hero from '../components/Hero';
+import Header from '../components/Browse/Header';
+import Hero from '../components/Browse/Hero';
 import Footer from '../components/Footer';
 import MoreInfoModal from '../components/MoreInfoModal';
-import List from '../components/List';
+import List from '../components/Browse/List';
 import Loading from '../components/Loading';
-import { useUsuario, useFilms } from '@contexts';
 import { withSession } from '../services/auth/session';
 import { ISession, IMovieDataInfo } from '@types';
+import { useHomeList, useHeroData } from '@hooks';
+import Layout from 'src/components/Layout';
 
 const Browse: React.FC<{ session: ISession }> = ({ session }) => {
-  const { list, loadAll, heroFilm } = useFilms();
-  const { profile, refreshProfile } = useUsuario();
-  const [headerActive, setHeaderActive] = useState(false);
-  const [modalInfo, setModalInfo] = useState({
-    id: '',
-    success: true,
-  });
+	// Loadable because the method is Async and not support React Suspense
+	const loadableHeroData = useHeroData();
+	const loadableList = useHomeList();
 
-  const handleSetModalInfo = (film: IMovieDataInfo) => {
-    setModalInfo({ ...modalInfo, id: film.id.toString() });
-  };
+	const [headerActive, setHeaderActive] = useState(false);
+	const [modalInfo, setModalInfo] = useState({
+		id: '',
+		success: true,
+	});
 
-  const toHoursAndMinutes = useCallback((totalMinutes: number) => {
-    const minutes = totalMinutes % 60;
-    const hours = Math.floor(totalMinutes / 60);
+	const handleSetModalInfo = (film: IMovieDataInfo) => {
+		setModalInfo({ ...modalInfo, id: film.id.toString() });
+	};
 
-    return `${hours < 1 ? '' : `${hours}h`}${
-      minutes < 1 ? '' : `${minutes}min`
-    }`;
-  }, []);
+	useEffect(() => {
+		const scrollListener = () => {
+			if (window.scrollY > 10) {
+				setHeaderActive(true);
+			} else {
+				setHeaderActive(false);
+			}
+		};
 
-  useEffect(() => {
-    if (!profile) {
-      const prof = refreshProfile();
-      loadAll(prof);
-    } else {
-      loadAll(profile);
-    }
+		window.addEventListener('scroll', scrollListener);
+		return () => {
+			window.removeEventListener('scroll', scrollListener);
+		};
+	}, []);
 
-    const scrollListener = () => {
-      if (window.scrollY > 10) {
-        setHeaderActive(true);
-      } else {
-        setHeaderActive(false);
-      }
-    };
+	if (
+		loadableList.state === 'loading' ||
+		loadableHeroData.state === 'loading'
+	) {
+		return <Loading />;
+	}
 
-    window.addEventListener('scroll', scrollListener);
-    return () => {
-      window.removeEventListener('scroll', scrollListener);
-    };
-  }, []);
+	const list = loadableList.getValue();
 
-  return (
-    <>
-      <Head>
-        <title>Netflix</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      {modalInfo.id && (
-        <MoreInfoModal
-          minutesToHours={toHoursAndMinutes}
-          id={Number(modalInfo.id)}
-          setModalInfo={setModalInfo}
-        />
-      )}
+	return (
+		<Layout title="Netflix">
+			<Header session={session} scroll={headerActive} />
+			{modalInfo.id && (
+				<MoreInfoModal id={Number(modalInfo.id)} setModalInfo={setModalInfo} />
+			)}
 
-      <Header session={session} scroll={headerActive} />
-      {!modalInfo.success && (
-        <S.StyledAlert
-          onClose={() => {
-            setModalInfo({ ...modalInfo, success: true });
-          }}
-          severity="error"
-        >
-          Opa! Não encontramos informações sobre esse filme!{' '}
-          <strong>Tente Novamente!</strong>
-        </S.StyledAlert>
-      )}
-      {heroFilm.title && list.length > 7 && (
-        <Hero
-          handleSetModal={handleSetModalInfo}
-          minutesToHours={toHoursAndMinutes}
-        />
-      )}
-      {heroFilm.title && list.length > 7 && (
-        <S.MainWrapper>
-          {list.map((category, key) => {
-            return (
-              <List key={key} setModal={handleSetModalInfo} list={category} />
-            );
-          })}
-        </S.MainWrapper>
-      )}
-      {!(heroFilm.title && list.length > 7) && <Loading />}
-      {heroFilm.title && list.length > 7 && <Footer />}
-    </>
-  );
+			<Hero handleSetModal={handleSetModalInfo} />
+			<S.MainWrapper>
+				{list.map((category, key) => {
+					return (
+						<List key={key} setModal={handleSetModalInfo} list={category} />
+					);
+				})}
+			</S.MainWrapper>
+			<Footer />
+		</Layout>
+	);
 };
 
 // Decorator Pattern
 export const getServerSideProps = withSession(ctx => {
-  return {
-    props: {
-      session: ctx.req.session,
-    },
-  };
+	return {
+		props: {
+			session: ctx.req.session,
+		},
+	};
 });
 
 export default Browse;
