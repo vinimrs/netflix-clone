@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IImageData, ISession } from '@types';
 import { useRouter } from 'next/router';
-import { withSession } from '../services/auth/session';
+import { withSessionHOC } from '../services/auth/session';
 import { HttpClient } from '../infra/HttpClient/HttpClient';
 
 import ManageProfileContainer from '../components/ManageProfileContainer';
@@ -13,7 +13,6 @@ interface CreateManageProfilesProps {
 }
 
 const ManageProfilesPage: React.FC<CreateManageProfilesProps> = ({
-	session,
 	images,
 }) => {
 	const [editProfile, setEditProfile] = useState('');
@@ -30,26 +29,20 @@ const ManageProfilesPage: React.FC<CreateManageProfilesProps> = ({
 
 	return (
 		<Layout title="Netflix - Manage Profile">
-			<ManageProfileContainer
-				session={session}
-				images={images}
-				editProfile={editProfile}
-			/>
+			<ManageProfileContainer images={images} editProfile={editProfile} />
 		</Layout>
 	);
 };
 
-export const getServerSideProps = withSession(async ctx => {
+export async function getStaticProps() {
 	const res = await HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/image`, {
 		method: 'GET',
 	});
-
 	return {
 		props: {
 			images: res.body,
-			session: ctx.req.session,
 		},
 	};
-});
+}
 
-export default ManageProfilesPage;
+export default withSessionHOC(ManageProfilesPage);

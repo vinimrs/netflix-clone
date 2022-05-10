@@ -1,4 +1,4 @@
-import { IProfile } from '@types';
+import { IImageData, IProfile, ISession } from '@types';
 import { atom } from 'recoil';
 
 const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
@@ -23,4 +23,14 @@ export const profileAtom = atom<IProfile>({
 
 	default: localStorage ? JSON.parse(localStorage.getItem('usuario')) : {},
 	effects: [localStorageEffect('usuario')],
+});
+
+export const sessionAtom = atom<ISession>({
+	key: 'sessionAtom',
+	default: {} as ISession,
+});
+
+export const imagesAtom = atom<IImageData[]>({
+	key: 'imagesAtom',
+	default: [{}] as IImageData[],
 });

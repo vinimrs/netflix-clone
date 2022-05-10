@@ -16,19 +16,19 @@ import { CustomButton, CustomTextField } from 'src/styles/GlobalComponents';
 import { toSlug } from '@utils';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useAlert } from '@hooks';
+import { useAlert, useSession } from '@hooks';
 import ProfileImages from './ProfileImages';
 
 const ManageProfileContainer: React.FC<{
 	editProfile: string;
-	session: ISession;
 	images: IImageData[];
-}> = ({ editProfile, session, images }) => {
+}> = ({ editProfile, images }) => {
 	const [preferences, setPreferences] = useState<string[]>([]);
 	const [profileName, setProfileName] = useState('');
 	const [imageData, setImageData] = useState({ id: '', data: '' });
 	const [loading, setLoading] = useState(false);
 
+	const { session } = useSession();
 	const alertActions = useAlert();
 	const router = useRouter();
 
@@ -126,11 +126,7 @@ const ManageProfileContainer: React.FC<{
 						<div className="profile__edit-session">
 							<div>
 								<h3>Escolha sua imagem</h3>
-								<ProfileImages
-									setImageData={setImageData}
-									session={session}
-									images={images}
-								/>
+								<ProfileImages setImageData={setImageData} images={images} />
 							</div>
 							<div className="inputs-wrapper">
 								<CustomTextField

@@ -10,6 +10,7 @@ import * as S from './styles';
 
 const SelectProfile: React.FC<{ session: ISession }> = ({ session }) => {
 	const [profileHovered, setProfileHovered] = useState('');
+	const [profiles, setProfiles] = useState(session.profiles);
 	const { width } = useWindowDimensions();
 	const { setProfile } = useProfile();
 	const alertActions = useAlert();
@@ -23,7 +24,8 @@ const SelectProfile: React.FC<{ session: ISession }> = ({ session }) => {
 				if (res.ok) {
 					alertActions.success('Perfil deletado com sucesso');
 				}
-				router.push('/select-profile');
+				const currentProfiles = profiles.filter(p => p.slug !== prof.slug);
+				setProfiles(currentProfiles);
 			})
 			.catch(() => {
 				alertActions.error('Erro ao deletar o perfil');
@@ -39,7 +41,7 @@ const SelectProfile: React.FC<{ session: ISession }> = ({ session }) => {
 		<S.ProfileWrapper>
 			<h1>Quem está assistindo?</h1>
 			<div data-testid="profile-container">
-				{session.profiles?.length < 4 && (
+				{profiles.length < 4 && (
 					<div className="create-profile__container">
 						<div
 							onClick={() => {
@@ -59,8 +61,8 @@ const SelectProfile: React.FC<{ session: ISession }> = ({ session }) => {
 					</div>
 				)}
 
-				{session.profiles.length > 0 &&
-					session.profiles.map((prof, index) => (
+				{profiles.length > 0 &&
+					profiles.map((prof, index) => (
 						<div
 							className="profile-image__box"
 							title="Entre com o perfil"

@@ -16,6 +16,7 @@
 
 - [Typescript](https://www.typescriptlang.org)
 - [NextJs](https://nextjs.org)
+- [Recoil](https://recoiljs.org)
 
 ## Features :hammer:
 
