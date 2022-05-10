@@ -1,5 +1,7 @@
 import { MuiCustomInputProps, regExp } from '@constants';
+import { useAlert } from '@hooks';
 import { userService } from '@services';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, {
@@ -24,7 +26,9 @@ const Register: React.FC = () => {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
+	const [loading, setLoading] = useState(false);
 	const router = useRouter();
+	const alertActions = useAlert();
 
 	const fieldValidation = (type: string, value: string) => {
 		const typeName = type === 'text' ? 'name' : type;
@@ -38,15 +42,21 @@ const Register: React.FC = () => {
 
 	const handleSubmit: FormEventHandler = e => {
 		e.preventDefault();
+		setLoading(true);
 		userService.registerUser(email, name, password).then(res => {
+			console.log(res);
 			if (res.status === 201) {
 				setConfirmPassword('');
 				setEmail('');
 				setName('');
 				setPassword('');
 
+				alertActions.success('Conta criada com sucesso!');
 				router.push('/email-confirmation');
+			} else {
+				alertActions.error(res.body.error);
 			}
+			setLoading(false);
 		});
 	};
 
@@ -200,7 +210,15 @@ const Register: React.FC = () => {
 					width="100%"
 					data-testid="Entrar"
 				>
-					Cadastrar
+					{loading && (
+						<Image
+							width="30px"
+							height="30px"
+							src="/loading-white.svg"
+							alt="Animação de carregamento"
+						/>
+					)}
+					{!loading && 'Cadastrar'}
 				</S.CustomButton>
 
 				<Link href="/login" passHref>

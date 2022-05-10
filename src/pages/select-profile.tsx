@@ -1,5 +1,5 @@
 import React from 'react';
-import { withSession } from '../services/auth/session';
+import { withSessionHOC } from '../services/auth/session';
 import { ISession } from '@types';
 import FirstHeader from '../components/FirstHeader';
 import Layout from 'src/components/Layout';
@@ -16,12 +16,4 @@ const SelectProfilePage: React.FC<{
 	);
 };
 
-export const getServerSideProps = withSession(async ctx => {
-	return {
-		props: {
-			session: ctx.req.session,
-		},
-	};
-});
-
-export default SelectProfilePage;
+export default withSessionHOC(SelectProfilePage);

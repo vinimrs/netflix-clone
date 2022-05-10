@@ -104,6 +104,7 @@ export const ProfileWrapper = styled.div`
 			}
 			& > .profile-image__box {
 				margin: 12px 0;
+				border-color: var(--white);
 
 				h2 {
 					color: var(--white);

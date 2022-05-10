@@ -1,7 +1,8 @@
 import * as S from './styles';
 import React from 'react';
 import { convertImage } from '@utils';
-import { IImageData, ISession } from '@types';
+import { IImageData, IProfile } from '@types';
+import { useSession } from '@hooks';
 
 const ProfileImages: React.FC<{
 	setImageData: React.Dispatch<
@@ -10,21 +11,21 @@ const ProfileImages: React.FC<{
 			data: string;
 		}>
 	>;
-	session: ISession;
 	images: IImageData[];
-}> = ({ setImageData, session, images }) => {
-	const filteredImages = (imgs: IImageData[]) => {
+}> = ({ setImageData, images }) => {
+	const filteredImages = (imgs: IImageData[], profiles: IProfile[]) => {
 		return imgs.filter(img => {
-			const exists = session?.profiles.find(prof => {
+			const exists = profiles.find(prof => {
 				return prof.image._id === img._id;
 			});
 			return exists ? false : true;
 		});
 	};
 
+	const { session } = useSession();
 	return (
 		<S.ImageContainer>
-			{filteredImages(images).map(image => (
+			{filteredImages(images, session.profiles).map(image => (
 				<div
 					key={image._id}
 					id={image._id}
