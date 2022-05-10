@@ -1,6 +1,6 @@
 import { IProfile, ISession, IImageData } from '@types';
 import { atom } from 'recoil';
-import { imagesSelector, sessionSelector } from '../selectors';
+import { imagesSelector } from '../selectors';
 
 const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
 
@@ -26,9 +26,9 @@ export const profileAtom = atom<IProfile>({
 	effects: [localStorageEffect('usuario')],
 });
 
-export const sessionAtom = atom({
+export const sessionAtom = atom<ISession>({
 	key: 'sessionAtom',
-	default: {},
+	default: {} as ISession,
 });
 
 export const profileImagesAtom = atom<IImageData[]>({
