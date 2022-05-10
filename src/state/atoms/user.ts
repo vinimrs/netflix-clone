@@ -1,6 +1,5 @@
 import { IProfile, ISession, IImageData } from '@types';
 import { atom } from 'recoil';
-import { imagesSelector } from '../selectors';
 
 const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
 
@@ -33,5 +32,5 @@ export const sessionAtom = atom<ISession>({
 
 export const profileImagesAtom = atom<IImageData[]>({
 	key: 'profileImagesAtom',
-	default: imagesSelector,
+	default: [{}] as IImageData[],
 });
