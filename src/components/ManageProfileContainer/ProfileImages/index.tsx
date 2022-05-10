@@ -1,8 +1,7 @@
 import * as S from './styles';
 import React from 'react';
 import { convertImage } from '@utils';
-import { useProfileImages, useSession } from '@hooks';
-import { IImageData } from '@types';
+import { IImageData, ISession } from '@types';
 
 const ProfileImages: React.FC<{
 	setImageData: React.Dispatch<
@@ -11,10 +10,9 @@ const ProfileImages: React.FC<{
 			data: string;
 		}>
 	>;
-}> = ({ setImageData }) => {
-	const loadableImages = useProfileImages();
-	const loadableSession = useSession();
-
+	session: ISession;
+	images: IImageData[];
+}> = ({ setImageData, session, images }) => {
 	const filteredImages = (imgs: IImageData[]) => {
 		return imgs.filter(img => {
 			const exists = session?.profiles.find(prof => {
@@ -24,35 +22,25 @@ const ProfileImages: React.FC<{
 		});
 	};
 
-	if (
-		loadableSession.session.state === 'loading' ||
-		loadableImages.images.state === 'loading'
-	)
-		return <div />;
-
-	const session = loadableSession.session.getValue();
-	const images = loadableImages.images.getValue();
-
 	return (
 		<S.ImageContainer>
-			{images &&
-				filteredImages(images).map(image => (
-					<div
-						key={image._id}
-						id={image._id}
-						onClick={() => {
-							setImageData({
-								id: image._id,
-								data: convertImage(image.data),
-							});
-						}}
-						role="img"
-					>
-						<S.CustomImage
-							src={`data:image/image/png;base64,${convertImage(image.data)}`}
-						/>
-					</div>
-				))}
+			{filteredImages(images).map(image => (
+				<div
+					key={image._id}
+					id={image._id}
+					onClick={() => {
+						setImageData({
+							id: image._id,
+							data: convertImage(image.data),
+						});
+					}}
+					role="img"
+				>
+					<S.CustomImage
+						src={`data:image/image/png;base64,${convertImage(image.data)}`}
+					/>
+				</div>
+			))}
 		</S.ImageContainer>
 	);
 };

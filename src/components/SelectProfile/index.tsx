@@ -1,21 +1,18 @@
-import { useAlert, useProfile, useSession, useWindowDimensions } from '@hooks';
+import { useAlert, useProfile, useWindowDimensions } from '@hooks';
 import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import Loading from '../Loading';
-import { IProfile } from '@types';
+import { IProfile, ISession } from '@types';
 import { userService } from '@services';
 import { convertImage } from '@utils';
-
 import * as S from './styles';
 
-const SelectProfile: React.FC = () => {
+const SelectProfile: React.FC<{ session: ISession }> = ({ session }) => {
 	const [profileHovered, setProfileHovered] = useState('');
 	const { width } = useWindowDimensions();
 	const { setProfile } = useProfile();
 	const alertActions = useAlert();
-	const loadableSession = useSession().session;
 
 	const router = useRouter();
 
@@ -38,14 +35,11 @@ const SelectProfile: React.FC = () => {
 	};
 	const handleMouseOff = () => setProfileHovered('');
 
-	if (loadableSession.state === 'loading') return <Loading />;
-	const session = loadableSession.getValue();
-
 	return (
 		<S.ProfileWrapper>
 			<h1>Quem está assistindo?</h1>
 			<div data-testid="profile-container">
-				{session?.profiles.length < 4 && (
+				{session.profiles?.length < 4 && (
 					<div className="create-profile__container">
 						<div
 							onClick={() => {
@@ -65,8 +59,8 @@ const SelectProfile: React.FC = () => {
 					</div>
 				)}
 
-				{session?.profiles.length > 0 &&
-					session?.profiles.map((prof, index) => (
+				{session.profiles.length > 0 &&
+					session.profiles.map((prof, index) => (
 						<div
 							className="profile-image__box"
 							title="Entre com o perfil"

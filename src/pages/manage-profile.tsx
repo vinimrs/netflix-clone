@@ -6,7 +6,6 @@ import { HttpClient } from '../infra/HttpClient/HttpClient';
 
 import ManageProfileContainer from '../components/ManageProfileContainer';
 import Layout from 'src/components/Layout';
-import { useProfileImages, useSession } from '@hooks';
 
 interface CreateManageProfilesProps {
 	session: ISession;
@@ -19,9 +18,6 @@ const ManageProfilesPage: React.FC<CreateManageProfilesProps> = ({
 }) => {
 	const [editProfile, setEditProfile] = useState('');
 
-	const { setSession } = useSession();
-	const { setImages } = useProfileImages();
-
 	const router = useRouter();
 
 	useEffect(() => {
@@ -29,14 +25,16 @@ const ManageProfilesPage: React.FC<CreateManageProfilesProps> = ({
 		if (typeof router.query.edit === 'string') {
 			setEditProfile(router.query.edit);
 		}
-		setSession(session);
-		setImages(images);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [setSession, setImages, setEditProfile]);
+	}, []);
 
 	return (
 		<Layout title="Netflix - Manage Profile">
-			<ManageProfileContainer editProfile={editProfile} />
+			<ManageProfileContainer
+				session={session}
+				images={images}
+				editProfile={editProfile}
+			/>
 		</Layout>
 	);
 };

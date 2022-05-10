@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 					style={{ cursor: 'pointer' }}
 				/>
 			</Link>
-			{profile?.image.data && (
+			{profile.image.data && (
 				<S.PerfilNetflix
 					onClick={() =>
 						dropdown ? handleCloseDropdown() : handleOpenDropdown()
@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 					}}
 				>
 					<ul onMouseLeave={handleCloseDropdown}>
-						{list?.map(item => {
+						{list.map(item => {
 							return (
 								<li
 									onClick={() => {

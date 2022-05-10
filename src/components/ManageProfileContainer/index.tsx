@@ -9,27 +9,27 @@ import {
 	Select,
 	Box,
 } from '@mui/material';
-import { ISession } from '@types';
+import { IImageData, ISession } from '@types';
 import { userService } from '@services';
 import { moviesGenres } from '@constants';
 import { CustomButton, CustomTextField } from 'src/styles/GlobalComponents';
 import { toSlug } from '@utils';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useAlert, useSession } from '@hooks';
+import { useAlert } from '@hooks';
 import ProfileImages from './ProfileImages';
-import Loading from '../Loading';
 
-const ManageProfileContainer: React.FC<{ editProfile: string }> = ({
-	editProfile,
-}) => {
+const ManageProfileContainer: React.FC<{
+	editProfile: string;
+	session: ISession;
+	images: IImageData[];
+}> = ({ editProfile, session, images }) => {
 	const [preferences, setPreferences] = useState<string[]>([]);
 	const [profileName, setProfileName] = useState('');
 	const [imageData, setImageData] = useState({ id: '', data: '' });
 	const [loading, setLoading] = useState(false);
 
 	const alertActions = useAlert();
-	const loadableSession = useSession().session;
 	const router = useRouter();
 
 	const validations = (
@@ -114,9 +114,6 @@ const ManageProfileContainer: React.FC<{ editProfile: string }> = ({
 		if (value.length < 7) setPreferences(value);
 	};
 
-	if (loadableSession.state === 'loading') return <Loading />;
-	const session = loadableSession.getValue();
-
 	return (
 		<S.ManageProfileContainer>
 			<div>
@@ -129,7 +126,11 @@ const ManageProfileContainer: React.FC<{ editProfile: string }> = ({
 						<div className="profile__edit-session">
 							<div>
 								<h3>Escolha sua imagem</h3>
-								<ProfileImages setImageData={setImageData} />
+								<ProfileImages
+									setImageData={setImageData}
+									session={session}
+									images={images}
+								/>
 							</div>
 							<div className="inputs-wrapper">
 								<CustomTextField
