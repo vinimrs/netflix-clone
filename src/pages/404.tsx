@@ -23,7 +23,7 @@ export default function Custom404() {
 			<Head>
 				<title>404 - Página não encontrada</title>
 			</Head>
-			<Image src="netflix-logo.svg" width="300px" height="150px" />
+			<Image src="/netflix-logo.svg" width="300px" height="150px" />
 			<h1>Oops - Página não encontrada</h1>
 		</Error404Div>
 	);
