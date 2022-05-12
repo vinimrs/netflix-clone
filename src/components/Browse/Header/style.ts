@@ -20,8 +20,8 @@ export const StyledHeader = styled.header<{ $active?: boolean }>`
 `;
 
 export const LogoNetflix = styled.img`
-	width: 117px;
-	height: 66px;
+	width: 145px;
+	height: 82px;
 	z-index: 100;
 
 	@media (max-width: 768px) {

@@ -8,6 +8,10 @@ export const MainWrapper = styled.main`
 	@media (max-width: 768px) {
 		margin-top: -80px;
 	}
+
+	@media (max-width: 1440px) {
+		margin-top: -100px;
+	}
 `;
 
 // login

@@ -36,7 +36,7 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 		flex-direction: column;
 		justify-content: center;
 		align-items: flex-start;
-		padding: 70px 0 150px 35px;
+		padding: 100px 0 150px 35px;
 		z-index: 10;
 		width: 100%;
 

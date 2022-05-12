@@ -19,10 +19,10 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 	const [videoIsOpen, setVideoIsOpen] = useState(false);
 
 	const limitedText = (text: string, type: string) => {
-		const windowWidth = width;
+
 		const limits = {
-			title: windowWidth > 768 ? 40 : 10,
-			description: windowWidth > 768 ? 250 : 100,
+			title: width < 1440 ? 10 : 40,
+			description: width < 1440 ? 100 : 250,
 		};
 		return text.length > limits[type]
 			? text.substring(0, limits[type]) + '...'
