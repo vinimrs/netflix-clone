@@ -2,7 +2,6 @@ import { Alert } from '@mui/material';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { alertAtom } from 'src/state/atoms';
-import { useAlert } from '@hooks';
 import styled from 'styled-components';
 
 export const StyledAlert = styled(Alert)`
@@ -11,6 +10,7 @@ export const StyledAlert = styled(Alert)`
 	left: 32px;
 	z-index: 90000;
 	font-size: 18px;
+	transition: 1s all;
 
 	@media (max-width: 768px) {
 		font-size: 14px;
@@ -19,14 +19,13 @@ export const StyledAlert = styled(Alert)`
 
 const AlertComponent: React.FC = () => {
 	const alert = useRecoilValue(alertAtom);
-	const alertHook = useAlert();
 
 	if (!alert.message) return <div />;
 
 	return (
 		<StyledAlert
 			variant="filled"
-			onClose={alertHook.clear}
+			// onClose={alertHook.clear}
 			severity={alert.severity}
 		>
 			{alert.message}

@@ -78,7 +78,6 @@ export const CustomButton = styled.button<{ width?: string }>`
 	user-select: none;
 	vertical-align: middle;
 	text-transform: uppercase;
-	font-family: 'Roboto';
 	padding: 12px 48px;
 	margin: 32px 0 12px 0;
 	outline: 0;

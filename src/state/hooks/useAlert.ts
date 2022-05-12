@@ -7,8 +7,20 @@ export const useAlert = () => {
 	const resetAlert = useResetRecoilState(alertAtom);
 
 	return {
-		success: (message: string) => setAlert({ message, severity: 'success' }),
-		error: (message: string) => setAlert({ message, severity: 'error' }),
-		clear: resetAlert,
+		success: (message: string) => {
+			setTimeout(() => {
+				resetAlert();
+			}, 4000);
+
+			setAlert({ message, severity: 'success' });
+		},
+
+		error: (message: string) => {
+			setTimeout(() => {
+				resetAlert();
+			}, 4000);
+			setAlert({ message, severity: 'error' });
+		},
+		// clear: resetAlert,
 	};
 };
