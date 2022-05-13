@@ -46,7 +46,7 @@ export const PerfilNetflix = styled.img`
 export const WrappedMenu = styled.div`
 	perspective: 2000;
 	position: absolute;
-	top: 87px;
+	top: 95px;
 	right: 24px;
 
 	@media (max-width: 768px) {

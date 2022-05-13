@@ -78,7 +78,10 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 									onClick={() => {
 										handleCloseDropdown();
 										setProfile(item);
-										router.reload();
+										/* Agora Recoil gerencia atualizações necessárias em filhos que 
+											 utilizam seus átomos
+										*/ 
+										// router.reload();
 									}}
 									key={item.slug}
 								>
