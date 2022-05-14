@@ -25,10 +25,15 @@ export const homeMovieListAsync = selector<IMovieHomeList[]>({
 const isAnMovieDataInfo = (obj: any): obj is IMovieDataInfo => {
 	return (
 		'backdrop_path' in obj &&
+		obj.backdrop_path !== null &&
 		'overview' in obj &&
+		obj.overview !== null &&
 		'title' in obj &&
+		obj.title !== null &&
 		'vote_average' in obj &&
-		'genre_ids' in obj
+		obj.vote_average !== null &&
+		'genre_ids' in obj &&
+		obj.genre_ids !== null
 	);
 };
 

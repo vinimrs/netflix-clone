@@ -44,7 +44,7 @@ const Register: React.FC = () => {
 		e.preventDefault();
 		setLoading(true);
 		userService.registerUser(email, name, password).then(res => {
-			console.log(res);
+			res;
 			if (res.status === 201) {
 				setConfirmPassword('');
 				setEmail('');

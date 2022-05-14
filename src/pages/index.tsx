@@ -6,10 +6,11 @@ import Footer from '../components/Footer';
 import MoreInfoModal from '../components/MoreInfoModal';
 import List from '../components/Browse/List';
 import Loading from '../components/Loading';
-import { withSession } from '../services/auth/session';
+import { withSession, withSessionHOC } from '../services/auth/session';
 import { ISession, IMovieDataInfo } from '@types';
 import { useHomeList, useHeroData } from '@hooks';
 import Layout from 'src/components/Layout';
+import { GetServerSideProps } from 'next';
 
 const Browse: React.FC<{ session: ISession }> = ({ session }) => {
 	// Loadable because the method is Async and not support React Suspense
@@ -71,12 +72,12 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
 };
 
 // Decorator Pattern
-export const getServerSideProps = withSession(ctx => {
-	return {
-		props: {
-			session: ctx.req.session,
-		},
-	};
-});
+// export const getServerSideProps: GetServerSideProps = withSession(ctx => {
+// 	return {
+// 		props: {
+// 			session: ctx.req.session,
+// 		},
+// 	};
+// });
 
-export default Browse;
+export default withSessionHOC(Browse);

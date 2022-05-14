@@ -2,7 +2,7 @@ import nookies from 'nookies';
 import { HttpClient } from '../../infra/HttpClient/HttpClient';
 import { tokenService } from '../../services/auth/tokenService';
 
-const REFRES_TOKEN_NAME = 'REFRESH_TOKEN_NAME';
+const REFRESH_TOKEN_NAME = 'netflix.ref';
 
 const controllers = {
 	async storeRefreshToken(req, res) {
@@ -10,7 +10,7 @@ const controllers = {
 
 		// guardando em um httpCookie - Mais seguro que cookie
 
-		nookies.set(ctx, REFRES_TOKEN_NAME, req.body.refresh_token, {
+		nookies.set(ctx, REFRESH_TOKEN_NAME, req.body.refresh_token, {
 			httpOnly: true,
 			sameSite: 'lax', // Somente do mesmo domínio terá acesso
 			path: '/',
@@ -35,7 +35,7 @@ const controllers = {
 		const ctx = { req, res };
 		const cookies = nookies.get(ctx);
 		// Ajuste pois no servidor não temos acesso aos cookies
-		const refresh_token = cookies[REFRES_TOKEN_NAME] || req.body.refresh_token;
+		const refresh_token = cookies[REFRESH_TOKEN_NAME] || req.body.refresh_token;
 
 		const refreshResponse = await HttpClient(
 			`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/refresh`,
@@ -47,7 +47,7 @@ const controllers = {
 			}
 		);
 		if (refreshResponse.ok) {
-			nookies.set(ctx, REFRES_TOKEN_NAME, refreshResponse.body.refresh_token, {
+			nookies.set(ctx, REFRESH_TOKEN_NAME, refreshResponse.body.refresh_token, {
 				httpOnly: true,
 				sameSite: 'lax',
 				path: '/',
@@ -76,7 +76,7 @@ const controllerBy = {
 	PUT: controllers.regenerateTokens,
 	DELETE: (req, res) => {
 		const ctx = { req, res };
-		nookies.destroy(ctx, REFRES_TOKEN_NAME, {
+		nookies.destroy(ctx, REFRESH_TOKEN_NAME, {
 			httpOnly: true,
 			sameSite: 'lax',
 			path: '/',
