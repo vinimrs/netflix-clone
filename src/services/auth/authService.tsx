@@ -63,7 +63,7 @@ export const authService = {
 				Authorization: `Bearer ${token}`,
 			},
 			body: {
-				refresh_token: ctx?.req?.cookies['REFRESH_TOKEN_NAME'],
+				refresh_token: ctx?.req?.cookies['netflix.ref'],
 			},
 			refresh: false,
 		}).then(response => {

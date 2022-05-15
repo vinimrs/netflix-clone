@@ -17,6 +17,7 @@ export function withSession(funcao: (ctx) => any) {
 			};
 			return funcao(modifiedCtx);
 		} catch (error) {
+			console.log(error);
 			return {
 				redirect: {
 					permanent: false,

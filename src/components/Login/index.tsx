@@ -1,4 +1,9 @@
-import React, { ChangeEventHandler, FormEventHandler, useState } from 'react';
+import React, {
+	ChangeEventHandler,
+	FormEventHandler,
+	useRef,
+	useState,
+} from 'react';
 import { useRouter } from 'next/router';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import * as S from './styles';
@@ -18,11 +23,13 @@ const Login: React.FC = () => {
 	const alertActions = useAlert();
 	const [loading, setLoading] = useState(false);
 
+	const button = useRef<HTMLButtonElement>(null);
 	const router = useRouter();
 
 	const handleSubmit: FormEventHandler = e => {
 		e.preventDefault();
 		setLoading(true);
+		button.current?.focus();
 
 		authService
 			.login({ email, password })
@@ -101,6 +108,7 @@ const Login: React.FC = () => {
 						)}
 					</div>
 					<S.CustomButton
+						ref={button}
 						disabled={password.length < 1 || email.length < 1}
 						type="submit"
 						data-testid="Entrar"

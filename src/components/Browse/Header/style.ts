@@ -46,11 +46,12 @@ export const PerfilNetflix = styled.img`
 export const WrappedMenu = styled.div`
 	perspective: 2000;
 	position: absolute;
-	top: 95px;
-	right: 24px;
+	top: 92px;
+	right: 32px;
 
 	@media (max-width: 768px) {
 		top: 65px;
+		right: 24px;
 	}
 `;
 

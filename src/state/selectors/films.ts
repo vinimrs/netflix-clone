@@ -9,16 +9,18 @@ export const homeMovieListAsync = selector<IMovieHomeList[]>({
 	get: async ({ get }) => {
 		const profile = get(profileAtom);
 
-		const resultList = await moviesService.getHomeList(profile);
-		const fixedLists = await moviesService.getFixedHomeLists();
-		const lists = [...resultList, ...fixedLists];
-		let res = await Promise.all(
-			lists.map(async item => {
-				return { ...item, items: item.items.body };
-			})
-		);
-		res = shuffle(res);
-		return res;
+		if (profile) {
+			const resultList = await moviesService.getHomeList(profile);
+			const fixedLists = await moviesService.getFixedHomeLists();
+			const lists = [...resultList, ...fixedLists];
+			let res = await Promise.all(
+				lists.map(async item => {
+					return { ...item, items: item.items.body };
+				})
+			);
+			res = shuffle(res);
+			return res;
+		}
 	},
 });
 

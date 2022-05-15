@@ -27,7 +27,8 @@ export async function HttpClient(fethUrl: string, fetchOptions) {
 
 			const isServer = Boolean(fetchOptions?.ctx);
 			const currentRefreshToken =
-				fetchOptions?.ctx?.req?.cookies['REFRESH_TOKEN_NAME'];
+				fetchOptions?.ctx?.req?.cookies['netflix.ref'];
+			console.log(currentRefreshToken, isServer);
 
 			// console.log('Atualizando tokens');
 
@@ -51,7 +52,7 @@ export async function HttpClient(fethUrl: string, fetchOptions) {
 				// guardar os tokens
 				if (isServer) {
 					// com ssr
-					nookies.set(fetchOptions.ctx, 'REFRESH_TOKEN_NAME', newRefreshToken, {
+					nookies.set(fetchOptions.ctx, 'netflix.ref', newRefreshToken, {
 						httpOnly: true,
 						sameSite: 'lax',
 						path: '/',

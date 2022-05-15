@@ -1,7 +1,7 @@
 import { NextPageContext } from 'next';
 import nookies from 'nookies';
 
-const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN_KEY';
+const ACCESS_TOKEN_KEY = 'netflix.acc';
 
 const ONE_SECOND = 1;
 const ONE_MINUTE = ONE_SECOND * 60;
