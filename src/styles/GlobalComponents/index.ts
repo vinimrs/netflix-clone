@@ -103,6 +103,7 @@ export const CustomButton = styled.button<{ width?: string }>`
 	}
 
 	&:disabled {
+		cursor: not-allowed;
 		color: #aaa;
 		background-color: rgb(102 0 0 / 97%);
 	}

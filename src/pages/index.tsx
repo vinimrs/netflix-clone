@@ -6,13 +6,26 @@ import Footer from '../components/Footer';
 import MoreInfoModal from '../components/MoreInfoModal';
 import List from '../components/Browse/List';
 import Loading from '../components/Loading';
-import { withSession, withSessionHOC } from '../services/auth/session';
+import { withSession } from '../services/auth/session';
 import { ISession, IMovieDataInfo } from '@types';
-import { useHomeList, useHeroData } from '@hooks';
+import { useHomeList, useHeroData, useProfile } from '@hooks';
 import Layout from 'src/components/Layout';
 import { GetServerSideProps } from 'next';
+import NeedToChooseAProfile from 'src/components/Browse/NeedToChooseAProfile';
 
 const Browse: React.FC<{ session: ISession }> = ({ session }) => {
+	const { profile } = useProfile();
+
+	const belongsToTheAccount = session.profiles.some(prof => {
+		if (prof.slug === profile.slug) {
+			const isEqualPreferences = prof.preference.every((pref, index) => {
+				return pref === profile.preference[index];
+			});
+			const isEqualImage = profile.image._id === prof.image._id;
+			return isEqualPreferences && isEqualImage;
+		}
+	});
+
 	// Loadable because the method is Async and not support React Suspense
 	const loadableHeroData = useHeroData();
 	const loadableList = useHomeList();
@@ -49,6 +62,10 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
 		return <Loading />;
 	}
 
+	if (!profile || !belongsToTheAccount) {
+		return <NeedToChooseAProfile />;
+	}
+
 	const list = loadableList.getValue();
 
 	return (
@@ -72,12 +89,13 @@ const Browse: React.FC<{ session: ISession }> = ({ session }) => {
 };
 
 // Decorator Pattern
-// export const getServerSideProps: GetServerSideProps = withSession(ctx => {
-// 	return {
-// 		props: {
-// 			session: ctx.req.session,
-// 		},
-// 	};
-// });
+export const getServerSideProps: GetServerSideProps = withSession(ctx => {
+	return {
+		props: {
+			session: ctx.req.session,
+		},
+	};
+});
 
-export default withSessionHOC(Browse);
+// export default withSessionHOC(Browse);
+export default Browse;

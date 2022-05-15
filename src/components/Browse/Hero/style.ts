@@ -4,7 +4,6 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 	width: 100%;
 	height: 100vh;
 	display: flex;
-	justify-content: start;
 	align-items: center;
 	position: relative;
 
