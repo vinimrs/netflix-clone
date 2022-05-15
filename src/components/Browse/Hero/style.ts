@@ -81,8 +81,7 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 		background-image: linear-gradient(0deg, #000e 40%, #00000000 95.33%),
 			url(${props => (props.src ? props.src : '')});
 		background-position: center;
-		align-items: end;
-		justify-content: flex-end;
+		align-items: flex-end;
 
 		p {
 			font-size: 16px;
@@ -93,7 +92,6 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 		.film-details {
 			width: 100%;
 			padding: 0 0 100px 16px;
-
 			justify-content: flex-end;
 
 			h1 {
