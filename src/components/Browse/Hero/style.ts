@@ -16,10 +16,8 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 		font-size: 20px;
 		line-height: 24px;
 		color: var(--white);
-
 		order: 4;
 		margin: 8px 0;
-
 		max-width: 35%;
 	}
 
@@ -79,7 +77,7 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 	}
 
 	@media (max-width: 768px) {
-		margin: -68px 0 0 0;
+		/* margin: -68px 0 0 0; */
 		background-image: linear-gradient(0deg, #000e 40%, #00000000 95.33%),
 			url(${props => (props.src ? props.src : '')});
 		background-position: center;
@@ -92,9 +90,9 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 		}
 
 		.film-details {
+			width: 100%;
 			padding: 100px 0 100px 16px;
 
-			max-width: 80vh;
 			justify-content: end;
 
 			h1 {
