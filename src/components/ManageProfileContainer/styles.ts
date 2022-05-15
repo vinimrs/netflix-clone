@@ -91,6 +91,9 @@ export const ManageProfileContainer = styled.div`
 	}
 
 	@media (max-width: 768px) {
+		height: 100%;
+		padding: 100px 0;
+
 		& > div {
 			margin-top: 10px;
 
