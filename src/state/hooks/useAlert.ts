@@ -22,7 +22,6 @@ export const useAlert = () => {
 			window.setTimeout(() => {
 				resetAlert();
 			}, 4000);
-
 			setAlert({ message, severity: 'success' });
 		},
 

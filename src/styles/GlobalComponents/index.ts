@@ -87,7 +87,8 @@ export const CustomButton = styled.button<{ width?: string }>`
 	outline: 0;
 	border-radius: 4px;
 	border: 0;
-	font-size: 0.875rem;
+	font-size: 0.9rem;
+	font-weight: 600;
 	line-height: 1.75;
 	letter-spacing: 0.02857em;
 	min-width: 64px;

@@ -1,4 +1,4 @@
-import { IMovieDataInfo, IMovieHomeList, IMovieVideo } from '@types';
+import { IHeroMovieData, IMovieDataInfo, IMovieHomeList } from '@types';
 import { selector } from 'recoil';
 import { moviesService } from '@services';
 import { shuffle } from '@utils';
@@ -39,10 +39,7 @@ const isAnMovieDataInfo = (obj: any): obj is IMovieDataInfo => {
 	);
 };
 
-export const heroFilmAsync = selector<{
-	video: IMovieVideo;
-	heroFilm: IMovieDataInfo;
-}>({
+export const heroFilmAsync = selector<IHeroMovieData>({
 	key: 'heroFilm',
 	get: async ({ get }) => {
 		const profile = get(profileAtom);
