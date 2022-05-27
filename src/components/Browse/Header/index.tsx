@@ -59,16 +59,22 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 					alt="Perfil do usuário"
 				/>
 			)}
-			<S.WrappedMenu>
+			<S.WrappedMenu
+				animate={{
+					opacity: dropdown ? 1 : 0,
+					visibility: dropdown ? 'inherit' : 'hidden',
+				}}
+				transition={{
+					opacity: { duration: 0.1 },
+					visibility: { delay: 0.1, duration: 0 },
+				}}
+			>
 				<S.ContainerMenu
 					animate={{
-						opacity: dropdown ? 1 : 0,
-						visibility: dropdown ? 'inherit' : 'hidden',
 						rotateX: dropdown ? 0 : -15,
 					}}
 					transition={{
-						opacity: { duration: 0.05 },
-						rotateX: { duration: 0.05 },
+						duration: 0.05,
 					}}
 				>
 					<ul onMouseLeave={handleCloseDropdown}>
@@ -79,8 +85,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 										handleCloseDropdown();
 										setProfile(item);
 										/* Agora Recoil gerencia atualizações necessárias em filhos que 
-											 utilizam seus átomos
-										*/ 
+											 utilizam seus átomos */
 										// router.reload();
 									}}
 									key={item.slug}

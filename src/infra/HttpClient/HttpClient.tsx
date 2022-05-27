@@ -28,7 +28,6 @@ export async function HttpClient(fethUrl: string, fetchOptions) {
 			const isServer = Boolean(fetchOptions?.ctx);
 			const currentRefreshToken =
 				fetchOptions?.ctx?.req?.cookies['netflix.ref'];
-			console.log(currentRefreshToken, isServer);
 
 			// console.log('Atualizando tokens');
 

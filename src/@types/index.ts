@@ -67,6 +67,11 @@ export interface IUser {
 	email?: string;
 }
 
+export interface IHeroMovieData {
+	video: IMovieVideo;
+	heroFilm: IMovieDataInfo;
+}
+
 export interface IImageData {
 	_id: string;
 	data?: ArrayBuffer;

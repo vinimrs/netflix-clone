@@ -43,11 +43,12 @@ export const PerfilNetflix = styled.img`
 	}
 `;
 
-export const WrappedMenu = styled.div`
+export const WrappedMenu = styled(motion.div)`
 	perspective: 2000;
 	position: absolute;
 	top: 92px;
 	right: 32px;
+	opacity: 0;
 
 	@media (max-width: 768px) {
 		top: 65px;
@@ -62,7 +63,6 @@ export const ContainerMenu = styled(motion.div)`
 	transition: 0.5s;
 	color: var(--white);
 	padding: 12px;
-	opacity: 0;
 	perspective: 2000;
 
 	ul {

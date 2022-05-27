@@ -10,9 +10,6 @@ import React, {
 	FormEventHandler,
 	useState,
 } from 'react';
-
-// import { Container } from './styles';
-
 import * as S from './styles';
 
 const Register: React.FC = () => {
@@ -44,7 +41,6 @@ const Register: React.FC = () => {
 		e.preventDefault();
 		setLoading(true);
 		userService.registerUser(email, name, password).then(res => {
-			res;
 			if (res.status === 201) {
 				setConfirmPassword('');
 				setEmail('');
