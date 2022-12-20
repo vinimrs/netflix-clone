@@ -21,10 +21,11 @@
 - `Funcionalidade 2` `Confirmação de e-mail`: para confirmar que estás utilizando um e-mail pessoal enviamos uma mensagem de confirmação para o e-mail cadastrado e a conta ficará ativa se a mensagem for confirmada!
 - `Funcionalidade 3` `Gerenciamento de perfis`: a aplicação permite que você crie, edite e remova seus perfis a qualquer momento!
 - `Funcionalidade 4` `Teasers dos filmes mais aclamados`: como parte do banco de filmes atualizados constantemente serão disponibilizados informações e teasers dos filmes mais aclamados da atualidade!
+- `Funcionalidade 5` `Lembramos de você`: a aplicação conta com um sistema de _fast login_ que permite que você não precise digitar seu e-mail e senha sempre que quiser acessar a aplicação!
 
-## Confira 🔦
-
-![gif-exemplo](https://user-images.githubusercontent.com/92659173/166121891-46220c7c-54bb-4d8c-a7e7-9f5332335610.gif)
+<p align="center">
+	<img src="https://user-images.githubusercontent.com/92659173/166121891-46220c7c-54bb-4d8c-a7e7-9f5332335610.gif" />
+</p>
 
 <!--
 
@@ -33,37 +34,52 @@
 ![edit-profile](https://user-images.githubusercontent.com/92659173/166117748-3c005c50-2230-4098-88f9-83b8eeb32d38.png)
 -->
 
-## Tecnologias ⚡
+## ⚡ Tecnologias
 
 - [Typescript](https://www.typescriptlang.org)
 - [NextJs](https://nextjs.org)
 - [Recoil](https://recoiljs.org)
 
+## 💾 Backend
 
-## Backend 💾
+**O sistema back-end dedicado em NodeJs com Express, pode ser visto no [repositório](https://github.com/ViniR07/netflix-backend)**
 
-**Backend dedicado em NodeJs com Express, pode ser visto no [repositório](https://github.com/ViniR07/netflix-backend)**
+## 📁 Acesso ao projeto
 
-## Como rodar a aplicação :arrow_forward:
+Você pode visualizar a <a href="https://netflix-clone-vinir07.vercel.app" target="_blank">última versao da aplicação</a> ou seguir o próximo tópico e rodá-la localmente.
 
-No terminal, clone o projeto:
+## 🛠 Abrir e rodar o projeto
 
-```bash
-git clone https://github.com/ViniR07/netflix-clone.git
-```
-
-Depois disso você pode ir no repositório e rodar o comando `npm install` para instalar as dependências:
+Primeiro, você deve ter o [`node`](https://nodejs.org/en/) e o [`npm`](https://www.npmjs.com) instalados em sua máquina, confirme executando os seguintes comandos (se houver erro precisa instalá-los):
 
 ```bash
-npm install
+node -v
+npm -v
 ```
 
-Finalmente, rode o comando `npm run dev` para iniciar a aplicação:
+Agora, navegue até o diretório que o projeto ficará e clone o projeto:
+
+```bash
+git clone https://github.com/vinimrs/netflix-clone.git
+cd netflix-clone/
+```
+
+Após isso, instale as dependências do projeto com o comando `npm install` ou `npm i`:
+
+```bash
+npm i
+```
+
+Finalmente, execute o comando `npm run dev` para iniciar a aplicação:
 
 ```bash
 npm run dev
 ```
 
-## Melhorias 🛠
+A aplicação deve estar visível em seu navegador, por padrão, no endereço `http://localhost:3000`.
+
+
+## ✅ Melhorias
 
 Ideias de melhorias para o projeto:
+
