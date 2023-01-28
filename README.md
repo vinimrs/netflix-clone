@@ -46,7 +46,7 @@
 
 ## 📁 Acesso ao projeto
 
-Você pode visualizar a <a href="https://netflix-clone-vinir07.vercel.app" target="_blank">última versao da aplicação</a> ou seguir o próximo tópico e rodá-la localmente.
+Você pode visualizar a <a href="https://vinflix.vercel.app" target="_blank">última versao da aplicação</a> ou seguir o próximo tópico e rodá-la localmente.
 
 ## 🛠 Abrir e rodar o projeto
 
