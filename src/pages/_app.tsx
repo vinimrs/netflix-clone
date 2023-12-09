@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import GlobalStyle from '../styles/global';
+import GlobalStyle from '../app/global';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { RecoilRoot } from 'recoil';
 import NextProgress from 'nextjs-progressbar';

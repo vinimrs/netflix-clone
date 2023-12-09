@@ -4,7 +4,7 @@ import React from 'react';
 import YouTube from 'react-youtube';
 import { moviesService } from '../../services/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import Loading from '../Loading';
+import Loading from '../../app/components/Loading';
 import { IMovieDataInfo } from '@types';
 import { videoOpts } from '@constants';
 import { useAlert, useWindowDimensions } from '@hooks';
@@ -36,7 +36,7 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
 			if (!video[0]) {
 				setModalInfo({ id: '', success: false });
 				alertActions.error(
-					'Não conseguimos coletar informações sobre esse filme! Tente novamente mais tarde!'
+					'Não conseguimos coletar informações sobre esse filme! Tente novamente mais tarde!',
 				);
 				setMissingError(true);
 				return;

@@ -1,5 +1,13 @@
 import { AlertColor } from '@mui/material';
 
+export type Children = {
+	children?: React.ReactNode;
+};
+
+export type Session = {
+	session: ISession;
+};
+
 export interface IMovieData {
 	adult?: boolean;
 	backdrop_path: string;
@@ -79,13 +87,13 @@ export interface IImageData {
 }
 
 export interface IProfile {
-	name?: string;
-	image?: IImageData;
-	preference?: string[];
-	slug?: string;
+	name: string;
+	image: IImageData;
+	preference: string[];
+	slug: string;
 }
 
-export interface ISession extends Response {
+export interface ISession {
 	user: IUser;
 	id: string;
 	verifiedEmail: boolean;

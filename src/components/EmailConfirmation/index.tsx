@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import FirstHeader from '../FirstHeader';
+import FirstHeader from '../../app/components/FirstHeader';
 
 import * as S from './styles';
 

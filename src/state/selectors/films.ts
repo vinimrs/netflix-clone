@@ -16,7 +16,7 @@ export const homeMovieListAsync = selector<IMovieHomeList[]>({
 			let res = await Promise.all(
 				lists.map(async item => {
 					return { ...item, items: item.items.body };
-				})
+				}),
 			);
 			res = shuffle(res);
 			return res;
@@ -45,8 +45,8 @@ export const heroFilmAsync = selector<IHeroMovieData>({
 		const profile = get(profileAtom);
 
 		const randomId =
-			profile?.preference[
-				Math.floor(Math.random() * profile?.preference.length)
+			profile?.preference![
+				Math.floor(Math.random() * profile?.preference!.length)
 			];
 
 		const resp = await moviesService.getMovieListByGenre(randomId);
@@ -55,11 +55,11 @@ export const heroFilmAsync = selector<IHeroMovieData>({
 				return isAnMovieDataInfo(film);
 			});
 			const randomChosen = Math.floor(
-				Math.random() * (completedFilms.length - 1)
+				Math.random() * (completedFilms.length - 1),
 			);
 			const chosen = completedFilms[randomChosen];
-			const chosenInfo = await moviesService.getMovieInfo(chosen.id);
-			const videos = await moviesService.getMovieVideos(chosen.id);
+			const chosenInfo = await moviesService.getMovieInfo(chosen.id!);
+			const videos = await moviesService.getMovieVideos(chosen.id!);
 
 			return { video: videos[0], heroFilm: chosenInfo };
 		}

@@ -1,3 +1,5 @@
+import { IImageData } from '@types';
+
 export const toSlug = (str: string) => {
 	const slugify = str
 		.toLowerCase()

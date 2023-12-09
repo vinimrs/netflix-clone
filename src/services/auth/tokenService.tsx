@@ -16,7 +16,7 @@ export const tokenService = {
 			path: '/',
 		});
 	},
-	get(ctx: NextPageContext = null) {
+	get(ctx: NextPageContext) {
 		const cookies = nookies.get(ctx);
 		return cookies[ACCESS_TOKEN_KEY] || '';
 	},

@@ -1,5 +1,5 @@
 import React from 'react';
-import FirstHeader from '../components/FirstHeader';
+import FirstHeader from '../app/components/FirstHeader';
 import * as S from '../styles/GlobalComponents';
 import Layout from 'src/components/Layout';
 import Register from 'src/components/Register';

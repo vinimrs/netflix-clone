@@ -13,9 +13,7 @@ export const userService = {
 			},
 		});
 	},
-	async deleteUser(userId: string, ctx: NextPageContext = null) {
-		const token = tokenService.get(ctx);
-
+	async deleteUser(userId: string, token: string) {
 		return await HttpClient(
 			`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/${userId}`,
 			{
@@ -24,7 +22,7 @@ export const userService = {
 					Authorization: `Bearer ${token}`,
 				},
 				refresh: true,
-			}
+			},
 		);
 	},
 
@@ -34,10 +32,8 @@ export const userService = {
 		preference: string[],
 		image_id: string,
 		user_id: string,
-		ctx: NextPageContext = null
+		token: string,
 	) {
-		const token = tokenService.get(ctx);
-
 		try {
 			const response = await HttpClient(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/user-profile/${user_id}`,
@@ -53,20 +49,14 @@ export const userService = {
 						preference,
 					},
 					refresh: true,
-				}
+				},
 			);
 			return response;
 		} catch (error) {
 			console.log(error);
 		}
 	},
-	async deleteUserProfile(
-		slug: string,
-		userId: string,
-		ctx: NextPageContext = null
-	) {
-		const token = tokenService.get(ctx);
-
+	async deleteUserProfile(slug: string, userId: string, token: string) {
 		try {
 			const response = await HttpClient(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/user-profile/${userId}`,
@@ -79,7 +69,7 @@ export const userService = {
 						slug,
 					},
 					refresh: true,
-				}
+				},
 			);
 			return response;
 		} catch (error) {
@@ -93,9 +83,8 @@ export const userService = {
 		image: string,
 		userId: string,
 		index: string,
-		ctx: NextPageContext = null
+		token: string,
 	) {
-		const token = tokenService.get(ctx);
 		try {
 			const response = await HttpClient(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/user-profile/${userId}`,
@@ -112,7 +101,7 @@ export const userService = {
 						index,
 					},
 					refresh: true,
-				}
+				},
 			);
 			return response;
 		} catch (error) {

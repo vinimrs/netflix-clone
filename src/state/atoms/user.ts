@@ -21,7 +21,7 @@ const localStorageEffect =
 export const profileAtom = atom<IProfile>({
 	key: 'profileAtom',
 
-	default: localStorage ? JSON.parse(localStorage.getItem('usuario')) : {},
+	default: localStorage ? JSON.parse(localStorage.getItem('usuario')!) : {},
 	effects: [localStorageEffect('usuario')],
 });
 
