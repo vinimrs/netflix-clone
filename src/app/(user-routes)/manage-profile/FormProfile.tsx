@@ -13,9 +13,8 @@ import { CustomButton, CustomTextField } from 'src/styles/GlobalComponents';
 import { toSlug } from '@utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProfileImages from './ProfileImages';
-import { useAlert } from '@hooks';
+import { useAlert, useSession } from '@hooks';
 import { IImageData, IProfile, ISession } from '@types';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -27,7 +26,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 	const [loading, setLoading] = useState(false);
 	const [editProfile, setEditProfile] = useState('');
 
-	const { data: session, update } = useSession();
+	const { session, setSession } = useSession();
 	const alertActions = useAlert();
 	const router = useRouter();
 
@@ -80,7 +79,6 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 
 		let res;
 
-		console.log(session);
 		const newProfile: IProfile = {
 			slug,
 			image: {
@@ -97,7 +95,6 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 				preferencesId as string[],
 				imageData.id,
 				session?.id!,
-				session?.tokens.accessToken!,
 			);
 		} else {
 			res = await userService.updateUserProfile(
@@ -107,16 +104,24 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 				imageData.id,
 				session?.id!,
 				editProfile,
-				session?.tokens.accessToken!,
 			);
 		}
 
 		console.log(res);
 		if (res.ok) {
-			// update({
-			// 	...session,
-			// 	profiles: [...session!.profiles, {}],
-			// });
+			// atualizando a sessão
+			setSession({
+				...session,
+				profiles: [
+					...session.profiles,
+					{
+						name: profileName,
+						slug,
+						image: { _id: imageData.id },
+						preference: preferencesId as string[],
+					},
+				],
+			});
 			alertActions.success(res.body.message);
 			router.push('/select-profile');
 		} else {

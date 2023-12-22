@@ -14,41 +14,33 @@ import { IImageData, ISession } from '@types';
 
 export const authService = {
 	async login({ email, password }) {
-		return (
-			HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/login`, {
-				method: 'POST',
-				body: {
-					email: email,
-					password,
-				},
+		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/login`, {
+			method: 'POST',
+			body: {
+				email,
+				password,
+			},
+			refresh: false,
+		})
+			.then(res => {
+				const body = {
+					...res.body,
+					access: res.headers.get('Authorization'),
+				};
+				return body;
 			})
-				.then(res => {
-					const body = {
-						...res.body,
-						access: res.headers.get('Authorization'),
-					};
-					return body;
-				})
-				// .then(async body => {
-				// 	if (!body.refresh_token) return body;
-				// 	await HttpClient(`${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh`, {
-				// 		method: 'POST',
-				// 		body: {
-				// 			refresh_token: body.refresh_token,
-				// 		},
-				// 	});
-				// 	return body;
-				// })
-				.catch(err => {
-					console.log(err);
-				})
-		);
+			.catch(err => {
+				console.log(err);
+			});
 	},
-	async getSession(access: string): Promise<ISession> {
+	async getSession(): Promise<ISession> {
+		const { accessToken, refreshToken } = await tokenService.getTokens();
+		console.log(accessToken, refreshToken, 'authService');
+
 		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`, {
 			method: 'GET',
 			headers: {
-				Authorization: `Bearer ${access}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 			cache: 'no-store', // getServerSideProps na App route
 			refresh: true,
@@ -58,41 +50,129 @@ export const authService = {
 			return response.body.data;
 		});
 	},
-	async logout(ctx: any = null) {
-		const token = tokenService.get(ctx!);
+	async logout() {
+		const { accessToken, refreshToken } = await tokenService.getTokens();
+		console.log(accessToken, refreshToken, 'authService logout');
 
 		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/logout `, {
 			method: 'POST',
 			headers: {
-				Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 			body: {
-				refresh_token: ctx?.req?.cookies['netflix.ref'],
+				refresh_token: refreshToken,
+			},
+			refresh: false,
+		})
+			.then(response => {
+				if (!response.ok) throw new Error(response.body.message);
+
+				return response.body.data;
+			})
+			.finally(() => {
+				console.log('removendo tokens');
+				tokenService.removeTokens().then(res => {
+					console.log('tokens removidos', res);
+				});
+			});
+	},
+	async refresh(): Promise<{ accessToken: string; refreshToken: string }> {
+		const { accessToken, refreshToken } = await tokenService.getTokens();
+		console.log('tentando refresh', accessToken, refreshToken);
+
+		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/refresh`, {
+			method: 'POST',
+			body: {
+				refresh_token: refreshToken,
 			},
 			refresh: false,
 		}).then(response => {
-			if (!response.ok) throw new Error('Falha ao fazer Logout');
+			if (!response.ok) throw new Error(response.body.message);
 
-			return response.body.data;
+			const body = {
+				refreshToken: response.body.refresh_token,
+				accessToken: response.headers.get('Authorization'),
+			};
+
+			console.log('refresh', body);
+
+			return body;
 		});
 	},
-	async refresh(access, refresh) {
-		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/refresh `, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${access}`,
-			},
-			body: {
-				refresh_token: refresh,
-			},
-			refresh: false,
-		}).then(response => {
-			if (!response.ok) throw new Error('Falha ao fazer refresh');
+	async validateKey(accessKey: string): Promise<boolean> {
+		console.log(accessKey, 'validate key');
+		try {
+			const res: ISession = await HttpClient(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`,
+				{
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${accessKey}`,
+					},
+					cache: 'no-store', // getServerSideProps na App route
+					refresh: false,
+				},
+			).then(response => {
+				if (!response.ok) throw new Error('Não autorizado');
 
-			return {
-				...response.body,
-				access: response.headers.get('Authorization'),
+				return response.body.data;
+			});
+			console.log(res.user, 'validate key');
+			return true;
+		} catch (error) {
+			return false;
+		}
+	},
+	async validateKeyWithRefresh(
+		accessKey: string,
+		refreshKey: string,
+	): Promise<{
+		accessToken: string;
+		refreshToken: string;
+		message: string;
+	}> {
+		console.log(accessKey, refreshKey, 'validate key refresh');
+		// tentando refresh
+		console.log('tentando refresh');
+		try {
+			const res = await HttpClient(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/refresh`,
+				{
+					method: 'POST',
+					body: {
+						refresh_token: refreshKey,
+					},
+					refresh: false,
+				},
+			).then(response => {
+				if (!response.ok) throw new Error(response.body.message);
+
+				const body = {
+					refreshToken: response.body.refresh_token,
+					accessToken: response.headers.get('Authorization'),
+				};
+
+				console.log('refresh', body);
+
+				return body;
+			});
+
+			console.log(res, 'validate key refresh');
+			tokenService.save(res.accessToken, res.refreshToken);
+
+			const result = {
+				accessToken: res.accessToken,
+				refreshToken: res.refreshToken,
+				message: 'success',
 			};
-		});
+
+			return result;
+		} catch (error) {
+			return {
+				accessToken: '',
+				refreshToken: '',
+				message: 'Refresh token inválido!',
+			};
+		}
 	},
 };

@@ -1,8 +1,8 @@
 import * as S from './styles';
 import React from 'react';
 import { IImageData, IProfile } from '@types';
-import { useSession } from 'next-auth/react';
 import { convertImage } from '@utils';
+import { useSession } from '@hooks';
 
 const ProfileImages: React.FC<{
 	setImageData: React.Dispatch<
@@ -14,7 +14,6 @@ const ProfileImages: React.FC<{
 	images: IImageData[];
 }> = ({ setImageData, images }) => {
 	const filteredImages = (imgs: IImageData[], profiles: IProfile[]) => {
-		console.log('filtrando');
 		return imgs.filter(img => {
 			const exists = profiles.find(prof => {
 				return prof!.image!._id === img._id;
@@ -23,9 +22,7 @@ const ProfileImages: React.FC<{
 		});
 	};
 
-	const { data: session } = useSession();
-
-	console.log(`images interno ${images}`);
+	const { session } = useSession();
 
 	return (
 		<S.ImageContainer>

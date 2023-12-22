@@ -110,7 +110,7 @@ export const MuiCustomInputProps: {
 export const videoOpts = (
 	width: string,
 	height: string,
-	mute: 1 | 0
+	mute: 1 | 0,
 ): Options => ({
 	height: height,
 	width: width,
@@ -120,7 +120,7 @@ export const videoOpts = (
 		controls: 0,
 		cc_load_policy: 1,
 		rel: 0,
-		origin: 'https://netflix-clone-vinir07.vercel.app',
+		origin: process.env.NEXT_PUBLIC_BASE_URL,
 		mute: mute,
 		// showinfo: 0,
 	},

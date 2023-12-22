@@ -1,3 +1,4 @@
+'use client';
 import { IWindowDims } from '@types';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';

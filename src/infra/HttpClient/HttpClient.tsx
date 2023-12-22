@@ -1,6 +1,4 @@
-// Arquitetura Hexagonal
-import nookies from 'nookies';
-import { tokenService } from '../../services/auth/tokenService';
+import { authService, tokenService } from '@services';
 
 // Ports & Adapters
 export async function HttpClient(fethUrl: string, fetchOptions: any) {
@@ -11,65 +9,69 @@ export async function HttpClient(fethUrl: string, fetchOptions: any) {
 			...fetchOptions.headers,
 		},
 		body: fetchOptions.body ? JSON.stringify(fetchOptions.body) : null,
-	}).then(async respostaDoServidor => {
-		return {
-			ok: respostaDoServidor.ok,
-			status: respostaDoServidor.status,
-			body: await respostaDoServidor.json(),
-			headers: respostaDoServidor.headers,
-		};
-	});
+	})
+		.then(async respostaDoServidor => {
+			return {
+				ok: respostaDoServidor.ok,
+				status: respostaDoServidor.status,
+				body:
+					respostaDoServidor.status !== 204
+						? await respostaDoServidor.json()
+						: {},
+				headers: respostaDoServidor.headers,
+			};
+		})
+		.then(async res => {
+			if (!fetchOptions.refresh) return res;
+			if (res.status !== 401) return res;
 
-	// .then(async res => {
-	// 	if (!fetchOptions.refresh) return res;
-	// 	if (res.status !== 401) return res;
+			// console.log('Atualizando tokens');
 
-	// 	const isServer = Boolean(fetchOptions?.ctx);
-	// 	const currentRefreshToken =
-	// 		fetchOptions?.ctx?.req?.cookies['netflix.ref'];
+			/*
+	        -Sempre use try catch para capturar os erros desconhecidos.
+	        -Desconfia que algum código não está rodando misteriosamente, coloque num trycatch
+	        */
+			try {
+				// Tentar atualizar os tokens
+				const { accessToken, refreshToken } = await authService.refresh();
 
-	// 	// console.log('Atualizando tokens');
+				// guardar os tokens
+				const newAccessToken = accessToken;
+				const newRefreshToken = refreshToken;
 
-	// 	/*
-	//         -Sempre use try catch para capturar os erros desconhecidos.
-	//         -Desconfia que algum código não está rodando misteriosamente, coloque num trycatch
-	//         */
-	// 	try {
-	// 		// Tentar atualizar os tokens
-	// 		const refreshResponse = await HttpClient(
-	// 			`${process.env.NEXT_PUBLIC_BASE_URL}/api/refresh`,
-	// 			{
-	// 				method: isServer ? 'PUT' : 'GET',
-	// 				body: isServer ? { refresh_token: currentRefreshToken } : undefined,
-	// 			},
-	// 		);
+				console.log('Atualizando tokens', newAccessToken, newRefreshToken);
 
-	// 		const newAccessToken = refreshResponse.body.data.access_token;
-	// 		const newRefreshToken = refreshResponse.body.data.refresh_token;
+				// tentar rodar o request anterior
+				const retryResponse = await HttpClient(fethUrl, {
+					...fetchOptions,
+					refresh: false,
+					headers: {
+						Authorization: `Bearer ${newAccessToken}`,
+					},
+				});
 
-	// 		// guardar os tokens
-	// 		if (isServer) {
-	// 			// com ssr
-	// 			nookies.set(fetchOptions.ctx, 'netflix.ref', newRefreshToken, {
-	// 				httpOnly: true,
-	// 				sameSite: 'lax',
-	// 				path: '/',
-	// 			});
-	// 		}
+				tokenService.save(newAccessToken, newRefreshToken);
 
-	// 		tokenService.save(newAccessToken); // com static
+				console.log('retryResponse', retryResponse);
 
-	// 		// tentar rodar o request anterior
-	// 		const retryResponse = await HttpClient(fethUrl, {
-	// 			...fetchOptions,
-	// 			refresh: false,
-	// 			headers: {
-	// 				Authorization: `Bearer ${newAccessToken}`,
-	// 			},
-	// 		});
-	// 		return retryResponse;
-	// 	} catch (error) {
-	// 		return res;
-	// 	}
-	// });
+				// se der erro de novo, desloga
+				if (retryResponse.status === 401) {
+					await authService.logout();
+					return retryResponse;
+				}
+
+				// se der erro de novo, retorna o erro
+				return retryResponse;
+			} catch (error) {
+				console.log('error na tentativa de refresh', error);
+
+				if (error.message === 'Refresh token inválido!')
+					tokenService.removeTokens().then(res => {
+						console.log('tokens removidos', res);
+					});
+				else await authService.logout();
+
+				return res;
+			}
+		});
 }

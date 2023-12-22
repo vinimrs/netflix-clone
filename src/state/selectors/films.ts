@@ -1,15 +1,21 @@
-import { IHeroMovieData, IMovieDataInfo, IMovieHomeList } from '@types';
-import { selector } from 'recoil';
+import {
+	IHeroMovieData,
+	IMovieDataInfo,
+	IMovieHomeList,
+	IMovieVideo,
+} from '@types';
+import { atom, selector } from 'recoil';
 import { moviesService } from '@services';
 import { shuffle } from '@utils';
 import { profileAtom } from '../atoms';
 
 export const homeMovieListAsync = selector<IMovieHomeList[]>({
 	key: 'homeMovieListAsync',
+
 	get: async ({ get }) => {
 		const profile = get(profileAtom);
 
-		if (profile) {
+		if (Object.keys(profile).length > 0) {
 			const resultList = await moviesService.getHomeList(profile);
 			const fixedLists = await moviesService.getFixedHomeLists();
 			const lists = [...resultList, ...fixedLists];
@@ -18,9 +24,12 @@ export const homeMovieListAsync = selector<IMovieHomeList[]>({
 					return { ...item, items: item.items.body };
 				}),
 			);
+
 			res = shuffle(res);
 			return res;
 		}
+
+		return [];
 	},
 });
 
@@ -41,27 +50,33 @@ const isAnMovieDataInfo = (obj: any): obj is IMovieDataInfo => {
 
 export const heroFilmAsync = selector<IHeroMovieData>({
 	key: 'heroFilm',
-	get: async ({ get }) => {
+	get: async ({ get }): Promise<IHeroMovieData> => {
 		const profile = get(profileAtom);
 
-		const randomId =
-			profile?.preference![
-				Math.floor(Math.random() * profile?.preference!.length)
-			];
+		console.log('heroFilmAsync', profile);
 
-		const resp = await moviesService.getMovieListByGenre(randomId);
-		if (resp.length > 0) {
-			const completedFilms = resp.filter(film => {
-				return isAnMovieDataInfo(film);
-			});
-			const randomChosen = Math.floor(
-				Math.random() * (completedFilms.length - 1),
-			);
-			const chosen = completedFilms[randomChosen];
-			const chosenInfo = await moviesService.getMovieInfo(chosen.id!);
-			const videos = await moviesService.getMovieVideos(chosen.id!);
+		if (Object.keys(profile).length > 0) {
+			const randomId =
+				profile?.preference![
+					Math.floor(Math.random() * profile?.preference!.length)
+				];
 
-			return { video: videos[0], heroFilm: chosenInfo };
+			const resp = await moviesService.getMovieListByGenre(randomId);
+			if (resp.length > 0) {
+				const completedFilms = resp.filter(film => {
+					return isAnMovieDataInfo(film);
+				});
+				const randomChosen = Math.floor(
+					Math.random() * (completedFilms.length - 1),
+				);
+				const chosen = completedFilms[randomChosen];
+				const chosenInfo = await moviesService.getMovieInfo(chosen.id!);
+				const videos = await moviesService.getMovieVideos(chosen.id!);
+
+				return { video: videos[0], heroFilm: chosenInfo };
+			}
 		}
+
+		return { video: {} as IMovieVideo, heroFilm: {} as IMovieDataInfo };
 	},
 });

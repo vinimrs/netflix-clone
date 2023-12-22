@@ -25,6 +25,11 @@ export const profileAtom = atom<IProfile>({
 	effects: [localStorageEffect('usuario')],
 });
 
+export const profilesAtom = atom<IProfile[]>({
+	key: 'profilesAtom',
+	default: [] as IProfile[],
+});
+
 export const sessionAtom = atom<ISession>({
 	key: 'sessionAtom',
 	default: {} as ISession,

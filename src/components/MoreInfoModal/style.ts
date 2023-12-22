@@ -76,16 +76,32 @@ export const ModalBanner = styled.div<{ src?: string }>`
 	background-position: center;
 `;
 
-export const PosterImg = styled.img`
-	width: 200px;
-	order: 1;
-	margin-top: 20px;
+export const PosterContainer = styled.div`
+	text-align: center;
+
+	.poster-img {
+		width: 200px;
+		height: 300px;
+		order: 1;
+		margin-top: 20px;
+	}
 `;
 
 export const FilmInfosWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	padding: 24px 32px;
+
+	/* primeiro elemento div filho */
+	> div:first-child {
+		padding-left: 20px;
+		order: 2;
+
+		> span:first-child {
+			display: block;
+			width: 100%;
+		}
+	}
 
 	@media (max-width: 768px) {
 		flex-direction: column;
@@ -107,6 +123,7 @@ export const MovieProductionCompanies = styled.div`
 
 	h2 {
 		padding-top: 0px;
+		color: var(--black);
 	}
 `;
 

@@ -1,4 +1,4 @@
-import { IImageData } from '@types';
+import { IImageData, IProfile } from '@types';
 
 export const toSlug = (str: string) => {
 	const slugify = str
@@ -37,3 +37,19 @@ export const toHoursAndMinutes = (totalMinutes: number) => {
 
 	return `${hours < 1 ? '' : `${hours}h`}${minutes < 1 ? '' : `${minutes}min`}`;
 };
+
+export const belongsToTheAccount = (profiles: IProfile[], profile: IProfile) =>
+	profiles.some(prof => {
+		if (prof.slug === profile.slug && prof.preference !== undefined) {
+			const isEqualPreferences = prof.preference.every((pref, index) => {
+				return profile.preference !== undefined
+					? pref === profile.preference[index]
+					: false;
+			});
+			const isEqualImage =
+				profile.image !== undefined && prof.image !== undefined
+					? profile.image._id === prof.image._id
+					: null;
+			return isEqualPreferences && isEqualImage;
+		}
+	});

@@ -1,7 +1,7 @@
 import type { Children } from '@types';
 import { Metadata } from 'next';
 import { Montserrat, Open_Sans } from 'next/font/google';
-import Providers from './components/Providers';
+import Providers from '../components/Providers';
 
 const openSans = Open_Sans({
 	subsets: ['latin'],

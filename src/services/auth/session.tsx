@@ -1,6 +1,6 @@
 // import { useRouter } from 'next/router';
 import React from 'react';
-import Loading from 'src/app/components/Loading';
+import Loading from 'src/components/Loading';
 import { authService } from './authService';
 import { useSession } from '@hooks';
 

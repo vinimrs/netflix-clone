@@ -1,23 +1,10 @@
-import { Children } from '@types';
-import { getServerSession } from 'next-auth';
+'use client';
 import React from 'react';
-import { authOptions } from '../api/auth/[...nextauth]/route';
-import { redirect } from 'next/navigation';
+import { Children, ISession } from '@types';
+import Loading from 'src/components/Loading';
 
-// import { Container } from './styles';
-
-const UserLayout = async ({
-	children,
-}: {
-	children: React.ReactNode;
-}): Promise<React.ReactNode> => {
-	const session = await getServerSession(authOptions);
-
-	if (!session) {
-		redirect('/');
-	}
-
-	return <>{children}</>;
+const UserLayout: React.FC<Children> = ({ children }) => {
+	return <React.Suspense fallback={<Loading />}>{children}</React.Suspense>;
 };
 
 export default UserLayout;
