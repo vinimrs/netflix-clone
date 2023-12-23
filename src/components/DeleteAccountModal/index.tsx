@@ -9,7 +9,7 @@ import {
 	DialogTitle,
 } from '@mui/material';
 import { userService } from '../../services/userService';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface DeleteAccountModalProps {
 	setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;

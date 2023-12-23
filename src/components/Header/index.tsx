@@ -47,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 
 	return (
 		<S.StyledHeader $active={scroll}>
-			<Link href="/select-profile" passHref>
+			<Link href="/browse" passHref>
 				<S.LogoNetflix
 					src="/netflix-logo.svg"
 					alt="Logo da Netflix"

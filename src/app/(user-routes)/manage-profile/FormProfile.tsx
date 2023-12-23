@@ -123,7 +123,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 				],
 			});
 			alertActions.success(res.body.message);
-			router.push('/select-profile');
+			router.push('/browse');
 		} else {
 			alertActions.error(res.body.message);
 		}

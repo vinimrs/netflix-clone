@@ -1,9 +1,10 @@
+'use client';
 import { MuiCustomInputProps, regExp } from '@constants';
 import { useAlert } from '@hooks';
-import { userService } from '@services';
+import { authService, userService } from '@services';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React, {
 	ChangeEventHandler,
 	FocusEventHandler,
@@ -42,13 +43,18 @@ const Register: React.FC = () => {
 		setLoading(true);
 		userService.registerUser(email, name, password).then(res => {
 			if (res.status === 201) {
-				setConfirmPassword('');
-				setEmail('');
-				setName('');
-				setPassword('');
-
-				alertActions.success('Conta criada com sucesso!');
-				router.push('/email-confirmation');
+				authService.login({ email, password }).then(res => {
+					if (res.ok) {
+						alertActions.success('Conta criada com sucesso!');
+						setConfirmPassword('');
+						setEmail('');
+						setName('');
+						setPassword('');
+						router.push('/email-confirmation');
+					} else {
+						alertActions.error(res.body.error);
+					}
+				});
 			} else {
 				alertActions.error(res.body.error);
 			}

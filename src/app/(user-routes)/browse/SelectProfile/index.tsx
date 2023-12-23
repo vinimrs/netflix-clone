@@ -3,11 +3,11 @@ import { useAlert, useProfile, useSession, useWindowDimensions } from '@hooks';
 import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { IImageData, IProfile, ISession } from '@types';
+import React, { useState } from 'react';
+import { IProfile } from '@types';
 import { userService } from '@services';
 import { convertImage } from '@utils';
-import * as S from '../select-profile/styles';
+import * as S from './styles';
 import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
 
 const SelectProfile: React.FC = () => {
@@ -41,12 +41,6 @@ const SelectProfile: React.FC = () => {
 		setProfileHovered(index.toString());
 	};
 	const handleMouseOff = () => setProfileHovered('');
-
-	// const getImageFromList = (image: IImageData): IImageData => {
-	// 	return imagesData.find(img => img._id === image._id)!;
-	// };
-
-	console.log('select profile', profiles);
 
 	return (
 		<S.ProfileWrapper>

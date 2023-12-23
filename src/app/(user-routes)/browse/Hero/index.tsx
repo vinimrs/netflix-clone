@@ -1,24 +1,18 @@
 'use client';
 import * as S from './style';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { IHeroMovieData, IMovieData, IMovieDataInfo } from '@types';
-import { useHeroData, useProfile, useWindowDimensions } from '@hooks';
+import { IMovieDataInfo } from '@types';
+import { useHeroData, useWindowDimensions } from '@hooks';
 import { toHoursAndMinutes } from '@utils';
-import Loading from 'src/components/Loading';
-import { useLoading } from 'src/state/hooks/useLoading';
 
 interface Hero {
 	handleSetModal: (film: IMovieDataInfo) => void;
 }
 
 const Hero: React.FC<Hero> = ({ handleSetModal }) => {
-	const [data, setData] = useState<IHeroMovieData>({} as IHeroMovieData);
-	const { setLoading } = useLoading();
-	const { profile } = useProfile();
-
 	const heroData = useHeroData().getValue();
 	const { width, height } = useWindowDimensions();
 	const [videoIsOpen, setVideoIsOpen] = useState(false);

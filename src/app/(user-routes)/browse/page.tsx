@@ -13,6 +13,7 @@ import SelectProfile from './SelectProfile';
 import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
 import { authService } from '@services';
 import Loading from 'src/components/Loading';
+import { belongsToTheAccount } from '@utils';
 
 const Browse: React.FC<Session> = () => {
 	const { session, setSession } = useSession();
@@ -43,10 +44,6 @@ const Browse: React.FC<Session> = () => {
 			}
 		};
 
-		setLoading(true);
-
-		console.log('browse session', session);
-
 		window.addEventListener('scroll', scrollListener);
 		return () => {
 			window.removeEventListener('scroll', scrollListener);
@@ -55,37 +52,32 @@ const Browse: React.FC<Session> = () => {
 
 	useEffect(() => {
 		const asyncData = async () => {
-			console.log('loading true userlayout');
 			const session = await authService.getSession();
 			setSession(session);
 			setProfiles(session.profiles);
-			console.log('loading false userlayout');
+
+			if (
+				Object.keys(profile).length === 0 ||
+				!belongsToTheAccount(session.profiles, profile)
+			) {
+				setSelectProfile(true);
+				setLoading(false);
+			} else {
+				setSelectProfile(false);
+			}
 
 			if (heroData.state !== 'loading' && homeList.state !== 'loading') {
-				console.log('setLoading false');
 				setLoading(false);
 			}
 		};
 
+		setLoading(true);
 		asyncData();
-
-		console.log('browse profile');
-		if (Object.keys(profile).length === 0) {
-			setSelectProfile(true);
-		} else {
-			setSelectProfile(false);
-		}
-
-		console.log(selectProfile, 'select profile');
 	}, [profile, heroData.state, homeList.state]);
 
 	if (loading) return <Loading />;
 
-	if (selectProfile) {
-		return <SelectProfile />;
-	}
-
-	console.log('browse', session);
+	if (selectProfile) return <SelectProfile />;
 
 	return (
 		<>
