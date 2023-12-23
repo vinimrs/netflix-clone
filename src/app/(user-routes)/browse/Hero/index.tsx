@@ -1,8 +1,7 @@
 'use client';
 import * as S from './style';
-import React, { useState } from 'react';
+import React from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { IMovieDataInfo } from '@types';
 import { useHeroData, useWindowDimensions } from '@hooks';
@@ -15,7 +14,6 @@ interface Hero {
 const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 	const heroData = useHeroData().getValue();
 	const { width } = useWindowDimensions();
-	const [videoIsOpen, setVideoIsOpen] = useState(false);
 
 	const limitedText = (text: string, type: string) => {
 		const limits = {
@@ -37,24 +35,22 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 			data-testid="hero-container"
 			src={`https://image.tmdb.org/t/p/original${heroFilm.backdrop_path}`}
 		>
-			{videoIsOpen && (
-				<iframe
-					src={`https://www.youtube.com/embed/${video.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${video.key}`}
-					frameBorder="0"
-					allow="autoplay; encrypted-media"
-					allowFullScreen
-					style={{
-						width: '100%',
-						height: '100%',
-					}}
-					className="video"
-				/>
-			)}
+			<iframe
+				src={`https://www.youtube.com/embed/${video.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${video.key}`}
+				frameBorder="0"
+				allow="autoplay; encrypted-media"
+				allowFullScreen
+				style={{
+					width: '100%',
+					height: '100%',
+				}}
+				className="video"
+			/>
 			<div className="film-details">
 				<motion.h1
 					animate={{
-						scale: videoIsOpen ? 0.8 : 1,
-						order: videoIsOpen ? 5 : 1,
+						scale: 1,
+						order: 1,
 					}}
 					transition={{
 						ease: 'easeInOut',
@@ -66,8 +62,8 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 				</motion.h1>
 				<motion.div
 					animate={{
-						opacity: videoIsOpen ? 0 : 1,
-						visibility: videoIsOpen ? 'hidden' : 'inherit',
+						opacity: 1,
+						visibility: 'inherit',
 					}}
 					transition={{
 						ease: 'easeInOut',
@@ -96,8 +92,8 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 				</motion.div>
 				<motion.p
 					animate={{
-						opacity: videoIsOpen ? 0 : 1,
-						visibility: videoIsOpen ? 'hidden' : 'inherit',
+						opacity: 1,
+						visibility: 'inherit',
 					}}
 					transition={{
 						ease: 'easeInOut',
@@ -108,9 +104,9 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 					{limitedText(heroFilm.overview, 'description')}
 				</motion.p>
 				<div className="buttons">
-					{video && (
+					{/* {video && (
 						<S.HeroButton
-							variant={videoIsOpen ? 'secondary' : 'primary'}
+							variant={'primary'}
 							onClick={() => {
 								setVideoIsOpen(!videoIsOpen);
 							}}
@@ -123,7 +119,7 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 							/>
 							<span>{videoIsOpen ? 'Sair' : 'Trailer'}</span>
 						</S.HeroButton>
-					)}
+					)} */}
 					<S.HeroButton
 						onClick={() => {
 							handleSetModal(heroFilm);
@@ -136,8 +132,8 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 				</div>
 				<motion.p
 					animate={{
-						opacity: videoIsOpen ? 0 : 1,
-						visibility: videoIsOpen ? 'hidden' : 'inherit',
+						opacity: 1,
+						visibility: 'inherit',
 					}}
 					transition={{
 						ease: 'easeInOut',
