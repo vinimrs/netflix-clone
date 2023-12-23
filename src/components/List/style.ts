@@ -12,7 +12,7 @@ export const ListDiv = styled.div`
 `;
 
 export const FilmsList = styled.div<{ length?: number }>`
-	min-width: ${p => p.length * 200}px;
+	min-width: ${p => (p.length ? p.length * 200 : 200)}px;
 	display: flex;
 	align-items: center;
 `;

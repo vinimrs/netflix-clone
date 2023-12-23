@@ -53,8 +53,6 @@ export const heroFilmAsync = selector<IHeroMovieData>({
 	get: async ({ get }): Promise<IHeroMovieData> => {
 		const profile = get(profileAtom);
 
-		console.log('heroFilmAsync', profile);
-
 		if (Object.keys(profile).length > 0) {
 			const randomId =
 				profile?.preference![

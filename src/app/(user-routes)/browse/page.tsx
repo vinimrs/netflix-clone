@@ -4,25 +4,24 @@ import Header from '../../../components/Header';
 import Hero from './Hero';
 import Footer from '../../../components/Footer';
 import MoreInfoModal from '../../../components/MoreInfoModal';
-import { IMovieDataInfo, IProfile, Session } from '@types';
+import { IMovieDataInfo, Session } from '@types';
 import { useHomeList, useHeroData, useProfile, useSession } from '@hooks';
 import Main from './Main';
 import { useLoading } from 'src/state/hooks/useLoading';
-import { useRouter } from 'next/navigation';
 import SelectProfile from './SelectProfile';
 import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
 import { authService } from '@services';
 import Loading from 'src/components/Loading';
 import { belongsToTheAccount } from '@utils';
 
-const Browse: React.FC<Session> = () => {
+const Browse = () => {
 	const { session, setSession } = useSession();
-	const { profile, setProfile } = useProfile();
-	const heroData = useHeroData();
-	const homeList = useHomeList();
-	// const { loading, setLoading } = useLoading();
+	const { profile } = useProfile();
 	const { setProfiles } = useUserProfiles();
 	const { loading, setLoading } = useLoading();
+
+	const heroData = useHeroData();
+	const homeList = useHomeList();
 
 	const [headerActive, setHeaderActive] = useState(false);
 	const [modalInfo, setModalInfo] = useState({

@@ -14,7 +14,7 @@ import { useAlert, useSession } from '@hooks';
 import * as S from '../../../styles/GlobalComponents';
 import { authService, tokenService } from '@services';
 
-const Login: React.FC = () => {
+const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
 				throw new Error(res.error);
 			}
 
-			const tokenRes = await tokenService.save(res.access, res.refresh_token);
+			await tokenService.save(res.access, res.refresh_token);
 
 			const session = await authService.getSession();
 			setSession(session);
@@ -50,12 +50,7 @@ const Login: React.FC = () => {
 			setLoading(false);
 
 			router.push('/browse');
-
-			console.log(res, tokenRes, session);
-
-			setEmail('');
-			setPassword('');
-		} catch (error: any) {
+		} catch (error) {
 			setLoading(false);
 			alertActions.error(error.message);
 		}

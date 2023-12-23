@@ -27,7 +27,7 @@ const FirstHeader: React.FC = () => {
 				height="100"
 				// style={{ display: 'flex', justifyContent: 'start' }}
 			/>
-			<Link href={'/login'}>
+			<Link href={'/login'} passHref>
 				<button style={{ backgroundColor: 'red' }}>Entrar</button>
 			</Link>
 		</HeaderDiv>

@@ -1,13 +1,7 @@
 'use client';
-import Link from 'next/link';
 import React from 'react';
-import * as S from './styles';
-import { useSession } from '@hooks';
 
-const Dashboard: React.FC = () => {
-	const { session } = useSession();
-	console.log(`session: ${session?.user?.username}`);
-
+const Dashboard = () => {
 	return (
 		<div>
 			<h1>

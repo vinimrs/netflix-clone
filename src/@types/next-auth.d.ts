@@ -1,5 +1,4 @@
 import { IProfile, IUser } from '@types';
-import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
 	interface Session {
@@ -14,8 +13,6 @@ declare module 'next-auth' {
 		error?: string;
 	}
 }
-
-import { JWT } from 'next-auth/jwt';
 
 declare module 'next-auth/jwt' {
 	interface JWT {

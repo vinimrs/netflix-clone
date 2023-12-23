@@ -3,7 +3,6 @@ import {
 	InputBaseComponentProps,
 	InputLabelProps,
 } from '@mui/material';
-import { Options } from 'react-youtube';
 
 export const moviesGenres = [
 	{
@@ -106,22 +105,3 @@ export const MuiCustomInputProps: {
 	},
 	inputLabel: { style: { color: '#8c8c80' } },
 };
-
-export const videoOpts = (
-	width: string,
-	height: string,
-	mute: 1 | 0,
-): Options => ({
-	height: height,
-	width: width,
-	playerVars: {
-		// https://developers.google.com/youtube/player_parameters
-		autoplay: 1,
-		controls: 0,
-		cc_load_policy: 1,
-		rel: 0,
-		origin: process.env.NEXT_PUBLIC_BASE_URL,
-		mute: mute,
-		// showinfo: 0,
-	},
-});

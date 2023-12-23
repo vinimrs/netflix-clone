@@ -76,7 +76,6 @@ export const userService = {
 					refresh: true,
 				},
 			);
-			console.log(response);
 			return response;
 		} catch (error) {
 			console.log(error.message);

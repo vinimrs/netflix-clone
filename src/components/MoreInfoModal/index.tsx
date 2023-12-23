@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import { moviesService } from '../../services/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import Loading from '../Loading';
 import { IMovieDataInfo, IMovieVideo } from '@types';
-import { useAlert, useWindowDimensions } from '@hooks';
+import { useAlert } from '@hooks';
 import { toHoursAndMinutes } from '@utils';
 import Image from 'next/image';
 
@@ -33,8 +32,6 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
 		const getMovieModal = async (id: number) => {
 			const movie = await moviesService.getMovieInfo(id);
 			const video = await moviesService.getMovieVideos(id);
-			console.log(video, movie);
-			console.log(process.env.NEXT_PUBLIC_BASE_URL);
 			if (!video[0] && !video[1]) {
 				setModalInfo({ id: '', success: false });
 				alertActions.error(
@@ -103,7 +100,6 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
 												height: '100%',
 											}}
 											title="video"
-											onPlay={() => console.log('play')}
 										/>
 									</S.ModalBanner>
 									<S.FilmInfosWrapper>

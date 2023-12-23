@@ -1,10 +1,11 @@
+'use client';
 import Link from 'next/link';
 import React from 'react';
 import FirstHeader from '../../../components/FirstHeader';
 
 import * as S from './styles';
 
-const EmailConfirmation: React.FC = () => {
+const EmailConfirmation = () => {
 	return (
 		<S.CustomBackground>
 			<FirstHeader />

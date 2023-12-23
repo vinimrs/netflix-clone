@@ -14,7 +14,7 @@ interface Hero {
 
 const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 	const heroData = useHeroData().getValue();
-	const { width, height } = useWindowDimensions();
+	const { width } = useWindowDimensions();
 	const [videoIsOpen, setVideoIsOpen] = useState(false);
 
 	const limitedText = (text: string, type: string) => {

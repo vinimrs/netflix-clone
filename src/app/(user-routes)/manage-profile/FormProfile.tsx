@@ -14,7 +14,7 @@ import { toSlug } from '@utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProfileImages from './ProfileImages';
 import { useAlert, useSession } from '@hooks';
-import { IImageData, IProfile, ISession } from '@types';
+import { IImageData, ISession } from '@types';
 import Link from 'next/link';
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -66,7 +66,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 		e.preventDefault();
 		setLoading(true);
 
-		if (!validations(preferences, imageData, profileName, session!)) {
+		if (!validations(preferences, imageData, profileName, session)) {
 			setLoading(false);
 			return;
 		}
@@ -79,22 +79,13 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 
 		let res;
 
-		const newProfile: IProfile = {
-			slug,
-			image: {
-				_id: imageData.id,
-			},
-			name: profileName,
-			preference: preferencesId as string[],
-		};
-
 		if (!editProfile) {
 			res = await userService.createNewProfile(
 				slug,
 				profileName,
 				preferencesId as string[],
 				imageData.id,
-				session?.id!,
+				session?.id,
 			);
 		} else {
 			res = await userService.updateUserProfile(
@@ -102,12 +93,11 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 				profileName,
 				preferencesId as string[],
 				imageData.id,
-				session?.id!,
+				session?.id,
 				editProfile,
 			);
 		}
 
-		console.log(res);
 		if (res.ok) {
 			// atualizando a sessão
 			setSession({
@@ -141,11 +131,9 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 
 	useEffect(() => {
 		if (searchParams?.get('create')) setEditProfile('');
-		if (
-			typeof searchParams?.get('edit') === 'string' &&
-			searchParams.get('edit') !== null
-		) {
-			setEditProfile(searchParams.get('edit')!);
+		const edit = searchParams?.get('edit');
+		if (edit !== undefined && edit !== null) {
+			setEditProfile(edit);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

@@ -10,16 +10,16 @@ export const moviesService = {
 				const genre = moviesGenres.find(genre => genre.id === Number(prefId));
 
 				return {
-					slug: genre.slug,
-					title: genre.title,
+					slug: genre?.slug,
+					title: genre?.title,
 					items: await HttpClient(
-						`${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/${genre.id}`,
+						`${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/${genre?.id}`,
 						{
 							method: 'GET',
-						}
+						},
 					),
 				};
-			})
+			}),
 		);
 	},
 	getFixedHomeLists: async (): Promise<any[]> => [
@@ -30,7 +30,7 @@ export const moviesService = {
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/trending`,
 				{
 					method: 'GET',
-				}
+				},
 			),
 		},
 		{
@@ -40,7 +40,7 @@ export const moviesService = {
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/top-rated`,
 				{
 					method: 'GET',
-				}
+				},
 			),
 		},
 	],
@@ -49,7 +49,7 @@ export const moviesService = {
 			`${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/${id}`,
 			{
 				method: 'GET',
-			}
+			},
 		);
 		return await res.body;
 	},
@@ -58,7 +58,7 @@ export const moviesService = {
 			`${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/videos/${id}`,
 			{
 				method: 'GET',
-			}
+			},
 		);
 		return res.body;
 	},
@@ -67,7 +67,7 @@ export const moviesService = {
 			`${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/genre/${genre_id}`,
 			{
 				method: 'GET',
-			}
+			},
 		);
 		return await res.body;
 	},

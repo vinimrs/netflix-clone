@@ -19,10 +19,10 @@ export const useWindowDimensions = () => {
 
 	useEffect(() => {
 		function handleResize() {
-			setDims(getWindowDimensions());
+			setDims(getWindowDimensions()!);
 		}
 
-		setDims(getWindowDimensions());
+		setDims(getWindowDimensions()!);
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	}, [setDims]);

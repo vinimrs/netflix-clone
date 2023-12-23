@@ -1,6 +1,6 @@
 import { HttpClient } from '../../infra/HttpClient/HttpClient';
 import { tokenService } from './tokenService';
-import { IImageData, ISession } from '@types';
+import { ISession } from '@types';
 
 /**
  * @4.1 Agora, que já abstraímos e criamos um servico de autenticação que envia a requisição
@@ -34,8 +34,7 @@ export const authService = {
 			});
 	},
 	async getSession(): Promise<ISession> {
-		const { accessToken, refreshToken } = await tokenService.getTokens();
-		console.log(accessToken, refreshToken, 'authService');
+		const { accessToken } = await tokenService.getTokens();
 
 		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`, {
 			method: 'GET',
@@ -52,7 +51,6 @@ export const authService = {
 	},
 	async logout() {
 		const { accessToken, refreshToken } = await tokenService.getTokens();
-		console.log(accessToken, refreshToken, 'authService logout');
 
 		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/logout `, {
 			method: 'POST',
@@ -70,15 +68,13 @@ export const authService = {
 				return response.body.data;
 			})
 			.finally(() => {
-				console.log('removendo tokens');
 				tokenService.removeTokens().then(res => {
 					console.log('tokens removidos', res);
 				});
 			});
 	},
 	async refresh(): Promise<{ accessToken: string; refreshToken: string }> {
-		const { accessToken, refreshToken } = await tokenService.getTokens();
-		console.log('tentando refresh', accessToken, refreshToken);
+		const { refreshToken } = await tokenService.getTokens();
 
 		return HttpClient(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/refresh`, {
 			method: 'POST',
@@ -94,13 +90,10 @@ export const authService = {
 				accessToken: response.headers.get('Authorization'),
 			};
 
-			console.log('refresh', body);
-
 			return body;
 		});
 	},
 	async validateKey(accessKey: string): Promise<boolean> {
-		console.log(accessKey, 'validate key');
 		try {
 			const res: ISession = await HttpClient(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`,
@@ -117,7 +110,6 @@ export const authService = {
 
 				return response.body.data;
 			});
-			console.log(res.user, 'validate key');
 			return true;
 		} catch (error) {
 			return false;
@@ -131,9 +123,7 @@ export const authService = {
 		refreshToken: string;
 		message: string;
 	}> {
-		console.log(accessKey, refreshKey, 'validate key refresh');
 		// tentando refresh
-		console.log('tentando refresh');
 		try {
 			const res = await HttpClient(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/refresh`,
@@ -152,12 +142,9 @@ export const authService = {
 					accessToken: response.headers.get('Authorization'),
 				};
 
-				console.log('refresh', body);
-
 				return body;
 			});
 
-			console.log(res, 'validate key refresh');
 			tokenService.save(res.accessToken, res.refreshToken);
 
 			const result = {

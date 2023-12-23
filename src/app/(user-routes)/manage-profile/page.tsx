@@ -10,8 +10,6 @@ const ManageProfileContainer = async () => {
 		cache: 'force-cache', // getStaticProps
 	});
 
-	console.log(`res ${res}`);
-
 	return (
 		<S.ManageProfileContainer>
 			<FormProfile images={res.body} />

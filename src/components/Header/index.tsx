@@ -5,13 +5,12 @@ import { useRouter } from 'next/navigation';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { IImageData, IProfile, ISession } from '@types';
+import { IProfile, ISession } from '@types';
 import DeleteAccountModal from '../DeleteAccountModal';
 import Link from 'next/link';
 import Image from 'next/image';
 import { convertImage } from '@utils';
-import { useHomeList, useProfile } from '@hooks';
-import { useLoading } from 'src/state/hooks/useLoading';
+import { useProfile } from '@hooks';
 import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
 
 interface HeaderProps {

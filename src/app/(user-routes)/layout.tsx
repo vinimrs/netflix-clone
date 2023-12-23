@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Children, ISession } from '@types';
+import { Children } from '@types';
 import Loading from 'src/components/Loading';
 
 const UserLayout: React.FC<Children> = ({ children }) => {

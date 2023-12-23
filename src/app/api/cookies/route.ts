@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-	console.log('post cookies');
 	// guarda os tokens em cookies
 	const body = JSON.parse(await request.text());
 	const { accessToken, refreshToken } = body;
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 		maxAge: 30 * 24 * 60 * 60,
 	});
 
-	return Response.json(
+	return NextResponse.json(
 		{ accessToken, refreshToken },
 		{
 			status: 200,
@@ -28,14 +28,12 @@ export async function POST(request: Request) {
 	);
 }
 
-export async function GET(request: Request) {
-	console.log('get cookies');
+export async function GET() {
 	// retorna os tokens em cookies
 	const accessToken = cookies().get('netflix.acc')?.value;
 	const refreshToken = cookies().get('netflix.ref')?.value;
 
-	console.log('get cookies', accessToken, refreshToken);
-	return Response.json(
+	return NextResponse.json(
 		{ accessToken, refreshToken },
 		{
 			status: 200,
@@ -43,12 +41,12 @@ export async function GET(request: Request) {
 	);
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE() {
 	// remove os tokens em cookies
 	cookies().delete('netflix.acc');
 	cookies().delete('netflix.ref');
 
-	return Response.json(
+	return NextResponse.json(
 		{ message: 'success' },
 		{
 			status: 200,

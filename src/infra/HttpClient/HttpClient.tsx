@@ -39,8 +39,6 @@ export async function HttpClient(fethUrl: string, fetchOptions: any) {
 				const newAccessToken = accessToken;
 				const newRefreshToken = refreshToken;
 
-				console.log('Atualizando tokens', newAccessToken, newRefreshToken);
-
 				// tentar rodar o request anterior
 				const retryResponse = await HttpClient(fethUrl, {
 					...fetchOptions,
@@ -52,8 +50,6 @@ export async function HttpClient(fethUrl: string, fetchOptions: any) {
 
 				tokenService.save(newAccessToken, newRefreshToken);
 
-				console.log('retryResponse', retryResponse);
-
 				// se der erro de novo, desloga
 				if (retryResponse.status === 401) {
 					await authService.logout();
@@ -63,8 +59,6 @@ export async function HttpClient(fethUrl: string, fetchOptions: any) {
 				// se der erro de novo, retorna o erro
 				return retryResponse;
 			} catch (error) {
-				console.log('error na tentativa de refresh', error);
-
 				if (error.message === 'Refresh token inválido!')
 					tokenService.removeTokens().then(res => {
 						console.log('tokens removidos', res);

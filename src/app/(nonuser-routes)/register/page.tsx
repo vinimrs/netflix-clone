@@ -13,7 +13,7 @@ import React, {
 } from 'react';
 import * as S from '../../../styles/GlobalComponents';
 
-const Register: React.FC = () => {
+const Register = () => {
 	const [validity, setValidity] = useState({
 		email: true,
 		password: true,

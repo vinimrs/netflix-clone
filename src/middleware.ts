@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import type { NextFetchEvent, NextMiddleware, NextRequest } from 'next/server';
+import type { NextFetchEvent, NextRequest } from 'next/server';
 import { authService } from './services/auth/authService';
 
 const userRoutes = [
@@ -12,14 +12,14 @@ const userRoutes = [
 
 const publicRoutes = ['/login', '/', '/register'];
 
-export async function middleware(request: NextRequest, event: NextFetchEvent) {
+export async function middleware(request: NextRequest) {
 	const accessCookie = request.cookies.get('netflix.acc');
 	const refreshCookie = request.cookies.get('netflix.ref');
 
 	const accessToken = accessCookie?.value;
 	const refreshToken = refreshCookie?.value;
 
-	let validCookie: boolean = false;
+	let validCookie = false;
 	const newTokens = {
 		accessToken: '',
 		refreshToken: '',
@@ -46,8 +46,6 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 		}
 	}
 
-	console.log('middleware ', validCookie);
-
 	// Getting the request path
 	const path = request.nextUrl.pathname;
 
@@ -60,17 +58,13 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 	// Check if the user is logged in
 	const isLoggedIn = validCookie && !!accessToken;
 
-	console.log('middleware', path, isLoggedIn);
-
 	// If the request path is a user route and the user isnt logged in, redirect to the login page
 	if (isUserRoute && !isLoggedIn) {
-		console.log('middleware', 'redirecting to nonuser route');
 		return NextResponse.redirect(new URL('/', request.url));
 	}
 
 	// If the request path is a public page and the user is logged in, redirect to the browse page
 	if (isPublicRoute && isLoggedIn) {
-		console.log('middleware', 'redirecting to user route');
 		const res = NextResponse.redirect(new URL('/browse', request.url));
 
 		// se renovou

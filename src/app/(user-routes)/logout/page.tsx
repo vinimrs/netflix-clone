@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Redirection from 'src/components/Redirection';
 
 export const metadata: Metadata = {
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 	description: 'Logout from Netflix.',
 };
 
-const Logout: React.FC = () => {
+const Logout = () => {
 	return <Redirection />;
 };
 
