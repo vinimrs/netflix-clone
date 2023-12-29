@@ -11,6 +11,8 @@ const ManageProfileContainer = async () => {
 		cache: 'force-cache', // getStaticProps
 	});
 
+	if (!res.ok) return <div>Erro</div>;
+
 	return (
 		<S.ManageProfileContainer>
 			<FirstHeader />
