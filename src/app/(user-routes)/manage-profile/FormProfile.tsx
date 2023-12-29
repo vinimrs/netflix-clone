@@ -131,10 +131,11 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 	const searchParams = useSearchParams();
 
 	useEffect(() => {
-		if (searchParams?.get('create')) setEditProfile('');
 		const edit = searchParams?.get('edit');
 		if (edit !== undefined && edit !== null) {
 			setEditProfile(edit);
+		} else {
+			setEditProfile('');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
