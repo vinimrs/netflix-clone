@@ -2,124 +2,98 @@
 import * as S from './style';
 import React from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { motion } from 'framer-motion';
+import { Variants, motion } from 'framer-motion';
 import { IMovieDataInfo } from '@types';
 import { useHeroData, useWindowDimensions } from '@hooks';
-import { toHoursAndMinutes } from '@utils';
+import { limitedText, toHoursAndMinutes } from '@utils';
 
-interface Hero {
+interface HeroProps {
 	handleSetModal: (film: IMovieDataInfo) => void;
 }
 
-const Hero: React.FC<Hero> = ({ handleSetModal }) => {
+const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 	const heroData = useHeroData().getValue();
 	const { width } = useWindowDimensions();
 
-	const limitedText = (text: string, type: string) => {
-		const limits = {
-			title: width < 1440 ? 10 : 40,
-			description: width < 1440 ? 100 : 250,
-		};
-
-		if (text === undefined) return '';
-
-		return text.length > limits[type]
-			? text.substring(0, limits[type]) + '...'
-			: text;
-	};
-
 	const { heroFilm, video } = heroData;
+
+	const variantsTitle = (titleSize: number): Variants => ({
+		initial: {
+			fontSize: 8 - titleSize * 0.1 + 'vw',
+			lineHeight: 6 + 'vw',
+			maxWidth: 50 + '%',
+		},
+		final: {
+			fontSize: 6 - titleSize * 0.1 + 'vw',
+			lineHeight: 4 + 'vw',
+			maxWidth: 35 + '%',
+
+			transition: {
+				ease: 'linear',
+				duration: 1,
+				delay: 8,
+			},
+		},
+	});
+
+	const variantsDescription = (description: boolean): Variants => ({
+		initial: {
+			opacity: 1,
+			marginBottom: 0,
+		},
+		final: {
+			opacity: 0,
+			marginBottom: description ? '-110px' : 0,
+
+			transition: {
+				ease: 'linear',
+				duration: 0.6,
+				delay: 8,
+			},
+		},
+	});
 
 	return (
 		<S.HeroWrapper
 			data-testid="hero-container"
 			src={`https://image.tmdb.org/t/p/original${heroFilm.backdrop_path}`}
 		>
-			<iframe
-				src={`https://www.youtube.com/embed/${video.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${video.key}`}
-				frameBorder="0"
-				allow="autoplay; encrypted-media"
-				allowFullScreen
-				style={{
-					width: '100%',
-					height: '100%',
-				}}
-				className="video"
-			/>
+			{video && (
+				<iframe
+					src={`https://www.youtube.com/embed/${video.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${video.key}&modestbranding=1&showinfo=0&rel=0`}
+					frameBorder="0"
+					allow="autoplay; encrypted-media"
+					allowFullScreen
+					style={{
+						width: '100%',
+						height: '100%',
+						pointerEvents: 'none',
+					}}
+					className="video"
+				/>
+			)}
 			<div className="film-details">
 				<motion.h1
-					animate={{
-						scale: 1,
-						order: 1,
-					}}
-					transition={{
-						ease: 'easeInOut',
-						scale: { duration: 0.6 },
-						order: { duration: 0.3 },
-					}}
+					variants={
+						video && heroFilm?.title ? variantsTitle(heroFilm.title.length) : {}
+					}
+					initial={'initial'}
+					animate={'final'}
 				>
-					{limitedText(heroFilm.title, 'title')}
+					{heroFilm.title}
 				</motion.h1>
-				<motion.div
-					animate={{
-						opacity: 1,
-						visibility: 'inherit',
-					}}
-					transition={{
-						ease: 'easeInOut',
-						duration: 0.3,
-						delay: 0.2,
-					}}
-				>
-					<span className="score">{heroFilm.vote_average} pontos</span>
-					{(heroFilm.release_date || heroFilm.last_air_date) && (
-						<span>
-							{heroFilm.release_date
-								? heroFilm.release_date.substring(0, 4)
-								: heroFilm.last_air_date!.substring(0, 4)}
-						</span>
-					)}
-					{(heroFilm.runtime || heroFilm.last_air_date) && (
-						<span>
-							{heroFilm.runtime
-								? toHoursAndMinutes(heroFilm.runtime)
-								: `${heroFilm.number_of_seasons} temporada${
-										heroFilm.number_of_seasons! > 1 ? 's' : ''
-										// eslint-disable-next-line no-mixed-spaces-and-tabs
-								  }`}
-						</span>
-					)}
-				</motion.div>
 				<motion.p
-					animate={{
-						opacity: 1,
-						visibility: 'inherit',
-					}}
-					transition={{
-						ease: 'easeInOut',
-						duration: 0.3,
-						delay: 0.2,
-					}}
+					variants={
+						video && heroFilm?.overview
+							? variantsDescription(heroFilm.overview.length > 0)
+							: {}
+					}
+					initial={'initial'}
+					animate={'final'}
 				>
-					{limitedText(heroFilm.overview, 'description')}
+					{limitedText(heroFilm.overview, 'description', width)}
 				</motion.p>
 				<div className="buttons">
-					{/* {video && (
-						<S.HeroButton
-							variant={'primary'}
-							onClick={() => {
-								setVideoIsOpen(!videoIsOpen);
-							}}
-						>
-							<Image
-								alt="Ícone de iniciar."
-								src="/play.svg"
-								width="20"
-								height="20"
-							/>
-							<span>{videoIsOpen ? 'Sair' : 'Trailer'}</span>
-						</S.HeroButton>
-					)} */}
 					<S.HeroButton
 						onClick={() => {
 							handleSetModal(heroFilm);
@@ -130,26 +104,10 @@ const Hero: React.FC<Hero> = ({ handleSetModal }) => {
 						<span>Mais Informações</span>
 					</S.HeroButton>
 				</div>
-				<motion.p
-					animate={{
-						opacity: 1,
-						visibility: 'inherit',
-					}}
-					transition={{
-						ease: 'easeInOut',
-						duration: 0.3,
-						delay: 0.2,
-					}}
-				>
-					|{' '}
-					{heroFilm.genres &&
-						heroFilm.genres!.map(genre => {
-							return `${genre.name} | `;
-						})}
-				</motion.p>
 			</div>
 		</S.HeroWrapper>
 	);
 };
 
 export default Hero;
+

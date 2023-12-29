@@ -14,10 +14,11 @@ import { toSlug } from '@utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProfileImages from './ProfileImages';
 import { useAlert, useSession } from '@hooks';
-import { IImageData, ISession } from '@types';
+import { IImageData, IProfile, ISession } from '@types';
 import Link from 'next/link';
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
 
 const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 	const [preferences, setPreferences] = useState<string[]>([]);
@@ -27,6 +28,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 	const [editProfile, setEditProfile] = useState('');
 
 	const { session, setSession } = useSession();
+	const { profiles, setProfiles } = useUserProfiles();
 	const alertActions = useAlert();
 	const router = useRouter();
 
@@ -34,7 +36,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 		pref: string[],
 		imageInfo: { data: string; id: string },
 		profName: string,
-		session: ISession,
+		profiles: IProfile[],
 	) => {
 		if (pref.length < 6) {
 			alertActions.error('Você deve escolher no mínimo 6 gêneros!');
@@ -45,13 +47,13 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 			return false;
 		}
 
-		if (session.profiles?.length > 3 && !editProfile) {
+		if (profiles?.length > 3 && !editProfile) {
 			alertActions.error('Você chegou no limite de perfis');
 			return false;
 		}
 
 		const slug = toSlug(profName);
-		const exists = session.profiles?.find(prof => {
+		const exists = profiles?.find(prof => {
 			return prof.slug === slug;
 		});
 
@@ -66,7 +68,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 		e.preventDefault();
 		setLoading(true);
 
-		if (!validations(preferences, imageData, profileName, session)) {
+		if (!validations(preferences, imageData, profileName, profiles)) {
 			setLoading(false);
 			return;
 		}
@@ -100,20 +102,19 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 
 		if (res.ok) {
 			// atualizando a sessão
-			setSession({
-				...session,
-				profiles: [
-					...session.profiles,
-					{
-						name: profileName,
-						slug,
-						image: { _id: imageData.id },
-						preference: preferencesId as string[],
-					},
-				],
-			});
+
 			alertActions.success(res.body.message);
 			router.push('/browse');
+
+			setProfiles([
+				...profiles,
+				{
+					name: profileName,
+					slug,
+					image: { _id: imageData.id },
+					preference: preferencesId as string[],
+				},
+			]);
 		} else {
 			alertActions.error(res.body.message);
 		}

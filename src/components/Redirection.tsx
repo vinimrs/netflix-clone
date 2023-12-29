@@ -1,5 +1,7 @@
 'use client';
+import { useProfile } from '@hooks';
 import { authService } from '@services';
+import { IProfile } from '@types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -48,11 +50,15 @@ const Container = styled.div`
 
 const Redirection: React.FC = () => {
 	const [ready, setReady] = useState(false);
+	const { setProfile } = useProfile();
 
 	useEffect(() => {
 		authService
 			.logout()
 			.catch(e => console.log(e))
+			.then(() => {
+				setProfile({} as IProfile);
+			})
 			.finally(() => {
 				setReady(true);
 			});

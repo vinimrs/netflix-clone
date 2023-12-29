@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import type { NextFetchEvent, NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { authService } from './services/auth/authService';
 
 const userRoutes = [
@@ -30,6 +30,7 @@ export async function middleware(request: NextRequest) {
 		// se for invalido, redireciona para login
 		// se for valido, redireciona para browse
 		validCookie = await authService.validateKey(accessToken);
+
 		if (!validCookie) {
 			// tenta renovar o token
 			const response = await authService.validateKeyWithRefresh(
@@ -63,30 +64,30 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.redirect(new URL('/', request.url));
 	}
 
+	let response: NextResponse = NextResponse.next();
+
 	// If the request path is a public page and the user is logged in, redirect to the browse page
 	if (isPublicRoute && isLoggedIn) {
-		const res = NextResponse.redirect(new URL('/browse', request.url));
-
-		// se renovou
-		if (newTokens.accessToken !== '' && newTokens.refreshToken !== '') {
-			res.cookies.set('netflix.acc', newTokens.accessToken, {
-				path: '/',
-				sameSite: 'lax', // csrf
-				httpOnly: true, // csrf
-				maxAge: 30 * 24 * 60 * 60,
-			});
-			res.cookies.set('netflix.ref', newTokens.refreshToken, {
-				path: '/',
-				sameSite: 'lax', // csrf
-				httpOnly: true, // csrf
-				maxAge: 30 * 24 * 60 * 60,
-			});
-		}
-
-		return res;
+		response = NextResponse.redirect(new URL('/browse', request.url));
 	}
 
-	return NextResponse.next();
+	// se renovou
+	if (newTokens.accessToken !== '' && newTokens.refreshToken !== '') {
+		response.cookies.set('netflix.acc', newTokens.accessToken, {
+			path: '/',
+			sameSite: 'lax', // csrf
+			httpOnly: true, // csrf
+			maxAge: 30 * 24 * 60 * 60,
+		});
+		response.cookies.set('netflix.ref', newTokens.refreshToken, {
+			path: '/',
+			sameSite: 'lax', // csrf
+			httpOnly: true, // csrf
+			maxAge: 30 * 24 * 60 * 60,
+		});
+	}
+
+	return response;
 }
 
 export const config = {

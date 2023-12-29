@@ -3,7 +3,10 @@ import styled from 'styled-components';
 
 export const MainWrapper = styled.main`
 	overflow-x: hidden;
-	margin-top: -150px;
+	margin-top: -100px;
+	position: relative;
+	padding: 0 0 0 52px;
+	z-index: 10;
 
 	@media (max-width: 768px) {
 		margin-top: -80px;

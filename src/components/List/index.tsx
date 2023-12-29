@@ -101,7 +101,7 @@ const List: React.FC<List> = ({ list, setModal }) => {
 											? `https://image.tmdb.org/t/p/w300${film.poster_path}`
 											: ''
 									}
-									alt={film.original_title}
+									alt={film.title}
 									key={key}
 									data-testid="film-poster"
 									onClick={() => {
@@ -117,3 +117,4 @@ const List: React.FC<List> = ({ list, setModal }) => {
 };
 
 export default List;
+

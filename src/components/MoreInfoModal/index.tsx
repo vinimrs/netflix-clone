@@ -91,13 +91,14 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
 								<>
 									<S.ModalBanner src={tmdbUrl + movie.backdrop_path}>
 										<iframe
-											src={`https://www.youtube.com/embed/${movieVideo.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${movieVideo.key}&showinfo=0&rel=0`}
+											src={`https://www.youtube.com/embed/${movieVideo.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${movieVideo.key}&modestbranding=1&showinfo=0&rel=0`}
 											frameBorder="0"
 											allow="autoplay; encrypted-media"
 											allowFullScreen
 											style={{
 												width: '100%',
 												height: '100%',
+												pointerEvents: 'none',
 											}}
 											title="video"
 										/>

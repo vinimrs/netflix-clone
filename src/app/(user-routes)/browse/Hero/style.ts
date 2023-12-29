@@ -4,22 +4,13 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 	width: 100%;
 	height: 100vh;
 	display: flex;
-	align-items: center;
+	align-items: end;
 	position: relative;
 
-	background-image: linear-gradient(90deg, #000e 37%, #00000000 85.33%),
+	background-image: linear-gradient(90deg, #00000eae 10%, #00000000 85.33%),
 		url(${props => (props.src ? props.src : '')});
 	background-size: cover;
 	background-position: center;
-
-	p {
-		font-size: 20px;
-		line-height: 24px;
-		color: var(--white);
-		order: 4;
-		margin: 8px 0;
-		max-width: 35%;
-	}
 
 	.video {
 		position: absolute;
@@ -29,40 +20,34 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 	}
 
 	.film-details {
+		position: absolute;
+		left: 60px;
+		bottom: 35%;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: baseline;
 		align-items: flex-start;
-		padding: 100px 0 150px 35px;
-		z-index: 10;
-		width: 100%;
+		width: fit-content;
+		margin-bottom: 20;
 
 		h1 {
-			font-size: 72px;
+			font-size: 8vw;
 			color: var(--white);
-			max-width: 45%;
-			order: 1;
+			margin-left: 8px;
+			margin-bottom: 12px;
+			max-width: 50%;
+			line-height: 4vw;
 		}
 
-		h1 + div {
-			display: flex;
-			flex-direction: row;
-			align-items: flex-start;
-			max-width: 35%;
+		p {
+			font-size: 20px;
+			line-height: 32px;
+			color: var(--white);
 			order: 2;
-			margin-top: 12px;
-
-			span {
-				font-weight: 500;
-				font-size: 20px;
-				line-height: 23px;
-				color: #f5f5f5;
-				margin-right: 12px;
-
-				&.score {
-					color: #46d369;
-				}
-			}
+			margin: 8px 0;
+			max-width: 50%;
+			font-weight: 600;
+			margin-left: 8px;
 		}
 	}
 
@@ -72,8 +57,7 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 		flex-wrap: wrap;
 
 		order: 6;
-		margin: 12px 0px;
-		max-width: 45%;
+		margin: 24px 0 0 0;
 	}
 
 	@media (max-width: 768px) {
@@ -82,12 +66,6 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 			url(${props => (props.src ? props.src : '')});
 		background-position: center;
 		align-items: flex-end;
-
-		p {
-			font-size: 16px;
-			margin: 8px 0;
-			max-width: 80%;
-		}
 
 		.film-details {
 			width: 100%;
@@ -100,14 +78,10 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 				line-height: 75px;
 			}
 
-			h1 + div {
-				margin-top: 8px;
+			p {
+				font-size: 16px;
+				margin: 8px 0;
 				max-width: 80%;
-
-				span {
-					font-size: 16px;
-					text-align: center;
-				}
 			}
 		}
 
@@ -130,6 +104,7 @@ export const HeroButton = styled.button<{
 	cursor: pointer;
 	transition: 0.5s;
 	border-radius: 6px;
+	z-index: 2;
 
 	padding: ${props => (!props.variant ? '10px 20px' : '12px 22px')};
 	background-color: var(
@@ -200,8 +175,8 @@ export const HeroButton = styled.button<{
 				}
 			}}
 		);
-		font-weight: 500;
-		font-size: 20px;
+		font-weight: 600;
+		font-size: 16px;
 		line-height: 24px;
 		margin: 0 0 0 8px;
 		max-width: 100%;
@@ -218,3 +193,4 @@ export const HeroButton = styled.button<{
 		}
 	}
 `;
+

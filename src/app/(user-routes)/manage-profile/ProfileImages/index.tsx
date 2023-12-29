@@ -3,6 +3,7 @@ import React from 'react';
 import { IImageData, IProfile } from '@types';
 import { convertImage } from '@utils';
 import { useSession } from '@hooks';
+import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
 
 const ProfileImages: React.FC<{
 	setImageData: React.Dispatch<
@@ -22,34 +23,34 @@ const ProfileImages: React.FC<{
 		});
 	};
 
-	const { session } = useSession();
+	const { profiles } = useUserProfiles();
 
 	return (
 		<S.ImageContainer>
-			{session !== null &&
+			{profiles !== null &&
 				images !== undefined &&
-				filteredImages(
-					images,
-					session?.profiles === undefined ? [] : session.profiles,
-				).map(image => (
-					<div
-						key={image._id}
-						id={image._id}
-						onClick={() => {
-							setImageData({
-								id: image._id,
-								data: convertImage(image.data!),
-							});
-						}}
-						role="img"
-					>
-						<S.CustomImage
-							src={`data:image/image/png;base64,${convertImage(image.data!)}`}
-						/>
-					</div>
-				))}
+				filteredImages(images, profiles === undefined ? [] : profiles).map(
+					image => (
+						<div
+							key={image._id}
+							id={image._id}
+							onClick={() => {
+								setImageData({
+									id: image._id,
+									data: convertImage(image.data!),
+								});
+							}}
+							role="img"
+						>
+							<S.CustomImage
+								src={`data:image/image/png;base64,${convertImage(image.data!)}`}
+							/>
+						</div>
+					),
+				)}
 		</S.ImageContainer>
 	);
 };
 
 export default ProfileImages;
+

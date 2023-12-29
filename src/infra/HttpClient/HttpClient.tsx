@@ -60,9 +60,7 @@ export async function HttpClient(fethUrl: string, fetchOptions: any) {
 				return retryResponse;
 			} catch (error) {
 				if (error.message === 'Refresh token inválido!')
-					tokenService.removeTokens().then(res => {
-						console.log('tokens removidos', res);
-					});
+					tokenService.removeTokens();
 				else await authService.logout();
 
 				return res;

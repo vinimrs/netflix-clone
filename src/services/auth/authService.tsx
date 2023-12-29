@@ -68,9 +68,7 @@ export const authService = {
 				return response.body.data;
 			})
 			.finally(() => {
-				tokenService.removeTokens().then(res => {
-					console.log('tokens removidos', res);
-				});
+				tokenService.removeTokens();
 			});
 	},
 	async refresh(): Promise<{ accessToken: string; refreshToken: string }> {

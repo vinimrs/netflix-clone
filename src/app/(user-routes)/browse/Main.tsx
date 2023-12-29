@@ -3,7 +3,7 @@ import { useHomeList } from '@hooks';
 import React from 'react';
 
 import * as S from '../../../styles/GlobalComponents';
-import { IMovieData, IMovieHomeList } from '@types';
+import { IMovieData } from '@types';
 import List from 'src/components/List';
 
 interface Modal {

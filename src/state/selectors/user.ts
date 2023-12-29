@@ -6,8 +6,12 @@ import { authService } from '../../services/auth/authService';
 export const sessionSelector = selector<ISession>({
 	key: 'sessionSelector',
 	get: async () => {
-		const res = await authService.getSession();
-		return res;
+		try {
+			const res = await authService.getSession();
+			return res;
+		} catch (error) {
+			return {} as ISession;
+		}
 	},
 });
 

@@ -9,7 +9,7 @@ export const StyledHeader = styled.header<{ $active?: boolean }>`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 17px 32px;
+	padding: 17px 52px;
 	transition: all ease 0.2s;
 	background-color: ${props => (props.$active ? 'var(--black)' : '#00000000')};
 	z-index: 1000;
@@ -100,30 +100,3 @@ export const ContainerMenu = styled(motion.div)`
 	}
 `;
 
-// export const Menu = styled.ul`
-//   list-style: none;
-// `;
-
-// export const MenuItem = styled.li`
-//   display: flex;
-//   align-items: center;
-//   margin: 10px 0;
-//   cursor: pointer;
-
-//   &:hover {
-//     span {
-//       text-decoration: underline;
-//     }
-//   }
-// `;
-
-// export const MenuImage = styled.img`
-//   width: 35px;
-//   border-radius: 4px;
-// `;
-
-// export const MenuText = styled.span`
-//   font-family: Open sans;
-//   font-size: 14px;
-//   margin-left: 8px;
-// `;

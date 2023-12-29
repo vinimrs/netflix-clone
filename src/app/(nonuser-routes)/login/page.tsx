@@ -47,8 +47,6 @@ const Login = () => {
 			const session = await authService.getSession();
 			setSession(session);
 
-			setLoading(false);
-
 			router.push('/browse');
 		} catch (error) {
 			setLoading(false);
@@ -168,3 +166,4 @@ const Login = () => {
 };
 
 export default Login;
+

@@ -53,3 +53,16 @@ export const belongsToTheAccount = (profiles: IProfile[], profile: IProfile) =>
 			return isEqualPreferences && isEqualImage;
 		}
 	});
+
+export const limitedText = (text: string, type: string, width: number) => {
+	const limits = {
+		title: width < 1440 ? 10 : 40,
+		description: width < 1440 ? 100 : 240,
+	};
+
+	if (text === undefined) return '';
+
+	return text.length > limits[type]
+		? text.substring(0, limits[type]) + '...'
+		: text;
+};
