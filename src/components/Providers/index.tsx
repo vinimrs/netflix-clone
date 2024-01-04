@@ -7,6 +7,7 @@ import GlobalStyle from '../../app/global';
 import NextNProgress from 'nextjs-progressbar';
 import AlertComponent from '../Alert';
 import StyledComponentsRegistry from './registry';
+import WebVitals from '../WebVitals';
 
 const theme = createTheme({
 	palette: {
@@ -36,6 +37,7 @@ const Providers: React.FC<Children> = ({ children }) => {
 						height={3.5}
 					/>
 					{children}
+					<WebVitals />
 					<AlertComponent />
 					<GlobalStyle />
 				</RecoilRoot>
