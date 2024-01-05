@@ -91,7 +91,9 @@ export const authService = {
 			return body;
 		});
 	},
-	async validateKey(accessKey: string): Promise<boolean> {
+	async validateKey(
+		accessKey: string,
+	): Promise<{ data: ISession; isLogged: boolean }> {
 		try {
 			const res: ISession = await HttpClient(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`,
@@ -108,22 +110,31 @@ export const authService = {
 
 				return response.body.data;
 			});
-			return true;
+			return {
+				data: res,
+				isLogged: true,
+			};
 		} catch (error) {
-			return false;
+			return {
+				data: {} as ISession,
+				isLogged: false,
+			};
 		}
 	},
 	async validateKeyWithRefresh(
 		accessKey: string,
 		refreshKey: string,
 	): Promise<{
-		accessToken: string;
-		refreshToken: string;
+		data: {
+			session: ISession;
+			accessToken: string;
+			refreshToken: string;
+		};
 		message: string;
 	}> {
 		// tentando refresh
 		try {
-			const res = await HttpClient(
+			const resRefresh = await HttpClient(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/refresh`,
 				{
 					method: 'POST',
@@ -143,19 +154,41 @@ export const authService = {
 				return body;
 			});
 
-			tokenService.save(res.accessToken, res.refreshToken);
+			const res: ISession = await HttpClient(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/session`,
+				{
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${resRefresh.accessToken}`,
+					},
+					cache: 'no-store', // getServerSideProps na App route
+					refresh: false,
+				},
+			).then(response => {
+				if (!response.ok) throw new Error('Não autorizado');
+
+				return response.body.data;
+			});
+
+			tokenService.save(resRefresh.accessToken, resRefresh.refreshToken);
 
 			const result = {
-				accessToken: res.accessToken,
-				refreshToken: res.refreshToken,
+				data: {
+					session: res,
+					accessToken: resRefresh.accessToken,
+					refreshToken: resRefresh.refreshToken,
+				},
 				message: 'success',
 			};
 
 			return result;
 		} catch (error) {
 			return {
-				accessToken: '',
-				refreshToken: '',
+				data: {
+					session: {} as ISession,
+					accessToken: '',
+					refreshToken: '',
+				},
 				message: 'Refresh token inválido!',
 			};
 		}

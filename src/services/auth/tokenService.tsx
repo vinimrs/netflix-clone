@@ -1,4 +1,6 @@
+import { ISession } from '@types';
 import { HttpClient } from 'src/infra/HttpClient/HttpClient';
+import * as jose from 'jose';
 
 export const tokenService = {
 	getTokens: async (): Promise<{
@@ -30,5 +32,13 @@ export const tokenService = {
 		}).then(res => {
 			return res.body;
 		});
+	},
+	signSession: async (session: ISession): Promise<string> => {
+		const secret = process.env.JWT_SECRET || 'SECRET';
+		return await new jose.EncryptJWT({ ...session })
+			.setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
+			.setIssuedAt()
+			.setExpirationTime('7d')
+			.encrypt(new TextEncoder().encode(secret));
 	},
 };

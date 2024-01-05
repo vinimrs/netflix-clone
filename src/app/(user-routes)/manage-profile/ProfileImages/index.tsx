@@ -2,8 +2,7 @@ import * as S from './styles';
 import React from 'react';
 import { IImageData, IProfile } from '@types';
 import { convertImage } from '@utils';
-import { useSession } from '@hooks';
-import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
+import { useAppSelector } from 'src/store/hooks';
 
 const ProfileImages: React.FC<{
 	setImageData: React.Dispatch<
@@ -23,7 +22,7 @@ const ProfileImages: React.FC<{
 		});
 	};
 
-	const { profiles } = useUserProfiles();
+	const { profiles } = useAppSelector(state => state.session);
 
 	return (
 		<S.ImageContainer>

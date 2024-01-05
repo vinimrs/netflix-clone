@@ -6,13 +6,15 @@ import { Variants, motion } from 'framer-motion';
 import { IMovieDataInfo } from '@types';
 import { useHeroData, useWindowDimensions } from '@hooks';
 import { limitedText, toHoursAndMinutes } from '@utils';
+import { useSelector } from 'react-redux';
+import { useAppSelector } from 'src/store/hooks';
 
 interface HeroProps {
 	handleSetModal: (film: IMovieDataInfo) => void;
 }
 
 const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
-	const heroData = useHeroData().getValue();
+	const heroData = useAppSelector(state => state.films.data.hero);
 	const { width } = useWindowDimensions();
 
 	const { heroFilm, video } = heroData;
@@ -40,10 +42,12 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 		initial: {
 			opacity: 1,
 			marginBottom: 0,
+			userSelect: 'inherit',
 		},
 		final: {
 			opacity: 0,
 			marginBottom: description ? '-110px' : 0,
+			userSelect: 'none',
 
 			transition: {
 				ease: 'linear',
@@ -56,7 +60,11 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 	return (
 		<S.HeroWrapper
 			data-testid="hero-container"
-			src={`https://image.tmdb.org/t/p/original${heroFilm.backdrop_path}`}
+			src={
+				heroFilm?.backdrop_path
+					? `https://image.tmdb.org/t/p/original${heroFilm.backdrop_path}`
+					: 'https://image.tmdb.org/t/p/original/6MKr3KgOLmzOP6MSuZERO41Lpkt.jpg'
+			}
 		>
 			{video && (
 				<iframe
@@ -80,7 +88,7 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 					initial={'initial'}
 					animate={'final'}
 				>
-					{heroFilm.title}
+					{heroFilm?.title}
 				</motion.h1>
 				<motion.p
 					variants={
@@ -91,7 +99,7 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 					initial={'initial'}
 					animate={'final'}
 				>
-					{limitedText(heroFilm.overview, 'description', width)}
+					{limitedText(heroFilm?.overview, 'description', width)}
 				</motion.p>
 				<div className="buttons">
 					<S.HeroButton

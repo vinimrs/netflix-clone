@@ -1,11 +1,11 @@
 'use client';
-import { useProfile } from '@hooks';
 import { authService } from '@services';
-import { IProfile } from '@types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { resetProfile } from 'src/store/reducers/profile';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -50,14 +50,14 @@ const Container = styled.div`
 
 const Redirection: React.FC = () => {
 	const [ready, setReady] = useState(false);
-	const { setProfile } = useProfile();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		authService
 			.logout()
 			.catch(e => console.log(e))
 			.then(() => {
-				setProfile({} as IProfile);
+				dispatch(resetProfile());
 			})
 			.finally(() => {
 				setReady(true);

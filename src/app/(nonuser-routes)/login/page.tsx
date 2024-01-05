@@ -10,23 +10,23 @@ import { Checkbox, FormControlLabel } from '@mui/material';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MuiCustomInputProps } from '@constants';
-import { useAlert, useSession } from '@hooks';
 import * as S from '../../../styles/GlobalComponents';
 import { authService, tokenService } from '@services';
+import { useDispatch } from 'react-redux';
+import { setError } from 'src/store/reducers/alert';
+import { setSession } from 'src/store/reducers/session';
 
 const Login = () => {
+	const dispatch = useDispatch();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
 	const [checked, setChecked] = useState(true);
 
-	const alertActions = useAlert();
 	const [loading, setLoading] = useState(false);
 
 	const button = useRef<HTMLButtonElement>(null);
 	const router = useRouter();
-
-	const { setSession } = useSession();
 
 	const handleSubmit: FormEventHandler = async e => {
 		e.preventDefault();
@@ -45,12 +45,13 @@ const Login = () => {
 			await tokenService.save(res.access, res.refresh_token);
 
 			const session = await authService.getSession();
-			setSession(session);
+			dispatch(setSession(session));
 
 			router.push('/browse');
 		} catch (error) {
 			setLoading(false);
-			alertActions.error(error.message);
+			console.log(error.message);
+			dispatch(setError(error.message));
 		}
 	};
 

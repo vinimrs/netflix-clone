@@ -10,8 +10,8 @@ import DeleteAccountModal from '../DeleteAccountModal';
 import Link from 'next/link';
 import Image from 'next/image';
 import { convertImage } from '@utils';
-import { useProfile } from '@hooks';
-import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { resetProfile, setProfile } from 'src/store/reducers/profile';
 
 interface HeaderProps {
 	scroll: boolean;
@@ -19,8 +19,9 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
-	const { profile, setProfile } = useProfile();
-	const { profiles } = useUserProfiles();
+	const profile = useAppSelector(state => state.profile);
+	const { profiles } = useAppSelector(state => state.session);
+	const dispatch = useAppDispatch();
 
 	const [dropdown, setDropdown] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -39,10 +40,6 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 	const handleOpenDropdown = () => setDropdown(true);
 
 	const handleCloseDropdown = () => setDropdown(false);
-
-	// const getImageFromList = (image: IImageData): IImageData => {
-	// 	return images.find(img => img._id === image._id)!;
-	// };
 
 	return (
 		<S.StyledHeader $active={scroll}>
@@ -93,8 +90,8 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 											<li
 												onClick={() => {
 													handleCloseDropdown();
-													setProfile(item);
-													window !== undefined && location.reload();
+													dispatch(setProfile(item));
+													// window !== undefined && location.reload();
 													/* Agora Recoil gerencia atualizações necessárias em filhos que 
 											 utilizam seus átomos */
 												}}
@@ -115,7 +112,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 								<li
 									onClick={() => {
 										handleCloseDropdown();
-										setProfile({} as IProfile);
+										dispatch(resetProfile());
 									}}
 								>
 									<EditOutlinedIcon />

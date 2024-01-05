@@ -1,6 +1,5 @@
 'use client';
 import { MuiCustomInputProps, regExp } from '@constants';
-import { useAlert } from '@hooks';
 import { authService, userService } from '@services';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,6 +11,8 @@ import React, {
 	useState,
 } from 'react';
 import * as S from '../../../styles/GlobalComponents';
+import { useDispatch } from 'react-redux';
+import { setError, setSuccess } from 'src/store/reducers/alert';
 
 const Register = () => {
 	const [validity, setValidity] = useState({
@@ -20,13 +21,13 @@ const Register = () => {
 		confirmPassword: true,
 		name: true,
 	});
+	const dispatch = useDispatch();
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
 	const [loading, setLoading] = useState(false);
 	const router = useRouter();
-	const alertActions = useAlert();
 
 	const fieldValidation = (type: string, value: string) => {
 		const typeName = type === 'text' ? 'name' : type;
@@ -45,18 +46,18 @@ const Register = () => {
 			if (res.status === 201) {
 				authService.login({ email, password }).then(res => {
 					if (res.ok) {
-						alertActions.success('Conta criada com sucesso!');
+						dispatch(setSuccess('Conta criada com sucesso!'));
 						setConfirmPassword('');
 						setEmail('');
 						setName('');
 						setPassword('');
 						router.push('/email-confirmation');
 					} else {
-						alertActions.error(res.body.error);
+						dispatch(setError(res.body.error));
 					}
 				});
 			} else {
-				alertActions.error(res.body.error);
+				dispatch(setError(res.body.error));
 			}
 			setLoading(false);
 		});
@@ -232,3 +233,4 @@ const Register = () => {
 };
 
 export default Register;
+

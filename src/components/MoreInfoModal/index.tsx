@@ -5,9 +5,10 @@ import React from 'react';
 import { moviesService } from '../../services/moviesService';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { IMovieDataInfo, IMovieVideo } from '@types';
-import { useAlert } from '@hooks';
 import { toHoursAndMinutes } from '@utils';
 import Image from 'next/image';
+import { setError } from 'src/store/reducers/alert';
+import { useDispatch } from 'react-redux';
 
 interface ModeInfoModalProps {
 	id: number;
@@ -20,11 +21,10 @@ interface ModeInfoModalProps {
 }
 
 const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
+	const dispatch = useDispatch();
 	const [movie, setMovie] = useState<IMovieDataInfo>({} as IMovieDataInfo);
 	const [movieVideo, setMovieVideo] = useState<IMovieVideo>({} as IMovieVideo);
 	const [loading, setLoading] = useState(true);
-
-	const alertActions = useAlert();
 
 	const tmdbUrl = 'https://image.tmdb.org/t/p/w1280';
 
@@ -34,8 +34,10 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
 			const video = await moviesService.getMovieVideos(id);
 			if (!video[0] && !video[1]) {
 				setModalInfo({ id: '', success: false });
-				alertActions.error(
-					'Não conseguimos coletar informações sobre esse filme! Tente novamente mais tarde!',
+				dispatch(
+					setError(
+						'Não conseguimos coletar informações sobre esse filme! Tente novamente mais tarde!',
+					),
 				);
 				setLoading(false);
 				return;
@@ -182,10 +184,10 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
 										</div>
 										<S.PosterContainer>
 											{movie.poster_path ? (
-												<img
+												<Image
 													src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-													// width={'200'}
-													// height={'300'}
+													width={'200'}
+													height={'300'}
 													alt={movie.title}
 													className="poster-img"
 												/>

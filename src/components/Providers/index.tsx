@@ -2,12 +2,12 @@
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Children } from '@types';
 import React from 'react';
-import { RecoilRoot } from 'recoil';
 import GlobalStyle from '../../app/global';
-import NextNProgress from 'nextjs-progressbar';
 import AlertComponent from '../Alert';
 import StyledComponentsRegistry from './registry';
 import WebVitals from '../WebVitals';
+import { Provider } from 'react-redux';
+import store from 'src/store';
 
 const theme = createTheme({
 	palette: {
@@ -29,20 +29,16 @@ const theme = createTheme({
 
 const Providers: React.FC<Children> = ({ children }) => {
 	return (
-		<ThemeProvider theme={theme}>
-			<StyledComponentsRegistry>
-				<RecoilRoot>
-					<NextNProgress
-						color={'linear-gradient(90deg, #ff202c 30%, #E50914 100%)'}
-						height={3.5}
-					/>
+		<Provider store={store}>
+			<ThemeProvider theme={theme}>
+				<StyledComponentsRegistry>
 					{children}
 					<WebVitals />
 					<AlertComponent />
 					<GlobalStyle />
-				</RecoilRoot>
-			</StyledComponentsRegistry>
-		</ThemeProvider>
+				</StyledComponentsRegistry>
+			</ThemeProvider>
+		</Provider>
 	);
 };
 

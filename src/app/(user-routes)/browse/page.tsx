@@ -4,24 +4,21 @@ import Header from '../../../components/Header';
 import Hero from './Hero';
 import Footer from '../../../components/Footer';
 import MoreInfoModal from '../../../components/MoreInfoModal';
-import { IMovieDataInfo, Session } from '@types';
-import { useHomeList, useHeroData, useProfile, useSession } from '@hooks';
+import { IMovieDataInfo } from '@types';
 import Main from './Main';
-import { useLoading } from 'src/state/hooks/useLoading';
 import SelectProfile from './SelectProfile';
-import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
-import { authService } from '@services';
 import Loading from 'src/components/Loading';
 import { belongsToTheAccount } from '@utils';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { loadSession } from 'src/store/reducers/session';
+import { loadFilms } from 'src/store/reducers/films';
 
 const Browse = () => {
-	const { session, setSession } = useSession();
-	const { profile } = useProfile();
-	const { setProfiles } = useUserProfiles();
-	const { loading, setLoading } = useLoading();
+	const dispatch = useAppDispatch();
+	const session = useAppSelector(state => state.session);
+	const profile = useAppSelector(state => state.profile);
 
-	const heroData = useHeroData();
-	const homeList = useHomeList();
+	const { status, data } = useAppSelector(state => state.films);
 
 	const [headerActive, setHeaderActive] = useState(false);
 	const [modalInfo, setModalInfo] = useState({
@@ -50,31 +47,19 @@ const Browse = () => {
 	}, []);
 
 	useEffect(() => {
-		const asyncData = async () => {
-			const session = await authService.getSession();
-			setSession(session);
-			setProfiles(session.profiles);
+		if (!profile?.name || !belongsToTheAccount(session.profiles, profile)) {
+			setSelectProfile(true);
+		} else {
+			setSelectProfile(false);
+		}
+	}, [profile, session]);
 
-			if (
-				Object.keys(profile).length === 0 ||
-				!belongsToTheAccount(session.profiles, profile)
-			) {
-				setSelectProfile(true);
-				setLoading(false);
-			} else {
-				setSelectProfile(false);
-			}
+	useEffect(() => {
+		dispatch(loadSession());
+		if (profile) dispatch(loadFilms());
+	}, [dispatch, profile]);
 
-			if (heroData.state !== 'loading' && homeList.state !== 'loading') {
-				setLoading(false);
-			}
-		};
-
-		setLoading(true);
-		asyncData();
-	}, [profile, heroData.state, homeList.state]);
-
-	if (loading) return <Loading />;
+	if (status !== 'success' || !session?.id) return <Loading />;
 
 	if (selectProfile) return <SelectProfile />;
 

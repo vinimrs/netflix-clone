@@ -8,6 +8,38 @@ export const ProfileWrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 
+	.shimmer-container {
+		margin: 8px 0;
+		position: relative;
+		width: 200px;
+		height: 200px;
+		overflow: hidden;
+	}
+
+	.shimmer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 255, 255, 0.1),
+			transparent
+		);
+		animation: shimmerAnimation 2s infinite;
+	}
+
+	@keyframes shimmerAnimation {
+		0% {
+			transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(100%);
+		}
+	}
+
 	h1 {
 		font-size: 52px;
 		font-family: var(--font-open-sans);
@@ -128,3 +160,4 @@ export const CustomImage = styled.img`
 		width: 150px;
 	}
 `;
+

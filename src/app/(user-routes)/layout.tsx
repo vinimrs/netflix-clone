@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import { Children } from '@types';
 import Loading from 'src/components/Loading';

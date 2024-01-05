@@ -1,5 +1,5 @@
 'use client';
-import { useAlert, useProfile, useSession, useWindowDimensions } from '@hooks';
+import { useWindowDimensions } from '@hooks';
 import { Add, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -8,16 +8,19 @@ import { IProfile } from '@types';
 import { userService } from '@services';
 import { convertImage } from '@utils';
 import * as S from './styles';
-import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
+import { useDispatch } from 'react-redux';
+import { setProfile } from 'src/store/reducers/profile';
+import { useAppSelector } from 'src/store/hooks';
+import { setError, setSuccess } from 'src/store/reducers/alert';
+import { setSession, updateProfiles } from 'src/store/reducers/session';
 
 const SelectProfile: React.FC = () => {
-	const { session, setSession } = useSession();
+	const dispatch = useDispatch();
+	const session = useAppSelector(state => state.session);
+	console.log('select profiles', session);
 
 	const [profileHovered, setProfileHovered] = useState('');
 	const { width } = useWindowDimensions();
-	const { profiles, setProfiles } = useUserProfiles();
-	const { setProfile } = useProfile();
-	const alertActions = useAlert();
 
 	const router = useRouter();
 
@@ -26,14 +29,15 @@ const SelectProfile: React.FC = () => {
 			.deleteUserProfile(prof.slug as string, session!.id)
 			.then(res => {
 				if (res?.ok) {
-					alertActions.success('Perfil deletado com sucesso');
+					dispatch(setSuccess('Perfil deletado com sucesso'));
 				}
-				const currentProfiles = profiles.filter(p => p.slug !== prof.slug);
-				setProfiles(currentProfiles);
-				setSession({ ...session, profiles: currentProfiles });
+				const currentProfiles = session.profiles.filter(
+					p => p.slug !== prof.slug,
+				);
+				dispatch(updateProfiles(currentProfiles));
 			})
 			.catch(() => {
-				alertActions.error('Erro ao deletar o perfil');
+				dispatch(setError('Erro ao deletar o perfil'));
 			});
 	};
 
@@ -46,33 +50,41 @@ const SelectProfile: React.FC = () => {
 		<S.ProfileWrapper>
 			<h1>Quem está assistindo?</h1>
 			<div data-testid="profile-container">
-				{session !== undefined && Object.keys(session).length === 0 && (
-					<div className="create-profile__container">...</div>
-				)}
-				{session !== undefined &&
-					Object.keys(session).length > 0 &&
-					profiles.length < 4 && (
-						<div className="create-profile__container">
-							<div
-								onClick={() => {
-									router.push('/manage-profile?create=true');
-								}}
-								title="Crie um novo perfil"
-							>
-								<Add
-									fontSize="large"
-									style={{
-										width: width < 768 ? '140px' : '190px',
-										height: width < 768 ? '140px' : '190px',
-									}}
-								/>
-							</div>
-							<h2>Criar um perfil</h2>
+				{session?.id === '' && (
+					<div className="shimmer-container">
+						<div
+							className="profile-image__box shimmer"
+							title="Entre com o perfil"
+							data-testid="profile"
+							role="img"
+							style={{ textAlign: 'center' }}
+						>
+							{/* <h2>{prof.name}</h2> */}
 						</div>
-					)}
+					</div>
+				)}
+				{session?.id !== '' && session.profiles.length < 4 && (
+					<div className="create-profile__container">
+						<div
+							onClick={() => {
+								router.push('/manage-profile?create=true');
+							}}
+							title="Crie um novo perfil"
+						>
+							<Add
+								fontSize="large"
+								style={{
+									width: width < 768 ? '140px' : '190px',
+									height: width < 768 ? '140px' : '190px',
+								}}
+							/>
+						</div>
+						<h2>Criar um perfil</h2>
+					</div>
+				)}
 
-				{profiles.length > 0 &&
-					profiles.map((prof, index) => (
+				{session.profiles.length > 0 &&
+					session.profiles.map((prof, index) => (
 						<div
 							className="profile-image__box"
 							title="Entre com o perfil"
@@ -85,7 +97,7 @@ const SelectProfile: React.FC = () => {
 						>
 							<S.CustomImage
 								onClick={() => {
-									setProfile(prof);
+									dispatch(setProfile(prof));
 									router.push('/browse');
 								}}
 								src={`data:image/image/png;base64,${convertImage(

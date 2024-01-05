@@ -13,23 +13,25 @@ import { CustomButton, CustomTextField } from 'src/styles/GlobalComponents';
 import { toSlug } from '@utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProfileImages from './ProfileImages';
-import { useAlert, useSession } from '@hooks';
 import { IImageData, IProfile, ISession } from '@types';
 import Link from 'next/link';
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useUserProfiles } from 'src/state/hooks/useUserProfiles';
+import { setError, setSuccess } from 'src/store/reducers/alert';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from 'src/store/hooks';
+import { updateProfiles } from 'src/store/reducers/session';
 
 const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
+	const dispatch = useDispatch();
+	const session = useAppSelector(state => state.session);
 	const [preferences, setPreferences] = useState<string[]>([]);
 	const [profileName, setProfileName] = useState('');
 	const [imageData, setImageData] = useState({ id: '', data: '' });
 	const [loading, setLoading] = useState(false);
 	const [editProfile, setEditProfile] = useState('');
 
-	const { session, setSession } = useSession();
-	const { profiles, setProfiles } = useUserProfiles();
-	const alertActions = useAlert();
+	const { profiles } = useAppSelector(state => state.session);
 	const router = useRouter();
 
 	const validations = (
@@ -39,16 +41,16 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 		profiles: IProfile[],
 	) => {
 		if (pref.length < 6) {
-			alertActions.error('Você deve escolher no mínimo 6 gêneros!');
+			dispatch(setError('Você deve escolher no mínimo 6 gêneros!'));
 			return false;
 		}
 		if (!imageInfo.id) {
-			alertActions.error('Você deve escolher uma imagem para seu perfil');
+			dispatch(setError('Você deve escolher uma imagem para seu perfil'));
 			return false;
 		}
 
 		if (profiles?.length > 3 && !editProfile) {
-			alertActions.error('Você chegou no limite de perfis');
+			dispatch(setError('Você chegou no limite de perfis'));
 			return false;
 		}
 
@@ -58,7 +60,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 		});
 
 		if (exists) {
-			alertActions.error('Nome de perfil já usado');
+			dispatch(setError('Nome de perfil já usado'));
 			return false;
 		}
 		return true;
@@ -103,20 +105,22 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 		if (res.ok) {
 			// atualizando a sessão
 
-			alertActions.success(res.body.message);
+			dispatch(setSuccess(res.body.message));
 			router.push('/browse');
 
-			setProfiles([
-				...profiles,
-				{
-					name: profileName,
-					slug,
-					image: { _id: imageData.id },
-					preference: preferencesId as string[],
-				},
-			]);
+			dispatch(
+				updateProfiles([
+					...profiles,
+					{
+						name: profileName,
+						slug,
+						image: { _id: imageData.id },
+						preference: preferencesId as string[],
+					},
+				]),
+			);
 		} else {
-			alertActions.error(res.body.message);
+			dispatch(setError(res.body.message));
 		}
 	};
 

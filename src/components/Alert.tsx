@@ -1,7 +1,6 @@
 import { Alert } from '@mui/material';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { alertAtom } from 'src/state/atoms';
+import { useAppSelector } from 'src/store/hooks';
 import styled from 'styled-components';
 
 export const StyledAlert = styled(Alert)`
@@ -18,7 +17,8 @@ export const StyledAlert = styled(Alert)`
 `;
 
 const AlertComponent: React.FC = () => {
-	const alert = useRecoilValue(alertAtom);
+	const alert = useAppSelector(state => state.alert);
+	console.log(alert);
 
 	if (!alert.message) return <div />;
 
@@ -34,3 +34,4 @@ const AlertComponent: React.FC = () => {
 };
 
 export default AlertComponent;
+

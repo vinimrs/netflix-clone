@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-	reactStrictMode: true,
+	reactStrictMode: false,
 	compiler: {
 		styledComponents: true,
 	},
@@ -17,6 +17,7 @@ const nextConfig = {
 	env: {
 		NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
 		NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+		JWT_SECRET: process.env.JWT_SECRET,
 	},
 	distDir: 'dist',
 };

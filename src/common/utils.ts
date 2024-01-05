@@ -1,4 +1,4 @@
-import { IImageData, IProfile } from '@types';
+import { IImageData, IMovieDataInfo, IProfile } from '@types';
 
 export const toSlug = (str: string) => {
 	const slugify = str
@@ -65,4 +65,29 @@ export const limitedText = (text: string, type: string, width: number) => {
 	return text.length > limits[type]
 		? text.substring(0, limits[type]) + '...'
 		: text;
+};
+
+export const isAnMovieDataInfo = (obj: any): obj is IMovieDataInfo => {
+	return (
+		'backdrop_path' in obj &&
+		obj.backdrop_path !== null &&
+		'overview' in obj &&
+		obj.overview !== null &&
+		'title' in obj &&
+		obj.title !== null &&
+		'vote_average' in obj &&
+		obj.vote_average !== null &&
+		'genre_ids' in obj &&
+		obj.genre_ids !== null
+	);
+};
+
+export const clearAllTimeouts = () => {
+	let id = window.setTimeout(function () {
+		return;
+	}, 0);
+
+	while (id--) {
+		window.clearTimeout(id); // will do nothing if no timeout with id is present
+	}
 };
