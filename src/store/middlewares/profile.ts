@@ -6,8 +6,8 @@ export const profileListener = createListenerMiddleware();
 
 profileListener.startListening({
 	actionCreator: setProfile,
-	effect: (action, { dispatch, getState }) => {
-		dispatch(removeSpecificFilms({}));
+	effect: (action, { dispatch }) => {
+		dispatch(removeSpecificFilms());
 		console.log('escutando set profile');
 	},
 });

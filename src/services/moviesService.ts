@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '../infra/HttpClient/HttpClient';
 import { IProfile } from '@types';
 import { IMovieData, IMovieDataInfo, IMovieVideo } from '@types';

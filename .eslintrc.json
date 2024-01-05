@@ -16,20 +16,19 @@
 		"sourceType": "module"
 	},
 	"plugins": ["@typescript-eslint", "react-hooks"],
-	"rules": {
-		"indent": "off",
-		"quotes": ["error", "single"],
-		"semi": ["error", "always"],
-		"react/prop-types": "off",
-		"no-explicit-any": "off",
-		"react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-		"react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
-	},
+
 	"overrides": [
 		{
 			"files": ["*.tsx"],
 			"rules": {
-				"no-undef": "off"
+				"no-undef": "off",
+				"indent": "off",
+				"quotes": ["error", "single"],
+				"semi": ["error", "always"],
+				"react/prop-types": "off",
+				"no-explicit-any": "off",
+				"react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+				"react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
 			}
 		}
 	]

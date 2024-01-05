@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next';
 import { HttpClient } from '../infra/HttpClient/HttpClient';
 import { tokenService } from './auth/tokenService';
 

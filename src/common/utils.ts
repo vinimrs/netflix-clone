@@ -1,4 +1,5 @@
-import { IImageData, IMovieDataInfo, IProfile } from '@types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IMovieDataInfo, IProfile } from '@types';
 
 export const toSlug = (str: string) => {
 	const slugify = str

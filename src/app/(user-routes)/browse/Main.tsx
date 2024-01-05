@@ -1,5 +1,4 @@
 'use client';
-import { useHomeList } from '@hooks';
 import React, { useMemo } from 'react';
 
 import * as S from '../../../styles/GlobalComponents';
@@ -14,7 +13,6 @@ interface Modal {
 
 const Main: React.FC<Modal> = ({ setModal }) => {
 	const {
-		status,
 		data: { general, specific },
 	} = useAppSelector(state => state.films);
 

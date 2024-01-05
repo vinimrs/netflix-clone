@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { authService } from './services/auth/authService';
-import { ISession } from '@types';
-import { tokenService } from './services/auth/tokenService';
 
 const userRoutes = [
 	'/browse',
@@ -22,7 +20,6 @@ export async function middleware(request: NextRequest) {
 	const refreshToken = refreshCookie?.value;
 
 	let validCookie = false;
-	let session: ISession = {} as ISession;
 	const newTokens = {
 		accessToken: '',
 		refreshToken: '',
@@ -43,13 +40,11 @@ export async function middleware(request: NextRequest) {
 			if (response.message === 'success') {
 				newTokens.accessToken = response.data.accessToken;
 				newTokens.refreshToken = response.data.refreshToken;
-				session = response.data.session;
 				validCookie = true;
 			} else {
 				validCookie = false;
 			}
 		} else {
-			session = data;
 			validCookie = true;
 		}
 	}
@@ -77,17 +72,6 @@ export async function middleware(request: NextRequest) {
 	// If the request path is a public page and the user is logged in, redirect to the browse page
 	if (isPublicRoute && isLoggedIn) {
 		response = NextResponse.redirect(new URL('/browse', request.url));
-	}
-
-	if (isLoggedIn) {
-		// console.log('registrando cookie sesison', { ...session, profiles: [] });
-		// const token = await tokenService.signSession({ ...session, profiles: [] });
-		response.cookies.set('session', 'true', {
-			path: '/',
-			sameSite: 'strict', // csrf
-			httpOnly: true, // csrf
-			maxAge: 7 * 24 * 60 * 60, // 7 days
-		});
 	}
 
 	// se renovou

@@ -18,7 +18,7 @@ const Browse = () => {
 	const session = useAppSelector(state => state.session);
 	const profile = useAppSelector(state => state.profile);
 
-	const { status, data } = useAppSelector(state => state.films);
+	const { status } = useAppSelector(state => state.films);
 
 	const [headerActive, setHeaderActive] = useState(false);
 	const [modalInfo, setModalInfo] = useState({

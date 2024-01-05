@@ -13,7 +13,7 @@ import { CustomButton, CustomTextField } from 'src/styles/GlobalComponents';
 import { toSlug } from '@utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProfileImages from './ProfileImages';
-import { IImageData, IProfile, ISession } from '@types';
+import { IImageData, IProfile } from '@types';
 import Link from 'next/link';
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import Image from 'next/image';

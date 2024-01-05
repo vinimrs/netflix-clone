@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { authService, tokenService } from '@services';
 
 // Ports & Adapters
@@ -25,12 +26,10 @@ export async function HttpClient(fethUrl: string, fetchOptions: any) {
 			if (!fetchOptions.refresh) return res;
 			if (res.status !== 401) return res;
 
-			// console.log('Atualizando tokens');
-
 			/*
-	        -Sempre use try catch para capturar os erros desconhecidos.
-	        -Desconfia que algum código não está rodando misteriosamente, coloque num trycatch
-	        */
+        -Sempre use try catch para capturar os erros desconhecidos.
+        -Desconfia que algum código não está rodando misteriosamente, coloque num trycatch
+      */
 			try {
 				// Tentar atualizar os tokens
 				const { accessToken, refreshToken } = await authService.refresh();

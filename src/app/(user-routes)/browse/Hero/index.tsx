@@ -4,9 +4,8 @@ import React from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Variants, motion } from 'framer-motion';
 import { IMovieDataInfo } from '@types';
-import { useHeroData, useWindowDimensions } from '@hooks';
-import { limitedText, toHoursAndMinutes } from '@utils';
-import { useSelector } from 'react-redux';
+import { useWindowDimensions } from '@hooks';
+import { limitedText } from '@utils';
 import { useAppSelector } from 'src/store/hooks';
 
 interface HeroProps {

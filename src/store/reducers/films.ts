@@ -37,7 +37,7 @@ const filmsListSlice = createSlice({
 			};
 		},
 		resetFilmsList: () => initialState,
-		removeSpecificFilms: (state, action) => {
+		removeSpecificFilms: state => {
 			return {
 				...state,
 				specific: [],

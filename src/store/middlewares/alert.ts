@@ -6,7 +6,7 @@ export const alertListener = createListenerMiddleware();
 
 alertListener.startListening({
 	actionCreator: setError,
-	effect: (action, { dispatch, getState }) => {
+	effect: (action, { dispatch }) => {
 		clearAllTimeouts();
 		window.setTimeout(() => {
 			dispatch(resetAlert());
@@ -16,7 +16,7 @@ alertListener.startListening({
 
 alertListener.startListening({
 	actionCreator: setSuccess,
-	effect: (action, { dispatch, getState }) => {
+	effect: (action, { dispatch }) => {
 		clearAllTimeouts();
 		window.setTimeout(() => {
 			dispatch(resetAlert());

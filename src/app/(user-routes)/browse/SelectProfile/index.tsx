@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { setProfile } from 'src/store/reducers/profile';
 import { useAppSelector } from 'src/store/hooks';
 import { setError, setSuccess } from 'src/store/reducers/alert';
-import { setSession, updateProfiles } from 'src/store/reducers/session';
+import { updateProfiles } from 'src/store/reducers/session';
 
 const SelectProfile: React.FC = () => {
 	const dispatch = useDispatch();
