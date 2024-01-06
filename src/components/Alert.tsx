@@ -18,7 +18,6 @@ export const StyledAlert = styled(Alert)`
 
 const AlertComponent: React.FC = () => {
 	const alert = useAppSelector(state => state.alert);
-	console.log(alert);
 
 	if (!alert.message) return <div />;
 

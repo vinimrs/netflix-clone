@@ -17,7 +17,6 @@ import { updateProfiles } from 'src/store/reducers/session';
 const SelectProfile: React.FC = () => {
 	const dispatch = useDispatch();
 	const session = useAppSelector(state => state.session);
-	console.log('select profiles', session);
 
 	const [profileHovered, setProfileHovered] = useState('');
 	const { width } = useWindowDimensions();

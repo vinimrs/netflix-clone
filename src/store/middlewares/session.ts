@@ -11,7 +11,6 @@ sessionListener.startListening({
 		if (getState().session?.id) return;
 
 		const session = await authService.getSession();
-		console.log('sessionListener -> session', session);
 		dispatch(setSession(session));
 	},
 });

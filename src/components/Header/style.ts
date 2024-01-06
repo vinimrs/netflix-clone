@@ -12,7 +12,7 @@ export const StyledHeader = styled.header<{ $active?: boolean }>`
 	padding: 17px 52px;
 	transition: all ease 0.2s;
 	background-color: ${props => (props.$active ? 'var(--black)' : '#00000000')};
-	z-index: 1000;
+	z-index: 1001;
 
 	@media (max-width: 768px) {
 		padding: 8px 16px;

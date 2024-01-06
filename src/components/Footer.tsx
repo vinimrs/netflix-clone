@@ -7,7 +7,14 @@ const Footer: React.FC = () => {
 			<span role="img" aria-label="coração">
 				💚
 			</span>{' '}
-			pela vocedeveloper
+			por{' '}
+			<a
+				href="https://www.linkedin.com/in/vinimrs"
+				target="_blank"
+				rel="noreferrer"
+			>
+				Vinícius Romualdo
+			</a>
 			<br />
 			Dados usados da Api TheMovieDB.com
 			<br />
@@ -17,3 +24,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+

@@ -12,13 +12,6 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 	background-size: cover;
 	background-position: center;
 
-	.video {
-		position: absolute;
-		z-index: 0;
-		top: 0;
-		left: 0;
-	}
-
 	.film-details {
 		position: absolute;
 		left: 60px;
@@ -48,6 +41,7 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 			max-width: 50%;
 			font-weight: 600;
 			margin-left: 8px;
+			user-select: none;
 		}
 	}
 

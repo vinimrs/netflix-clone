@@ -29,8 +29,7 @@ export async function middleware(request: NextRequest) {
 		// testa validade do cookie
 		// se for invalido, redireciona para login
 		// se for valido, redireciona para browse
-		const { data, isLogged } = await authService.validateKey(accessToken);
-		console.log('middleware -> data', data, isLogged);
+		const { isLogged } = await authService.validateKey(accessToken);
 		if (!isLogged) {
 			// tenta renovar o token
 			const response = await authService.validateKeyWithRefresh(
@@ -60,7 +59,6 @@ export async function middleware(request: NextRequest) {
 
 	// Check if the user is logged in
 	const isLoggedIn = validCookie && !!accessToken;
-	console.log('middleware -> isLoggedIn', isLoggedIn);
 
 	// If the request path is a user route and the user isnt logged in, redirect to the login page
 	if (isUserRoute && !isLoggedIn) {

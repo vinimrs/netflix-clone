@@ -9,6 +9,7 @@ import { toHoursAndMinutes } from '@utils';
 import Image from 'next/image';
 import { setError } from 'src/store/reducers/alert';
 import { useDispatch } from 'react-redux';
+import VideoPlayer from '../VideoPlayer';
 
 interface ModeInfoModalProps {
 	id: number;
@@ -88,116 +89,102 @@ const MoreInfoModal: React.FC<ModeInfoModalProps> = ({ id, setModalInfo }) => {
 								sx={{ color: 'var(--white)', fontSize: '40px' }}
 							/>
 						</div>
-						{Object.keys(movie).length > 0 &&
-							Object.keys(movieVideo).length > 0 && (
-								<>
-									<S.ModalBanner src={tmdbUrl + movie.backdrop_path}>
-										<iframe
-											src={`https://www.youtube.com/embed/${movieVideo.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${movieVideo.key}&modestbranding=1&showinfo=0&rel=0`}
-											frameBorder="0"
-											allow="autoplay; encrypted-media"
-											allowFullScreen
-											style={{
-												width: '100%',
-												height: '100%',
-												pointerEvents: 'none',
-											}}
-											title="video"
-										/>
-									</S.ModalBanner>
-									<S.FilmInfosWrapper>
-										<div>
-											<h1>{movie?.title}</h1>
-											{movie.tagline && (
-												<span>&quot;{movie.tagline}&quot;</span>
+						{Object.keys(movie).length > 0 && movieVideo?.key && (
+							<>
+								<S.ModalBanner src={tmdbUrl + movie.backdrop_path}>
+									<VideoPlayer videoKey={movieVideo.key} delayToPlay={0} />
+								</S.ModalBanner>
+								<S.FilmInfosWrapper>
+									<div>
+										<h1>{movie?.title}</h1>
+										{movie.tagline && <span>&quot;{movie.tagline}&quot;</span>}
+										<S.MovieDetails>
+											{movie.vote_average && (
+												<span style={{ color: 'var(--green)' }}>
+													{movie.vote_average} pontos
+												</span>
 											)}
-											<S.MovieDetails>
-												{movie.vote_average && (
-													<span style={{ color: 'var(--green)' }}>
-														{movie.vote_average} pontos
-													</span>
-												)}
-												{(movie.runtime || movie.last_air_date) && (
-													<span>
-														{movie.runtime
-															? toHoursAndMinutes(movie.runtime)
-															: `${movie.number_of_seasons} 
+											{(movie.runtime || movie.last_air_date) && (
+												<span>
+													{movie.runtime
+														? toHoursAndMinutes(movie.runtime)
+														: `${movie.number_of_seasons} 
                                                 temporada${
 																									movie.number_of_seasons &&
 																									movie.number_of_seasons > 1
 																										? 's'
 																										: ''
 																								}`}
-													</span>
-												)}
-												{(movie.release_date || movie.last_air_date) && (
-													<span>
-														{movie.release_date
-															? movie.release_date.substring(0, 4)
-															: movie.last_air_date!.substring(0, 4)}
-													</span>
-												)}
-											</S.MovieDetails>
-											<p>{movie?.overview}</p>
-											<h2>
-												Gênero
-												{movie.genres && movie.genres?.length > 1 ? 's' : ''}
-											</h2>
-											{movie.genres && (
+												</span>
+											)}
+											{(movie.release_date || movie.last_air_date) && (
+												<span>
+													{movie.release_date
+														? movie.release_date.substring(0, 4)
+														: movie.last_air_date!.substring(0, 4)}
+												</span>
+											)}
+										</S.MovieDetails>
+										<p>{movie?.overview}</p>
+										<h2>
+											Gênero
+											{movie.genres && movie.genres?.length > 1 ? 's' : ''}
+										</h2>
+										{movie.genres && (
+											<div>
+												{movie.genres.map(genre => (
+													<span key={genre.id}>{genre.name} </span>
+												))}
+											</div>
+										)}
+										{movie.production_countries && (
+											<>
+												<h2>
+													País
+													{movie.production_countries.length > 1 ? 'es' : ''}
+												</h2>
 												<div>
-													{movie.genres.map(genre => (
-														<span key={genre.id}>{genre.name} </span>
+													{movie.production_countries.map((country, id) => (
+														<span key={id}>{country.name}</span>
 													))}
 												</div>
-											)}
-											{movie.production_countries && (
-												<>
-													<h2>
-														País
-														{movie.production_countries.length > 1 ? 'es' : ''}
-													</h2>
-													<div>
-														{movie.production_countries.map((country, id) => (
-															<span key={id}>{country.name}</span>
-														))}
-													</div>
-												</>
-											)}
-											{movie.production_companies && (
-												<S.MovieProductionCompanies>
-													<h2 style={{ color: 'var(--black)' }}>Produção </h2>
-													<S.CompaniesWrapper>
-														{movie.production_companies.map(company => (
-															<S.CompaniesBox key={company.name}>
-																{company.logo_path && (
-																	<S.CompanyImg
-																		src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
-																		alt={company.name}
-																	/>
-																)}
-																<span>{company.name}</span>
-															</S.CompaniesBox>
-														))}
-													</S.CompaniesWrapper>
-												</S.MovieProductionCompanies>
-											)}
-										</div>
-										<S.PosterContainer>
-											{movie.poster_path ? (
-												<Image
-													src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-													width={'200'}
-													height={'300'}
-													alt={movie.title}
-													className="poster-img"
-												/>
-											) : (
-												<p>...</p>
-											)}
-										</S.PosterContainer>
-									</S.FilmInfosWrapper>
-								</>
-							)}
+											</>
+										)}
+										{movie.production_companies && (
+											<S.MovieProductionCompanies>
+												<h2 style={{ color: 'var(--black)' }}>Produção </h2>
+												<S.CompaniesWrapper>
+													{movie.production_companies.map(company => (
+														<S.CompaniesBox key={company.name}>
+															{company.logo_path && (
+																<S.CompanyImg
+																	src={`https://image.tmdb.org/t/p/original${company.logo_path}`}
+																	alt={company.name}
+																/>
+															)}
+															<span>{company.name}</span>
+														</S.CompaniesBox>
+													))}
+												</S.CompaniesWrapper>
+											</S.MovieProductionCompanies>
+										)}
+									</div>
+									<S.PosterContainer>
+										{movie.poster_path ? (
+											<Image
+												src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+												width={'200'}
+												height={'300'}
+												alt={movie.title}
+												className="poster-img"
+											/>
+										) : (
+											<p>...</p>
+										)}
+									</S.PosterContainer>
+								</S.FilmInfosWrapper>
+							</>
+						)}
 					</>
 				)}
 			</S.ModalContainer>

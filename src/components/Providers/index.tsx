@@ -30,14 +30,14 @@ const theme = createTheme({
 const Providers: React.FC<Children> = ({ children }) => {
 	return (
 		<Provider store={store}>
-			<ThemeProvider theme={theme}>
-				<StyledComponentsRegistry>
+			<StyledComponentsRegistry>
+				<ThemeProvider theme={theme}>
 					{children}
 					<WebVitals />
 					<AlertComponent />
 					<GlobalStyle />
-				</StyledComponentsRegistry>
-			</ThemeProvider>
+				</ThemeProvider>
+			</StyledComponentsRegistry>
 		</Provider>
 	);
 };

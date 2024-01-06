@@ -8,7 +8,6 @@ profileListener.startListening({
 	actionCreator: setProfile,
 	effect: (action, { dispatch }) => {
 		dispatch(removeSpecificFilms());
-		console.log('escutando set profile');
 	},
 });
 

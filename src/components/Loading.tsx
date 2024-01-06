@@ -2,28 +2,28 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const LoadingImg = styled.img`
-	width: 40vw;
+const LoadingContainer = styled.div`
+	position: absolute;
+	z-index: 900;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #000;
+
+	img {
+		width: 40vw;
+	}
 `;
 
 const Loading: React.FC = () => {
 	return (
-		<div
-			style={{
-				position: 'absolute',
-				zIndex: '900',
-				top: '0',
-				left: '0',
-				right: '0',
-				bottom: '0',
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-				backgroundColor: '#000',
-			}}
-		>
-			<LoadingImg src="/loading1.gif" alt="Animação de carregamento" />
-		</div>
+		<LoadingContainer>
+			<img src="/loading1.gif" alt="Animação de carregamento" />
+		</LoadingContainer>
 	);
 };
 

@@ -16,7 +16,6 @@ const filmsWorker = function* () {
 		yield put(setFilms({ general, specific, hero }));
 		yield put(setStatus('success'));
 	} catch (error) {
-		console.log('filmsWorker -> error', error);
 		yield put(setStatus('failed'));
 	}
 };
@@ -26,14 +25,12 @@ const profileFilmsWorker = function* () {
 
 	if (!profile?.name) return;
 
-	console.log('profileFilmsWorker -> profile', profile);
 	const resultList = yield call(moviesService.getHomeList, profile);
 	const res = yield Promise.all(
 		resultList.map(async item => {
 			return { ...item, items: item.items.body };
 		}),
 	);
-	console.log('profileFilmsWorker -> res', res);
 	return res;
 };
 
@@ -44,8 +41,6 @@ const generalFilmsWorker = function* () {
 			return { ...item, items: item.items.body };
 		}),
 	);
-
-	console.log('generalFilmsWorker -> res', res);
 
 	return res;
 };
@@ -75,7 +70,7 @@ const heroFilmWorker = function* () {
 			call(moviesService.getMovieVideos, chosen.id!),
 		]);
 
-		return { video: videos[1] ? videos[1] : videos[0], heroFilm: chosenInfo };
+		return { video: videos[0], heroFilm: chosenInfo };
 	}
 };
 

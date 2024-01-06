@@ -50,7 +50,6 @@ const Login = () => {
 			router.push('/browse');
 		} catch (error) {
 			setLoading(false);
-			console.log(error.message);
 			dispatch(setError(error.message));
 		}
 	};

@@ -74,6 +74,7 @@ export const isAnMovieDataInfo = (obj: any): obj is IMovieDataInfo => {
 		obj.backdrop_path !== null &&
 		'overview' in obj &&
 		obj.overview !== null &&
+		obj.overview !== '' &&
 		'title' in obj &&
 		obj.title !== null &&
 		'vote_average' in obj &&
