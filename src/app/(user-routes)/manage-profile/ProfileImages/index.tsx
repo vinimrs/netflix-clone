@@ -8,7 +8,7 @@ const ProfileImages: React.FC<{
 	setImageData: React.Dispatch<
 		React.SetStateAction<{
 			id: string;
-			data: string;
+			data: ArrayBuffer;
 		}>
 	>;
 	images: IImageData[];
@@ -36,7 +36,7 @@ const ProfileImages: React.FC<{
 							onClick={() => {
 								setImageData({
 									id: image._id,
-									data: convertImage(image.data!),
+									data: image.data!,
 								});
 							}}
 							role="img"

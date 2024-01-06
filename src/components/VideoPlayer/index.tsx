@@ -10,7 +10,7 @@ const iconsProps = {
 };
 
 const defaultDelayToPlay = 3000;
-const delayToAnimation = 8000;
+const delayToAnimation = 7000;
 
 const VideoPlayer: React.FC<{
 	videoKey: string;
@@ -22,7 +22,7 @@ const VideoPlayer: React.FC<{
 		'unstarted' | 'playing' | 'stopped'
 	>('unstarted');
 	const [muted, setMuted] = useState<boolean>(false);
-	const videoRef = useRef(null);
+	const videoRef = useRef<YouTube>(null);
 
 	const handleVideoReady = event => {
 		setTimeout(

@@ -56,12 +56,14 @@ const Browse = () => {
 
 	useEffect(() => {
 		dispatch(loadSession());
-		if (profile) dispatch(loadFilms());
+		if (profile?.name) dispatch(loadFilms());
 	}, [dispatch, profile]);
 
-	if (status !== 'success' || !session?.id) return <Loading />;
+	if ((status !== 'idle' && status !== 'success') || !session?.id)
+		return <Loading />;
 
-	if (selectProfile) return <SelectProfile />;
+	if (!profile?.name || !belongsToTheAccount(session.profiles, profile))
+		return <SelectProfile />;
 
 	return (
 		<>

@@ -104,7 +104,7 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 						animate={'final'}
 						transition={{
 							ease: 'linear',
-							duration: 0.6,
+							duration: 0.8,
 						}}
 					>
 						{heroFilm?.title}
@@ -121,7 +121,7 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 						custom={reverse}
 						transition={{
 							ease: 'linear',
-							duration: 0.6,
+							duration: 0.8,
 						}}
 					>
 						{limitedText(heroFilm?.overview, 'description', width)}

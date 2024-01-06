@@ -70,7 +70,7 @@ export const ModalContainer = styled(motion.div)`
 export const ModalBanner = styled.div<{ src?: string }>`
 	width: 100%;
 	height: 400px;
-	background-image: linear-gradient(90deg, #000e 37%, #00000000 85.33%),
+	background-image: linear-gradient(90deg, #00000eae 10%, #00000000 85.33%),
 		url(${props => (props.src ? props.src : '')});
 	background-size: cover;
 	background-position: center;

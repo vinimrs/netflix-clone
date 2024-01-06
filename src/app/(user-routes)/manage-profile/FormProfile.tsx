@@ -10,7 +10,7 @@ import {
 import { userService } from '@services';
 import { moviesGenres } from '@constants';
 import { CustomButton, CustomTextField } from 'src/styles/GlobalComponents';
-import { toSlug } from '@utils';
+import { convertImage, toSlug } from '@utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProfileImages from './ProfileImages';
 import { IImageData, IProfile } from '@types';
@@ -27,7 +27,9 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 	const session = useAppSelector(state => state.session);
 	const [preferences, setPreferences] = useState<string[]>([]);
 	const [profileName, setProfileName] = useState('');
-	const [imageData, setImageData] = useState({ id: '', data: '' });
+	const [imageData, setImageData] = useState<{ id: string; data: ArrayBuffer }>(
+		{ id: '', data: new ArrayBuffer(0) },
+	);
 	const [loading, setLoading] = useState(false);
 	const [editProfile, setEditProfile] = useState('');
 
@@ -36,7 +38,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 
 	const validations = (
 		pref: string[],
-		imageInfo: { data: string; id: string },
+		imageInfo: { data: ArrayBuffer; id: string },
 		profName: string,
 		profiles: IProfile[],
 	) => {
@@ -108,17 +110,22 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 			dispatch(setSuccess(res.body.message));
 			router.push('/browse');
 
-			dispatch(
-				updateProfiles([
-					...profiles,
-					{
-						name: profileName,
-						slug,
-						image: { _id: imageData.id },
-						preference: preferencesId as string[],
-					},
-				]),
-			);
+			const newProfile = {
+				name: profileName,
+				slug,
+				image: { _id: imageData.id, data: imageData.data },
+				preference: preferencesId as string[],
+			};
+
+			if (editProfile) {
+				const newProfiles = profiles.map((prof, ind) => {
+					if (ind === Number(editProfile)) return newProfile;
+					return prof;
+				});
+				dispatch(updateProfiles(newProfiles));
+			} else {
+				dispatch(updateProfiles([...profiles, newProfile]));
+			}
 		} else {
 			dispatch(setError(res.body.message));
 		}
@@ -136,6 +143,7 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 
 	useEffect(() => {
 		const edit = searchParams?.get('edit');
+		console.log('FormProfile: edit', edit);
 		if (edit !== undefined && edit !== null) {
 			setEditProfile(edit);
 		} else {
@@ -251,13 +259,15 @@ const FormProfile: React.FC<{ images: IImageData[] }> = ({ images }) => {
 					</div>
 					<div className="preview-container">
 						<h2>Seu novo perfil</h2>
-						{imageData.data && (
+						{imageData?.id && (
 							<Image
 								alt="Imagem do seu perfil."
 								width="200"
 								height="200"
 								style={{ borderRadius: '10px' }}
-								src={`data:image/image/png;base64,${imageData.data}`}
+								src={`data:image/image/png;base64,${convertImage(
+									imageData.data,
+								)}`}
 							/>
 						)}
 						{!profileName && <p>Insira um nome...</p>}

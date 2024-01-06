@@ -45,6 +45,7 @@ const SelectProfile: React.FC = () => {
 	};
 	const handleMouseOff = () => setProfileHovered('');
 
+	console.log('SelectProfile: session', session);
 	return (
 		<S.ProfileWrapper>
 			<h1>Quem está assistindo?</h1>

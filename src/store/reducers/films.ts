@@ -1,5 +1,5 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import { IHeroMovieData, IMovieHomeList } from '@types';
+import { IHeroMovieData, IMovieData, IMovieHomeList } from '@types';
 
 const initialState: {
 	data: {
@@ -12,12 +12,12 @@ const initialState: {
 	data: {
 		general: [],
 		specific: [],
-		hero: {} as IHeroMovieData,
+		hero: { heroFilm: {} as IMovieData, video: {} },
 	},
 	status: 'idle',
 };
 
-export const loadFilms = createAction('films/loadGeneralLists');
+export const loadFilms = createAction('films/loadFilms');
 // export const loadEspecificLists = createAction('films/loadEspecificLists');
 
 const filmsListSlice = createSlice({

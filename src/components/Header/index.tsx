@@ -41,6 +41,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 
 	const handleCloseDropdown = () => setDropdown(false);
 
+	console.log('Header: session', session);
 	return (
 		<S.StyledHeader $active={scroll}>
 			<Link href="/browse" passHref>
