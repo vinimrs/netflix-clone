@@ -62,8 +62,7 @@ const Browse = () => {
 	if ((status !== 'idle' && status !== 'success') || !session?.id)
 		return <Loading />;
 
-	if (!profile?.name || !belongsToTheAccount(session.profiles, profile))
-		return <SelectProfile />;
+	if (selectProfile) return <SelectProfile />;
 
 	return (
 		<>
