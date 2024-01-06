@@ -7,7 +7,7 @@ const initialState: {
 		specific: IMovieHomeList[];
 		hero: IHeroMovieData;
 	};
-	status: 'idle' | 'loading' | 'failed' | 'success';
+	status: 'idle' | 'loading' | 'failed' | 'success' | 'changingProfile';
 } = {
 	data: {
 		general: [],

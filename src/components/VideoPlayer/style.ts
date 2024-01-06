@@ -22,6 +22,11 @@ export const ButtonContainer = styled.div`
 	bottom: 35%;
 	right: 5%;
 	z-index: 1000;
+
+	@media (max-width: 768px) {
+		bottom: 118px;
+		right: 42px;
+	}
 `;
 
 export const VideoButton = styled.button`

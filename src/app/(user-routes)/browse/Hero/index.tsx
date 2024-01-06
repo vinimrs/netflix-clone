@@ -8,6 +8,7 @@ import { useWindowDimensions } from '@hooks';
 import { limitedText } from '@utils';
 import { useAppSelector } from 'src/store/hooks';
 import VideoPlayer from 'src/components/VideoPlayer';
+import HeroShimmer from './Shimmer';
 
 interface HeroProps {
 	handleSetModal: (film: IMovieDataInfo) => void;
@@ -26,12 +27,12 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 				final: {
 					fontSize: 8 - titleSize * 0.1 + 'vw',
 					lineHeight: 6 + 'vw',
-					maxWidth: 50 + '%',
+					maxWidth: width < 768 ? 80 + '%' : 50 + '%',
 				},
 				initial: {
 					fontSize: 6 - titleSize * 0.1 + 'vw',
 					lineHeight: 4 + 'vw',
-					maxWidth: 35 + '%',
+					maxWidth: width < 768 ? 60 + '%' : 35 + '%',
 				},
 			}[reverse ? 'final' : 'initial'];
 		},
@@ -40,12 +41,12 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 				initial: {
 					fontSize: 8 - titleSize * 0.1 + 'vw',
 					lineHeight: 6 + 'vw',
-					maxWidth: 50 + '%',
+					maxWidth: width < 768 ? 80 + '%' : 50 + '%',
 				},
 				final: {
 					fontSize: 6 - titleSize * 0.1 + 'vw',
 					lineHeight: 4 + 'vw',
-					maxWidth: 35 + '%',
+					maxWidth: width < 768 ? 60 + '%' : 35 + '%',
 				},
 			}[reverse ? 'initial' : 'final'];
 		},
@@ -77,6 +78,8 @@ const Hero: React.FC<HeroProps> = ({ handleSetModal }) => {
 			}[reverse ? 'initial' : 'final'];
 		},
 	});
+
+	if (!heroFilm?.id) return <HeroShimmer />;
 
 	return (
 		<S.HeroWrapper

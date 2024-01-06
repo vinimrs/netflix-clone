@@ -6,6 +6,7 @@ import { IMovieData } from '@types';
 import List from 'src/components/List';
 import { useAppSelector } from 'src/store/hooks';
 import { shuffle } from '@utils';
+import ListShimmer from 'src/components/List/Shimmer';
 
 interface Modal {
 	setModal: (film: IMovieData) => void;
@@ -23,9 +24,16 @@ const Main: React.FC<Modal> = ({ setModal }) => {
 
 	return (
 		<S.MainWrapper>
-			{homeList.map((category, key) => {
-				return <List key={key} setModal={setModal} list={category} />;
-			})}
+			{homeList?.length > 0 ? (
+				homeList.map((category, key) => {
+					return <List key={key} setModal={setModal} list={category} />;
+				})
+			) : (
+				<>
+					<ListShimmer />
+					<ListShimmer />
+				</>
+			)}
 		</S.MainWrapper>
 	);
 };

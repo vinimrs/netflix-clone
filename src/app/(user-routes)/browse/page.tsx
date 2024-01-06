@@ -59,8 +59,7 @@ const Browse = () => {
 		if (profile?.name) dispatch(loadFilms());
 	}, [dispatch, profile]);
 
-	if ((status !== 'idle' && status !== 'success') || !session?.id)
-		return <Loading />;
+	if (!session?.id || status === 'changingProfile') return <Loading />;
 
 	if (selectProfile) return <SelectProfile />;
 

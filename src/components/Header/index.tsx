@@ -11,7 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { convertImage } from '@utils';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { resetProfile, setProfile } from 'src/store/reducers/profile';
+import { changeProfile, resetProfile } from 'src/store/reducers/profile';
 
 interface HeaderProps {
 	scroll: boolean;
@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ scroll, session }) => {
 											<li
 												onClick={() => {
 													handleCloseDropdown();
-													dispatch(setProfile(item));
+													dispatch(changeProfile(item));
 													// window !== undefined && location.reload();
 													/* Agora Recoil gerencia atualizações necessárias em filhos que 
 											 utilizam seus átomos */

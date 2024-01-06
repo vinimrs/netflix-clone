@@ -9,11 +9,8 @@ export const MainWrapper = styled.main`
 	z-index: 10;
 
 	@media (max-width: 768px) {
-		margin-top: -80px;
-	}
-
-	@media (max-width: 1440px) {
-		margin-top: -100px;
+		margin-top: -70px;
+		padding: 0 0 0 0;
 	}
 `;
 
@@ -135,4 +132,30 @@ export const TogglePasswordVisibility = styled.span`
 	transition: 0.5s;
 	transform: translate(-97px, 30px);
 	color: var(--white);
+`;
+
+export const Shimmer = styled.div<{ duration: string }>`
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 0;
+	top: 0;
+	left: 0;
+
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.2),
+		transparent
+	);
+	animation: shimmerAnimation ${props => props.duration} infinite;
+
+	@keyframes shimmerAnimation {
+		0% {
+			transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(100%);
+		}
+	}
 `;

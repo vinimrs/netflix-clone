@@ -3,6 +3,7 @@ import { GoMute, GoUnmute } from 'react-icons/go';
 import { IoReload } from 'react-icons/io5';
 import YouTube from 'react-youtube';
 import * as S from './style';
+import { useWindowDimensions } from '@hooks';
 
 const iconsProps = {
 	size: '24px',
@@ -18,10 +19,11 @@ const VideoPlayer: React.FC<{
 	playerClassname?: string;
 	delayToPlay?: number;
 }> = ({ videoKey, onChangeState, playerClassname, delayToPlay }) => {
+	const { width } = useWindowDimensions();
 	const [playerStatus, setPlayerStatus] = useState<
 		'unstarted' | 'playing' | 'stopped'
 	>('unstarted');
-	const [muted, setMuted] = useState<boolean>(false);
+	const [muted, setMuted] = useState<boolean>(width < 768 ? true : false);
 	const videoRef = useRef<YouTube>(null);
 
 	const handleVideoReady = event => {
@@ -48,13 +50,13 @@ const VideoPlayer: React.FC<{
 	};
 
 	const muteVideo = () => {
-		setMuted(true);
 		if (videoRef.current) videoRef?.current?.internalPlayer.mute();
+		setMuted(true);
 	};
 
 	const unmuteVideo = () => {
-		setMuted(false);
 		if (videoRef.current) videoRef?.current?.internalPlayer.unMute();
+		setMuted(false);
 	};
 
 	const restartVideo = () => {
@@ -74,7 +76,7 @@ const VideoPlayer: React.FC<{
 				}}
 				opts={{
 					playerVars: {
-						mute: 0,
+						mute: width < 768 ? 1 : 0,
 						controls: 0,
 						modestbranding: 1,
 						showinfo: 0,

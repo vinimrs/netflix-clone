@@ -56,13 +56,15 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 
 	@media (max-width: 768px) {
 		margin: -28px 0 0 0;
-		background-image: linear-gradient(0deg, #000e 40%, #00000000 95.33%),
+		background-image: linear-gradient(0deg, #00000eae 10%, #00000000 95.33%),
 			url(${props => (props.src ? props.src : '')});
 		background-position: center;
 		align-items: flex-end;
 
 		.film-details {
-			width: 100%;
+			left: 0;
+			bottom: 0;
+			width: 90%;
 			padding: 0 0 100px 16px;
 			justify-content: flex-end;
 
@@ -75,7 +77,8 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 			p {
 				font-size: 16px;
 				margin: 8px 0;
-				max-width: 80%;
+				max-width: 100%;
+				margin-left: 8px;
 			}
 		}
 

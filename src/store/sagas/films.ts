@@ -2,9 +2,11 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import { loadFilms, setFilms, setStatus } from '../reducers/films';
 import { moviesService } from '@services';
 import { isAnMovieDataInfo } from '@utils';
+import { changeProfile } from '../reducers/profile';
 
 const filmsWorker = function* () {
-	yield put(setStatus('loading'));
+	const status = yield select(state => state.films.status);
+	if (status !== 'changingProfile') yield put(setStatus('loading'));
 
 	try {
 		const [general, specific, hero] = yield all([
@@ -74,7 +76,12 @@ const heroFilmWorker = function* () {
 	}
 };
 
+const profileChangeWorker = function* () {
+	yield put(setStatus('changingProfile'));
+};
+
 export const filmsSaga = function* () {
+	yield takeLatest(changeProfile, profileChangeWorker);
 	yield takeLatest(loadFilms, filmsWorker);
 };
 
