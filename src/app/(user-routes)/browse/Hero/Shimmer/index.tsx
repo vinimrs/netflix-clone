@@ -1,5 +1,5 @@
 import { Shimmer } from 'src/styles/GlobalComponents';
-import * as S from './style';
+import * as S from './styles';
 import React from 'react';
 
 const HeroShimmer: React.FC = () => {

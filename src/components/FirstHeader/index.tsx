@@ -2,24 +2,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import styled from 'styled-components';
-
-const HeaderDiv = styled.div`
-	width: 100vw;
-	height: 80px;
-	padding: 0px 50px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-
-	@media (max-width: 768px) {
-		padding: 0px 40px;
-	}
-`;
+import * as S from './style';
 
 const FirstHeader: React.FC = () => {
 	return (
-		<HeaderDiv>
+		<S.HeaderDiv>
 			<Image
 				alt="Logo da Netflix"
 				src="/netflix-logo.svg"
@@ -28,10 +15,11 @@ const FirstHeader: React.FC = () => {
 				// style={{ display: 'flex', justifyContent: 'start' }}
 			/>
 			<Link href={'/login'} passHref>
-				<button style={{ backgroundColor: 'red' }}>Entrar</button>
+				<S.HeaderLoginButton>Entrar</S.HeaderLoginButton>
 			</Link>
-		</HeaderDiv>
+		</S.HeaderDiv>
 	);
 };
 
 export default FirstHeader;
+

@@ -1,5 +1,5 @@
 'use client';
-import * as S from './style';
+import * as S from './styles';
 import React, { useState } from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { AnimatePresence, Variants, motion } from 'framer-motion';

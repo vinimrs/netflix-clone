@@ -1,29 +1,15 @@
-'use client';
-import React from 'react';
+import { Metadata } from 'next';
+import Dashboard from './Dashboard';
 
-const Dashboard = () => {
-	return (
-		<div>
-			<h1>
-				Os maiores sucessos do Brasil e do mundo. As melhores histórias. Tudo na
-				Netflix.
-			</h1>
-			<p>Assista onde quiser. Cancele quando quiser.</p>
-			<div>
-				<p>
-					Quer assistir? Informe seu email para criar ou reiniciar sua
-					assinatura.
-				</p>
-				<form>
-					<input type="email" placeholder="Email" />
-					<button type="submit">Vamos lá</button>
-				</form>
-			</div>
-
-			{/* <Link href={'/signup'}>Sign Up</Link> */}
-		</div>
-	);
+export const metadata: Metadata = {
+	title: 'Netflix Brasil - Assista a séries e filmes online',
+	description:
+		'Assista a Netflix onde quiser. Assista no seu celular, tablet, Smart TV ou notebook sem pagar a mais por isso.',
 };
 
-export default Dashboard;
+const DashboardPage = () => {
+	return <Dashboard />;
+};
+
+export default DashboardPage;
 
