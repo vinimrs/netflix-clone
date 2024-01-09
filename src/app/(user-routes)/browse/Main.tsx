@@ -25,15 +25,18 @@ const Main: React.FC<Modal> = ({ setModal }) => {
 	return (
 		<S.MainWrapper>
 			{homeList?.length > 0 ? (
-				homeList.map((category, key) => {
-					return <List key={key} setModal={setModal} list={category} />;
-				})
+				<S.ListsWrapper>
+					{homeList.map((category, key) => {
+						return <List key={key} setModal={setModal} list={category} />;
+					})}
+				</S.ListsWrapper>
 			) : (
 				<>
 					<ListShimmer />
 					<ListShimmer />
 				</>
 			)}
+			<S.GradientMainWrapper />
 		</S.MainWrapper>
 	);
 };

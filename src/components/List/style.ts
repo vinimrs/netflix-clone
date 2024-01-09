@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ListWrapper = styled.div`
-	margin-bottom: 24px;
+	margin-bottom: 76px;
 	position: relative;
 `;
 
@@ -34,8 +34,8 @@ export const FilmImage = styled.img`
 `;
 
 export const ListTitle = styled.h2`
-	font-size: 24px;
-	font-weight: 600;
+	font-size: 26px;
+	font-weight: 700;
 	color: var(--white);
 	margin-left: 32px;
 `;

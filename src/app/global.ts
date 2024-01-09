@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
     ${normalize}
 
     :root {
-        --black: #111;
+        --black: #141414;
         --white: #f5f5f5;
         --white-hover: #f5f5f5c3;
         --green: #46d369;
@@ -33,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         background-color: var(--black);
         overflow-x: hidden;
+        -webkit-font-smooth: antialiased;
     }
 
     a {
@@ -50,3 +51,4 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default GlobalStyle;
+

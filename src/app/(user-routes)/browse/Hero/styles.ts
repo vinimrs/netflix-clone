@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const HeroWrapper = styled.div<{ src?: string }>`
 	width: 100%;
-	height: 100vh;
+	height: 105vh;
 	display: flex;
 	align-items: end;
 	position: relative;
@@ -15,7 +15,7 @@ export const HeroWrapper = styled.div<{ src?: string }>`
 	.film-details {
 		position: absolute;
 		left: 60px;
-		bottom: 35%;
+		bottom: 28%;
 		display: flex;
 		flex-direction: column;
 		justify-content: baseline;

@@ -19,8 +19,8 @@ export const VideoPlayerWrapper = styled.div`
 
 export const ButtonContainer = styled.div`
 	position: absolute;
-	bottom: 35%;
-	right: 5%;
+	bottom: 28%;
+	right: 7%;
 	z-index: 1000;
 
 	@media (max-width: 768px) {

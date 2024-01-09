@@ -100,9 +100,9 @@ const VideoPlayer: React.FC<{
 					>
 						{playerStatus === 'playing' ? (
 							muted ? (
-								<GoUnmute {...iconsProps} />
-							) : (
 								<GoMute {...iconsProps} />
+							) : (
+								<GoUnmute {...iconsProps} />
 							)
 						) : (
 							<IoReload {...iconsProps} />

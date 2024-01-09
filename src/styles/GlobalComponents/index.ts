@@ -2,8 +2,6 @@ import { Select, TextField } from '@mui/material';
 import styled from 'styled-components';
 
 export const MainWrapper = styled.main`
-	overflow-x: hidden;
-	margin-top: -100px;
 	position: relative;
 	padding: 0 0 0 52px;
 	z-index: 10;
@@ -14,7 +12,19 @@ export const MainWrapper = styled.main`
 	}
 `;
 
-// login
+export const GradientMainWrapper = styled.div`
+	width: 100%;
+	height: 60px;
+	position: absolute;
+	top: 120px;
+	left: 0;
+	z-index: -1;
+	background-image: linear-gradient(0deg, #141414 0%, #14141400 100%);
+`;
+
+export const ListsWrapper = styled.div`
+	margin-top: -180px;
+`;
 
 export const CustomBackground = styled.div<{ src?: string }>`
 	width: 100vw;

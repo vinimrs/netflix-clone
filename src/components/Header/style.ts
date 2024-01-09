@@ -11,7 +11,12 @@ export const StyledHeader = styled.header<{ $active?: boolean }>`
 	align-items: center;
 	padding: 17px 52px;
 	transition: all ease 0.2s;
-	background-color: ${props => (props.$active ? 'var(--black)' : '#00000000')};
+	background-color: ${props =>
+		props.$active ? 'var(--black)' : 'var(--transparent)'};
+	background-image: ${props =>
+		props.$active
+			? 'none'
+			: 'linear-gradient(180deg, #141414 0%, #14141400 50%, #0000 100%)'};
 	z-index: 1001;
 
 	@media (max-width: 768px) {
